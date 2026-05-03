@@ -1,0 +1,250 @@
+\documentclass[12pt, a4paper]{report}
+
+% ==========================================
+% PACKAGES
+% ==========================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[top=1.5cm, bottom=1.5cm, left=2cm, right=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{microtype}
+
+\usetikzlibrary{calc}
+
+% ==========================================
+% COULEURS (Unified Theme)
+% ==========================================
+\definecolor{primaryBlue}{RGB}{28, 62, 110}    % Single professional dark blue
+\definecolor{lightBlue}{RGB}{235, 243, 250}    % Very light blue for table rows
+\definecolor{royalBlue}{RGB}{52, 101, 164}
+
+\begin{document}
+\pagestyle{empty}
+
+% ==========================================
+% PAGE DE GARDE
+% ==========================================
+\begin{titlepage}
+\centering
+
+% ------------------------------------------
+% TOP BLUE BAR
+% ------------------------------------------
+\begin{tikzpicture}[remember picture]
+  % Top accent bar (full width)
+  \fill[primaryBlue] (0, 0) rectangle (\textwidth, 0.25cm);
+  % Thin lighter line below
+  \fill[primaryBlue!60] (0, -0.1cm) rectangle (\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.3cm}
+
+% Logos + University name row
+\begin{minipage}[c]{0.26\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{images/uae-logo.png}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.46\textwidth}
+    \centering
+    {\fontsize{13}{15}\selectfont\color{primaryBlue}\bfseries UNIVERSITÉ ABDELMALEK ESSAÂDI}\\[4pt]
+    {\fontsize{11}{13}\selectfont\color{primaryBlue}\bfseries Faculté des Sciences}\\[6pt]
+    \textcolor{primaryBlue}{\rule{5cm}{0.8pt}}\\[4pt]
+    {\fontsize{10.5}{12}\selectfont\color{primaryBlue}\textbf{- Tétouan -}}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.26\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{images/fst-logo.png}
+\end{minipage}
+
+\vspace{0.4cm}
+
+% Full-width separator
+\textcolor{primaryBlue}{\rule{\textwidth}{1pt}}
+
+\vspace{0.4cm}
+
+% ------------------------------------------
+% MASTER BADGE  (double rounded frame)
+% ------------------------------------------
+\begin{tikzpicture}
+  % Outer dashed frame
+  \node[
+    draw=primaryBlue, dashed, rounded corners=14pt,
+    inner sep=6pt, line width=1.2pt
+  ] (outer) {
+    % Inner solid frame
+    \begin{tikzpicture}
+      \node[
+        draw=primaryBlue, rounded corners=10pt,
+        inner xsep=24pt, inner ysep=14pt, line width=1pt,
+        fill=lightBlue
+      ] (inner) {
+        \begin{minipage}{0.75\textwidth}
+          \centering
+          {\fontsize{13}{18}\selectfont\color{royalBlue}\bfseries Master spécialisé}\\[8pt]
+          {\fontsize{20}{19}\selectfont\color{primaryBlue}\bfseries INGÉNIERIE INFORMATIQUE (M2I)}
+        \end{minipage}
+      };
+    \end{tikzpicture}
+  };
+\end{tikzpicture}
+
+\vspace{0.4cm}
+
+% ------------------------------------------
+% PFE TITLE
+% ------------------------------------------
+{\fontsize{15}{18}\selectfont\color{royalBlue}\bfseries MÉMOIRE DU STAGE PROFESSIONNEL\par}
+
+\vspace{0.2cm}
+
+% Decorative dashed rule
+\begin{tikzpicture}
+  \draw[primaryBlue, dash pattern=on 6pt off 4pt, line width=2pt]
+    (0,0) -- (0.75\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.35cm}
+
+% ------------------------------------------
+% PROJECT TITLE
+% ------------------------------------------
+{\fontsize{20}{25}\selectfont\color{primaryBlue}\bfseries
+  Conception et implémentation full-stack
+  \\ du module Invoicing pour la plateforme KAFA'AT EMS\par}
+
+\vspace{0.45cm}
+
+% NTT DATA Logo
+\includegraphics[width=5.5cm]{images/ntt-data-logo.png}\par
+
+\vspace{0.35cm}
+
+% Decorative dashed rule
+\begin{tikzpicture}
+  \draw[primaryBlue, dash pattern=on 6pt off 4pt, line width=2pt]
+    (0,0) -- (0.65\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.35cm}
+
+% ------------------------------------------
+% AUTHOR BLOCK
+% ------------------------------------------
+{\fontsize{14}{16}\selectfont\color{royalBlue}\bfseries Présenté par :\par}
+\vspace{0.15cm}
+{\fontsize{16}{19}\selectfont\color{primaryBlue}\bfseries Redouane ED-DAHMANY\par}
+
+\vspace{0.3cm}
+
+% Decorative dashed rule
+\begin{tikzpicture}
+  \draw[primaryBlue, dash pattern=on 6pt off 4pt, line width=2pt]
+    (0,0) -- (0.65\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.3cm}
+
+% ------------------------------------------
+% DATE
+% ------------------------------------------
+{\fontsize{14}{16}\selectfont\color{royalBlue}\bfseries
+  Date de soutenance :\enspace 01 juillet 2026\par}
+
+\vfill
+
+% ------------------------------------------
+% JURY TABLE
+% ------------------------------------------
+\arrayrulecolor{primaryBlue}
+\renewcommand{\arraystretch}{1.6}
+\setlength{\arrayrulewidth}{1pt}
+
+\noindent
+\begin{tabular}{|l|l|l|l|}
+  \hline
+  % --- LIGNE D'EN-TÊTE (Header Row) ---
+  \rowcolor{primaryBlue}
+  \textbf{\color{white}Titre} &
+  \textbf{\color{white}Nom et Prénom} &
+  \textbf{\color{white}Établissement} &
+  \textbf{\color{white}Qualité} \\
+  \hline
+  % --- DONNÉES DU JURY ---
+  \rowcolor{lightBlue}
+  \textbf{\color{primaryBlue}Pr.} &
+  \textbf{\color{primaryBlue}Amjad Souad} &
+  {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
+  {\color{primaryBlue}\bfseries Président} \\
+  \hline
+  \textbf{\color{primaryBlue}Pr.} &
+  \textbf{\color{primaryBlue}Naoufal Rtayli} &
+  {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
+  {\color{primaryBlue}\bfseries Examinateur} \\
+  \hline
+  \rowcolor{lightBlue}
+  \textbf{\color{primaryBlue}Pr.} &
+  \textbf{\color{primaryBlue}Benameur Lamiae} &
+  {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
+  {\color{primaryBlue}\bfseries Encadrant universitaire} \\
+  \hline
+  \textbf{\color{primaryBlue}Mr.} &
+  \textbf{\color{primaryBlue}Saloumi Achraf} &
+  {\color{primaryBlue}\small NTT DATA Tétouan} &
+  {\color{primaryBlue}\bfseries Encadrant professionnel} \\
+  \hline
+\end{tabular}
+
+\vspace{0.5cm}
+
+% ------------------------------------------
+% BOTTOM BLUE BAR
+% ------------------------------------------
+\begin{tikzpicture}
+  \fill[primaryBlue] (0, 0) rectangle (\textwidth, 0.25cm);
+  \fill[primaryBlue!40] (0, 0.25cm) rectangle (\textwidth, 0.35cm);
+\end{tikzpicture}
+
+\end{titlepage}
+
+% ==========================================
+% PAGE 2 : VERSETS CORANIQUES
+% ==========================================
+\newpage
+\thispagestyle{empty} % Bach matbanch rqm d page
+
+\vspace*{\fill} % Kaydf3 kolchi l-te7t bach yji f l-west
+
+\begin{center}
+    % Tswira 1: Bismillah (L-fou9)
+    \includegraphics[width=0.8\textwidth]{images/bismillah.png}
+    
+    \vspace{4cm} % Masafa bin tswira lola w tanya
+    
+    % Tswira 2: Rabbi Zidni Ilma (L-west)
+    \includegraphics[width=0.8\textwidth]{images/rabbi-zidni-ilma.png}
+    
+    \vspace{4cm} % Masafa bin tswira tanya w talta
+    
+    % Tswira 3: Sadaqa Allah (L-te7t)
+    \includegraphics[width=0.8\textwidth]{images/sadaqa-allah.png}
+\end{center}
+
+\vspace*{\fill} % Kaydf3 men l-te7t bach kolchi yb9a m-centri
+
+% ==========================================
+% SOMMAIRE
+% ==========================================
+\newpage
+\tableofcontents
+
+\end{document}
