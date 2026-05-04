@@ -6,7 +6,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
-\usepackage[top=1.5cm, bottom=1.5cm, left=2cm, right=2cm]{geometry}
+\usepackage[top=1.5cm, bottom=2.5cm, left=2cm, right=2cm, footskip=1.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{colortbl}
@@ -16,6 +16,155 @@
 \usepackage{booktabs}
 \usepackage{microtype}
 
+% --- ZID HAD L'PACKAGE HNA BACH YBANO NOQAT F L'FIHRES ---
+\usepackage[titles]{tocloft}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+% ---------------------------------------------------------
+% Zid had 3 stora bach tktb "Figure X :" f Table des figures:
+\renewcommand{\cftfigpresnum}{Figure }
+\renewcommand{\cftfigaftersnum}{ :}
+\addtolength{\cftfignumwidth}{40pt} % Tissa3 bach t9ed lkelma "Figure 10 :"
+% ---------------------------------------------------------
+
+% L'code jdid dyal Liste des tableaux:
+\renewcommand{\cfttabpresnum}{Tableau }
+\renewcommand{\cfttabaftersnum}{ :}
+\addtolength{\cfttabnumwidth}{48pt} % Drnaha 48pt 7it kelmat 'Tableau' twel mn 'Figure'
+% ---------------------------------------------------------
+
+
+% ==========================================
+% CUSTOM TABLE DES MATIERES
+% ==========================================
+\makeatletter
+\renewcommand\tableofcontents{%
+    \newpage
+    \pagestyle{frontmatter}     % <--- ZID HADI: bach tb9a khdama f ga3 l'pages d l'fihres
+    \thispagestyle{frontmatter} % <--- BEDDEL HADI: mn 'empty' l 'frontmatter'
+    \vspace*{-1cm}
+    
+    % 1. HEADER : Les Logos
+    \noindent
+    \begin{minipage}[c]{0.45\textwidth}
+        \raggedright
+        \includegraphics[height=1.0cm]{images/ntt-data-logo.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.45\textwidth}
+        \raggedleft
+        \includegraphics[height=2.2cm]{images/fst-logo.png}
+    \end{minipage}\par
+    \vspace{0.1cm}
+    
+    % 2. Ligne m9et3a
+    \noindent
+    \begin{tikzpicture}
+        \draw[royalBlue, dash pattern=on 5pt off 3pt, line width=0.8pt] (0,0) -- (\textwidth, 0);
+    \end{tikzpicture}\par
+    \vspace{1.0cm}
+    
+    % 3. Titre "Table des matières"
+    \noindent
+    \textcolor{royalBlue}{\rule{0.45\textwidth}{1pt}}
+    \hfill
+    {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Table des matières}\par
+    \vspace{1.5cm}
+    
+    % Hna fin LaTeX kay-généri l'fihres bo7do (Lownah b zre9 mftou7)
+    {\color{azureBlue} % <--- BEDDELHA L AZURE BLUE
+    \@starttoc{toc}%
+    }
+}
+\makeatother
+
+% ==========================================
+% CUSTOM TABLE DES FIGURES
+% ==========================================
+\makeatletter
+\renewcommand\listoffigures{%
+    \newpage
+    \pagestyle{frontmatter}     
+    \thispagestyle{frontmatter} 
+    \vspace*{-1cm} 
+    
+    % 1. HEADER : Les Logos
+    \noindent
+    \begin{minipage}[c]{0.45\textwidth}
+        \raggedright
+        \includegraphics[height=1.0cm]{images/ntt-data-logo.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.45\textwidth}
+        \raggedleft
+        \includegraphics[height=2.2cm]{images/fst-logo.png}
+    \end{minipage}\par
+    \vspace{0.1cm}
+    
+    % 2. Ligne m9et3a
+    \noindent
+    \begin{tikzpicture}
+        \draw[royalBlue, dash pattern=on 5pt off 3pt, line width=0.8pt] (0,0) -- (\textwidth, 0);
+    \end{tikzpicture}\par
+    \vspace{1.0cm}
+    
+    % 3. Titre "Table des figures"
+    \noindent
+    \textcolor{royalBlue}{\rule{0.45\textwidth}{1pt}}
+    \hfill
+    {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Table des figures}\par
+    \vspace{1.5cm}
+    
+    % Hna fin LaTeX kay-généri l'fihres d'les figures
+    {\color{azureBlue} 
+    \@starttoc{lof}% <--- lof katsme3 'List of Figures'
+    }
+}
+\makeatother
+
+% ==========================================
+% CUSTOM LISTE DES TABLEAUX
+% ==========================================
+\makeatletter
+\renewcommand\listoftables{%
+    \newpage
+    \pagestyle{frontmatter}     
+    \thispagestyle{frontmatter} 
+    \vspace*{-1cm} 
+    
+    % 1. HEADER : Les Logos
+    \noindent
+    \begin{minipage}[c]{0.45\textwidth}
+        \raggedright
+        \includegraphics[height=1.0cm]{images/ntt-data-logo.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.45\textwidth}
+        \raggedleft
+        \includegraphics[height=2.2cm]{images/fst-logo.png}
+    \end{minipage}\par
+    \vspace{0.1cm}
+    
+    % 2. Ligne m9et3a
+    \noindent
+    \begin{tikzpicture}
+        \draw[royalBlue, dash pattern=on 5pt off 3pt, line width=0.8pt] (0,0) -- (\textwidth, 0);
+    \end{tikzpicture}\par
+    \vspace{1.0cm}
+    
+    % 3. Titre "Liste des tableaux"
+    \noindent
+    \textcolor{royalBlue}{\rule{0.48\textwidth}{1pt}}
+    \hfill
+    {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Liste des tableaux}\par
+    \vspace{1.5cm}
+    
+    % Hna fin LaTeX kay-généri l'fihres d'les tableaux
+    {\color{azureBlue} 
+    \@starttoc{lot}% <--- lot katsme3 'List of Tables'
+    }
+}
+\makeatother
+
 \usetikzlibrary{calc}
 
 % ==========================================
@@ -24,14 +173,51 @@
 \definecolor{primaryBlue}{RGB}{28, 62, 110}    % Single professional dark blue
 \definecolor{lightBlue}{RGB}{235, 243, 250}    % Very light blue for table rows
 \definecolor{royalBlue}{RGB}{52, 101, 164}
+\definecolor{azureBlue}{RGB}{0, 122, 204}      % <--- ZID HADA (Zre9 mftou7 w kayban)
+
+% ==========================================
+% LIENS ET CLICKABLE TOC (Fihres Interactif)
+% ==========================================
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=azureBlue, % <--- BEDDELHA HNA
+    urlcolor=azureBlue,  % <--- W HNA
+    linktoc=all 
+}
+
+% ==========================================
+% CUSTOM HEADER / FOOTER (Fancyhdr)
+% ==========================================
+\usepackage{fancyhdr}
+\fancypagestyle{frontmatter}{
+    \fancyhf{} % Kanms7o ga3 les headers w footers l9dam
+    \renewcommand{\headrulewidth}{0pt} % Mkaynch khat lfo9
+    \renewcommand{\footrulewidth}{0pt} % Mkaynch khat lta7t
+    % L'Footer dyalna f lwest (C = Center)
+    % L'Footer dyalna f lwest (C = Center)
+    \fancyfoot[C]{
+        \begin{tabular}{c}
+            \begin{tikzpicture}
+                \fill[royalBlue] (-0.45\textwidth, 0) -- (0, 0.05cm) -- (0.45\textwidth, 0) -- (0, -0.05cm) -- cycle;
+            \end{tikzpicture} \\
+            \rule{0pt}{12pt} % Had l'code kaydir espace sghir n9i bin l'khat w ra9m
+            \textcolor{royalBlue}{\textbf{\thepage}}
+        \end{tabular}
+    }
+}
 
 \begin{document}
 \pagestyle{empty}
+
+% --- L'pages Romani (I, II, III, IV...) ---
+\pagenumbering{Roman}
 
 % ==========================================
 % PAGE DE GARDE
 % ==========================================
 \begin{titlepage}
+\enlargethispage{0.6cm} % <--- ZID HADI HNA !!
 \centering
 
 % ------------------------------------------
@@ -204,7 +390,7 @@
   \hline
 \end{tabular}
 
-\vspace{0.5cm}
+\vspace{0.3cm}
 
 % ------------------------------------------
 % BOTTOM BLUE BAR
@@ -215,6 +401,8 @@
 \end{tikzpicture}
 
 \end{titlepage}
+
+\setcounter{page}{2}
 
 % ==========================================
 % PAGE 2 : VERSETS CORANIQUES
@@ -245,7 +433,9 @@
 % PAGE 3 : DÉDICACE
 % ==========================================
 \newpage
-\thispagestyle{empty} % Bach n7kmo f ra9m l'page b idina lte7t
+\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Dédicace} % <--- 7ETHA HNA !
 
 \vspace*{-1cm} % Bach ntle3o l'header lfo9 chwia
 
@@ -307,21 +497,14 @@ Enfin, je souhaite exprimer ma gratitude envers mes amis, qui ont été mes comp
 % \vfill
 \vspace{0.1cm}
 
-% 6. L'khat l'mzoweq w Ra9m l'page (III)
-\begin{center}
-    \begin{tikzpicture}
-        % Had l'code kaydir khat ghlid f lwest (0.05cm) w r9i9 f jnab
-        \fill[royalBlue] (-0.45\textwidth, 0) -- (0, 0.05cm) -- (0.45\textwidth, 0) -- (0, -0.05cm) -- cycle;
-    \end{tikzpicture}
-    \\[0.3cm]
-    \textcolor{royalBlue}{\textbf{III}}
-\end{center}
 
 % ==========================================
 % PAGE 4 : REMERCIEMENTS
 % ==========================================
 \newpage
-\thispagestyle{empty} % Bach n7kmo f ra9m l'page b idina lte7t
+\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Remerciements} % <--- 7ETHA HNA !
 
 \vspace*{-1cm} % Bach ntle3o l'header lfo9 chwia
 
@@ -382,21 +565,14 @@ Mes sincères remerciements à toutes les personnes qui ont contribué de près 
 % \vfill
 \vspace{0.1cm}
 
-% 6. L'khat l'mzoweq w Ra9m l'page (IV)
-\begin{center}
-    \begin{tikzpicture}
-        % Had l'code kaydir khat ghlid f lwest (0.05cm) w r9i9 f jnab
-        \fill[royalBlue] (-0.45\textwidth, 0) -- (0, 0.05cm) -- (0.45\textwidth, 0) -- (0, -0.05cm) -- cycle;
-    \end{tikzpicture}
-    \\[0.3cm]
-    \textcolor{royalBlue}{\textbf{IV}}
-\end{center}
 
 % ==========================================
 % PAGE 5 : RÉSUMÉ
 % ==========================================
 \newpage
-\thispagestyle{empty} % Bach n7kmo f ra9m l'page b idina lte7t
+\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Résumé} % <--- 7ETHA HNA !
 
 \vspace*{-1cm} % Bach ntle3o l'header lfo9 chwia
 
@@ -457,21 +633,14 @@ Application Web, Plateforme EMS, Invoicing, Microservice, NTT DATA, Angular, Spr
 % \vfill
 \vspace{0.1cm}
 
-% 6. L'khat l'mzoweq w Ra9m l'page (V)
-\begin{center}
-    \begin{tikzpicture}
-        % Had l'code kaydir khat ghlid f lwest (0.05cm) w r9i9 f jnab
-        \fill[royalBlue] (-0.45\textwidth, 0) -- (0, 0.05cm) -- (0.45\textwidth, 0) -- (0, -0.05cm) -- cycle;
-    \end{tikzpicture}
-    \\[0.3cm]
-    \textcolor{royalBlue}{\textbf{V}}
-\end{center}
 
 % ==========================================
 % PAGE 6 : ABSTRACT
 % ==========================================
 \newpage
-\thispagestyle{empty} 
+\thispagestyle{frontmatter} 
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Abstract} % <--- 7ETHA HNA !
 
 \vspace*{-1cm} 
 
@@ -531,14 +700,250 @@ Web Application, EMS Platform, Invoicing, Microservice, NTT DATA, Angular, Sprin
 
 \vspace{0.1cm}
 
-% 6. L'khat l'mzoweq w Ra9m l'page (VI)
+% % 6. L'khat l'mzoweq w Ra9m l'page (VI)
+% \begin{center}
+%     \begin{tikzpicture}
+%         \fill[royalBlue] (-0.45\textwidth, 0) -- (0, 0.05cm) -- (0.45\textwidth, 0) -- (0, -0.05cm) -- cycle;
+%     \end{tikzpicture}
+%     \\[0.3cm]
+%     \textcolor{royalBlue}{\textbf{VI}}
+% \end{center}
+
+% ==========================================
+% L'APPEL DYAL TABLE DES MATIERES
+% ==========================================
+\tableofcontents
+
+% ==========================================
+% L'APPEL DYAL TABLE DES FIGURES
+% ==========================================
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Table des figures}
+\listoffigures
+
+% ==========================================
+% L'APPEL DYAL LISTE DES TABLEAUX
+% ==========================================
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+\listoftables
+
+% ==========================================
+% L'APPEL DYAL LISTE DES ABRÉVIATIONS
+% ==========================================
+\newpage
+\thispagestyle{frontmatter}
+\phantomsection
+\addcontentsline{toc}{chapter}{Liste des abréviations}
+
+\vspace*{-1cm} 
+
+% 1. HEADER : Les Logos (NTT DATA 3la lissr, FST 3la limen)
+\noindent
+\begin{minipage}[c]{0.45\textwidth}
+    \raggedright
+    \includegraphics[height=1.0cm]{images/ntt-data-logo.png}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.45\textwidth}
+    \raggedleft
+    \includegraphics[height=2.2cm]{images/fst-logo.png}
+\end{minipage}
+
+\vspace{0.1cm}
+
+% 2. Ligne m9et3a (Dashed line) b l'zre9
+\noindent
+\begin{tikzpicture}
+    \draw[royalBlue, dash pattern=on 5pt off 3pt, line width=0.8pt] (0,0) -- (\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{1.0cm}
+
+% 3. Titre "Liste des abréviations" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.35\textwidth}{1pt}} % <--- N9ESNA MN T-TOUL DYAL L'KHAT (0.35)
+\hfill
+\mbox{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Liste des abréviations} % <--- MBOX BACH MAYT9SSEMCH
+
+\vspace{1.5cm}
+
+% 4. Le Tableau des abréviations
 \begin{center}
-    \begin{tikzpicture}
-        \fill[royalBlue] (-0.45\textwidth, 0) -- (0, 0.05cm) -- (0.45\textwidth, 0) -- (0, -0.05cm) -- cycle;
-    \end{tikzpicture}
-    \\[0.3cm]
-    \textcolor{royalBlue}{\textbf{VI}}
+\renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura
+\setlength{\arrayrulewidth}{1pt}
+\arrayrulecolor{primaryBlue}
+
+% Tableau b 2 colonnes (25% l'abréviation, 65% l'signification)
+% Tableau b 2 colonnes (25% l'abréviation, 65% l'signification)
+\begin{tabular}{|>{\centering\arraybackslash}p{0.25\textwidth}|>{\raggedright\arraybackslash}p{0.65\textwidth}|}
+    \hline
+    % En-tête dyal l'tableau b zre9 mghlo9 w ktba bida
+    \rowcolor{primaryBlue}
+    \textbf{\textcolor{white}{Abréviation}} & \textbf{\textcolor{white}{Signification}} \\
+    \hline
+    
+    % --- Les données stfin alphabétiquement ---
+    
+    \rowcolor{lightBlue}
+    % \textbf{ACID} & Atomicity, Consistency, Isolation, Durability (Atomicité, Cohérence, Isolation, Durabilité) \\
+    % \hline
+    \textbf{API} & Application Programming Interface (Interface de Programmation Applicative) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{CI/CD} & Continuous Integration / Continuous Deployment (Intégration et Déploiement Continus) \\
+    \hline
+    % \textbf{CORS} & Cross-Origin Resource Sharing (Partage des Ressources Entre Origines Multiples) \\
+    % \hline
+    \rowcolor{lightBlue}
+    % \textbf{CRUD} & Create, Read, Update, Delete (Créer, Lire, Mettre à jour, Supprimer) \\
+    % \hline
+    \textbf{DAO} & Data Access Object (Objet d'Accès aux Données) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{DI} & Dependency Injection (Injection de Dépendances) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{DTO} & Data Transfer Object (Objet de Transfert de Données) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{EMS} & Employee Management System (Système de Gestion des Employés) \\
+    \hline
+    % \textbf{FST} & Faculté des Sciences de Tétouan \\
+    % \hline
+    \rowcolor{lightBlue}
+    \textbf{HTTP} & HyperText Transfer Protocol (Protocole de Transfert Hypertexte) \\
+    \hline
+    \textbf{IDE} & Integrated Development Environment (Environnement de Développement Intégré) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{IoC} & Inversion of Control (Inversion de Contrôle) \\
+    \hline
+    \textbf{JPA} & Java Persistence API \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{JSON} & JavaScript Object Notation \\
+    \hline
+    \textbf{JWT} & JSON Web Token (Jeton Web JSON) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{MVC} & Model-View-Controller (Modèle-Vue-Contrôleur) \\
+    \hline
+    \textbf{ORM} & Object-Relational Mapping (Mappage Objet-Relationnel) \\
+    \hline
+    \rowcolor{lightBlue}
+    % \textbf{PFE} & Projet de Fin d'Études \\
+    % \hline
+    \textbf{REST} & Representational State Transfer \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{SGBDR} & Système de Gestion de Base de Données Relationnelle (ex: PostgreSQL) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{SPA} & Single Page Application (Application Web Monopage) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{SQL} & Structured Query Language (Langage de Requête Structurée) \\
+    \hline
+    % \textbf{UI/UX} & User Interface / User Experience (Interface Utilisateur / Expérience Utilisateur) \\
+    % \hline
+    \rowcolor{lightBlue}
+    \textbf{UML} & Unified Modeling Language (Langage de Modélisation Unifié) \\
+    \hline
+\end{tabular}
 \end{center}
+
+% ==========================================
+% DÉBUT DU CONTENU PRINCIPAL (Page 1, 2, 3...)
+% ==========================================
+\newpage
+\pagenumbering{arabic} % HNA KANRJJ3O L'AR9AM L'3ADIYIN (1, 2, 3...)
+\setcounter{page}{1} % KANBDAO MN PAGE 1
+
+% ==========================================
+% INTRODUCTION GÉNÉRALE
+% ==========================================
+\phantomsection
+\addcontentsline{toc}{chapter}{Introduction générale}
+
+\vspace*{-1cm} 
+
+% 1. HEADER : Les Logos (NTT DATA 3la lissr, FST 3la limen)
+\noindent
+\begin{minipage}[c]{0.45\textwidth}
+    \raggedright
+    \includegraphics[height=1.0cm]{images/ntt-data-logo.png}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.45\textwidth}
+    \raggedleft
+    \includegraphics[height=2.2cm]{images/fst-logo.png}
+\end{minipage}
+
+\vspace{0.1cm}
+
+% 2. Ligne m9et3a (Dashed line) b l'zre9
+\noindent
+\begin{tikzpicture}
+    \draw[royalBlue, dash pattern=on 5pt off 3pt, line width=0.8pt] (0,0) -- (\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.8cm}
+
+% 3. Titre "Introduction générale" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.3\textwidth}{1pt}}
+\hfill
+\mbox{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Introduction générale}
+
+\vspace{1.0cm}
+
+% 4. Le Texte de l'introduction (Taille normale bach t9ed f 1 page)
+\setlength{\parskip}{0.2cm}
+\renewcommand{\baselinestretch}{1.2}\selectfont
+
+La transformation digitale et l'optimisation continue des processus de gestion interne sont devenues des enjeux majeurs pour les entreprises cherchant à maintenir leur compétitivité. Dans cette optique, \textbf{NTT DATA}, leader mondial des services informatiques, s'engage à innover et à moderniser ses propres systèmes d'information. C'est dans ce contexte que s'inscrit notre projet de fin d'études, intitulé : 
+
+\begin{center}
+    \textcolor{primaryBlue}{\textbf{\og Conception et implémentation full-stack du module Invoicing pour la plateforme KAFA'AT EMS \fg{}.}}
+\end{center}
+
+Ce projet, réalisé au sein de \textbf{NTT DATA Tétouan}, a pour but de concevoir et développer de bout en bout un nouveau microservice indépendant dédié à la facturation (\textbf{Invoicing}). Ce module a pour objectif d'automatiser la gestion financière, de traiter les calculs liés aux temps de travail, d'appliquer les règles de facturation, et de générer les factures de manière automatisée, fiable et performante.
+
+Afin de détailler les différentes phases de réalisation de ce projet, le présent rapport est articulé autour de trois chapitres principaux :
+
+\vspace{0.5cm}
+
+% 5. DESIGN ATTRACTIF L'CHAPITRES (Badges TikZ + Tableau invisible)
+\noindent
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{@{} m{0.20\textwidth} m{0.72\textwidth} @{}}
+    
+    \tikz{\node[fill=primaryBlue, text=white, rounded corners=6pt, inner sep=8pt, text width=2.5cm, align=center] {\textbf{Chapitre 1}};} & 
+    Introduit l'organisme d'accueil (\textbf{NTT DATA}), le contexte général du projet pour la plateforme \textbf{KAFA'AT EMS}, et détaille la méthodologie de travail adoptée (Agile Scrum).\\
+    
+    \tikz{\node[fill=royalBlue, text=white, rounded corners=6pt, inner sep=8pt, text width=2.5cm, align=center] {\textbf{Chapitre 2}};} & 
+    Consacré à la spécification des besoins, à l'étude fonctionnelle et à la \textbf{conception} technique. Il détaille les choix d'architecture orientée \textbf{Microservices} et la modélisation \textbf{UML} du système.\\
+    
+    \tikz{\node[fill=azureBlue, text=white, rounded corners=6pt, inner sep=8pt, text width=2.5cm, align=center] {\textbf{Chapitre 3}};} & 
+    Se concentre sur la \textbf{réalisation}. Il détaille l'environnement technologique (\textbf{Angular, Spring Boot, PostgreSQL}) et présente les interfaces réalisées.\\
+    
+\end{tabular}
+
+\vspace{0.6cm}
+Ce rapport offre ainsi une vue d'ensemble complète du cycle de vie du développement de ce module, en mettant en évidence les défis techniques relevés et la valeur ajoutée apportée au système global de l'entreprise.
+
+\newpage
+
+% ==========================================
+% LES CHAPITRES (1, 2, 3, 4...)
+% ==========================================
+\newpage
+\pagenumbering{arabic} % HNA KANRJJ3O L'AR9AM L'3ADIYIN (1, 2, 3...)
+\setcounter{page}{1} % KANBDAO MN PAGE 1
+
 
 % ==========================================
 % SOMMAIRE
