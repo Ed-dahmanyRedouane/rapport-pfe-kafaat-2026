@@ -1,0 +1,1653 @@
+\documentclass[12pt, a4paper, openany]{report}
+
+% ==========================================
+% PACKAGES
+% ==========================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[top=3.5cm, bottom=2.5cm, left=2cm, right=2cm, headheight=75pt, headsep=1cm, footskip=1.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{float} % <--- ZID HAD L'PACKAGE HNA
+\usepackage{pifont} % <--- ZID HADI HNA
+\usepackage{pgfgantt} % Package l-asassi dyal l'Gantt
+\usepackage{graphicx} % Bach n-gueddou l'3bar dyalo m3a l'wer9a
+\usepackage{pifont}
+
+\usepackage{titlesec}
+\usepackage{etoolbox}
+
+% ← ZID HADI: Bach nmanc3o ga3 les pages khawyin
+\let\cleardoublepage\clearpage
+
+\makeatletter
+\patchcmd{\@chapter}
+  {\if@openright\cleardoublepage\else\clearpage\fi}
+  {}{}{}
+\makeatother
+
+% ==========================================
+% DESIGN DES TITRES (Sections, Sous-sections...)
+% ==========================================
+% Loun dyal Section (Titre kbir b zre9 mghlo9)
+\titleformat{\section}
+  {\color{primaryBlue}\normalfont\LARGE\bfseries}
+  {\thesection}{0.5em}{}
+
+% Loun dyal Subsection (Titre mtwest b zre9 royal)
+\titleformat{\subsection}
+  {\color{royalBlue}\normalfont\Large\bfseries}
+  {\thesubsection}{0.5em}{}
+
+% Loun dyal Subsubsection (Titre sghir b zre9 mftou7)
+\titleformat{\subsubsection}
+  {\color{azureBlue}\normalfont\large\bfseries}
+  {\thesubsubsection}{0.5em}{}
+
+% Espace bin les titres w l'ktba
+\titlespacing*{\section}{0pt}{3ex plus 1ex minus .2ex}{2ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+% 1. Had l'code bach nkhbiw l'titre dyal \chapter standard BLA maydir page khawya
+\titleformat{\chapter}[display]{}{}{0pt}{\vspace*{-3cm}\phantom}
+\titlespacing*{\chapter}{0pt}{-30pt}{10pt}
+
+% 2. Had l'code bach l'page li fiha \chapter t7tarem l'footer dyalna (l'khat zre9)
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{frontmatter}}{}{}
+
+% ==========================================
+% COMMANDE POUR LA PAGE DE GARDE DU CHAPITRE
+% ==========================================
+\newcommand{\chapterpage}[2]{%
+    \clearpage % T-bda page jdida n9iya
+    \thispagestyle{frontmatter} 
+    \vspace*{\fill}
+    \begin{center}
+        \begin{tikzpicture}
+            % 1. Image kberna liha l'width l 1.15 bach tban kbira w t-ched l'3erd
+            \node[inner sep=0pt] (frame) at (0,0) {
+                \includegraphics[width=1.0\textwidth, keepaspectratio]{images/cercle-chapitre.png}
+            };
+            
+            % 2. L'ktba m-centriya
+            \node[align=center, text width=0.8\textwidth] at (0,0) {
+                {\fontsize{36}{44}\selectfont\color{primaryBlue}\bfseries Chapitre #1}\\[15pt]
+                \textcolor{primaryBlue}{\rule{5cm}{2pt}}\\[15pt]
+                {\fontsize{24}{32}\selectfont\color{primaryBlue}\bfseries #2}
+            };
+        \end{tikzpicture}
+    \end{center}
+    \vspace*{\fill}
+    % MSSE7NA \newpage MN HNA BACH MAT3TICH WRATI KHAWYIN
+    \newpage % <--- ZID HADI
+}
+
+% --- ZID HAD L'PACKAGE HNA BACH YBANO NOQAT F L'FIHRES ---
+\usepackage[titles]{tocloft}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+% ---------------------------------------------------------
+% Zid had 3 stora bach tktb "Figure X :" f Table des figures:
+\renewcommand{\cftfigpresnum}{Figure }
+\renewcommand{\cftfigaftersnum}{ :}
+\addtolength{\cftfignumwidth}{40pt} % Tissa3 bach t9ed lkelma "Figure 10 :"
+% ---------------------------------------------------------
+
+% L'code jdid dyal Liste des tableaux:
+\renewcommand{\cfttabpresnum}{Tableau }
+\renewcommand{\cfttabaftersnum}{ :}
+\addtolength{\cfttabnumwidth}{48pt} % Drnaha 48pt 7it kelmat 'Tableau' twel mn 'Figure'
+% ---------------------------------------------------------
+
+
+% ==========================================
+% CUSTOM TABLE DES MATIERES
+% ==========================================
+\makeatletter
+\renewcommand\tableofcontents{%
+    \newpage
+    \pagestyle{frontmatter}     % <--- ZID HADI: bach tb9a khdama f ga3 l'pages d l'fihres
+    \thispagestyle{frontmatter} % <--- BEDDEL HADI: mn 'empty' l 'frontmatter'
+    \vspace*{0.5cm}
+    
+    % 3. Titre "Table des matières"
+    \noindent
+    \textcolor{royalBlue}{\rule{0.45\textwidth}{1pt}}
+    \hfill
+    {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Table des matières}\par
+    \vspace{1.5cm}
+    
+    % Hna fin LaTeX kay-généri l'fihres bo7do (Lownah b zre9 mftou7)
+    {\color{azureBlue} % <--- BEDDELHA L AZURE BLUE
+    \@starttoc{toc}%
+    }
+}
+\makeatother
+
+% ==========================================
+% CUSTOM TABLE DES FIGURES
+% ==========================================
+\makeatletter
+\renewcommand\listoffigures{%
+    \newpage
+    \pagestyle{frontmatter}     
+    \thispagestyle{frontmatter} 
+    \vspace*{0.5cm} 
+    
+    % 3. Titre "Table des figures"
+    \noindent
+    \textcolor{royalBlue}{\rule{0.45\textwidth}{1pt}}
+    \hfill
+    {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Table des figures}\par
+    \vspace{1.5cm}
+    
+    % Hna fin LaTeX kay-généri l'fihres d'les figures
+    {\color{azureBlue} 
+    \@starttoc{lof}% <--- lof katsme3 'List of Figures'
+    }
+}
+\makeatother
+
+% ==========================================
+% CUSTOM LISTE DES TABLEAUX
+% ==========================================
+\makeatletter
+\renewcommand\listoftables{%
+    \newpage
+    \pagestyle{frontmatter}     
+    \thispagestyle{frontmatter} 
+    \vspace*{0.5cm} 
+    
+    % 3. Titre "Liste des tableaux"
+    \noindent
+    \textcolor{royalBlue}{\rule{0.48\textwidth}{1pt}}
+    \hfill
+    {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Liste des tableaux}\par
+    \vspace{1.5cm}
+    
+    % Hna fin LaTeX kay-généri l'fihres d'les tableaux
+    {\color{azureBlue} 
+    \@starttoc{lot}% <--- lot katsme3 'List of Tables'
+    }
+}
+\makeatother
+
+\usetikzlibrary{calc}
+
+% ==========================================
+% COULEURS (Unified Theme)
+% ==========================================
+\definecolor{primaryBlue}{RGB}{28, 62, 110}    % Single professional dark blue
+\definecolor{lightBlue}{RGB}{235, 243, 250}    % Very light blue for table rows
+\definecolor{royalBlue}{RGB}{52, 101, 164}
+\definecolor{azureBlue}{RGB}{0, 122, 204}      % <--- ZID HADA (Zre9 mftou7 w kayban)
+
+% ==========================================
+% LIENS ET CLICKABLE TOC (Fihres Interactif)
+% ==========================================
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=azureBlue, % <--- BEDDELHA HNA
+    urlcolor=azureBlue,  % <--- W HNA
+    linktoc=all 
+}
+
+% ==========================================
+% CUSTOM HEADER / FOOTER (Bulletproof)
+% ==========================================
+\usepackage{fancyhdr}
+
+% 1. Kan-definiw l'header w l'footer f variables
+\newcommand{\mycustomheader}{%
+    \noindent
+    \begin{minipage}[b]{0.45\textwidth} 
+        \raggedright
+        \includegraphics[height=1.0cm]{images/ntt-data-logo.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth} 
+        \raggedleft
+        % ZEDNA \raisebox BACH NHEBTO L'LOGO DYAL FST B D-DRA3
+        \raisebox{-0.3cm}{\includegraphics[height=2.2cm]{images/fst-logo.png}}
+    \end{minipage}\par
+    \vspace{-0.4cm} % <--- ZEDNA L'ESPACE NEGATIF BACH YLSE9 L'KHAT MZYAN
+    \noindent
+    \begin{tikzpicture}
+        \draw[royalBlue, dash pattern=on 5pt off 3pt, line width=0.8pt] (0,0) -- (\textwidth, 0);
+    \end{tikzpicture}%
+}
+
+\newcommand{\mycustomfooter}{%
+    \centering
+    \begin{tikzpicture}
+        \fill[royalBlue] (-0.45\textwidth, 0) -- (0, 0.05cm) -- (0.45\textwidth, 0) -- (0, -0.05cm) -- cycle;
+    \end{tikzpicture}\\[5pt]
+    \textcolor{royalBlue}{\textbf{\thepage}}
+}
+
+% 2. Kan-appliqiw hadchi 3la ga3 l'pages (Style 'fancy')
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[C]{\mycustomheader}
+\fancyfoot[C]{\mycustomfooter}
+
+% 3. Kan-appliqiw hadchi 3la l'pages dyal \chapter (Style 'plain')
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyhead[C]{\mycustomheader}
+    \fancyfoot[C]{\mycustomfooter}
+}
+
+% 4. Kan-appliqiw hadchi 3la l'pages dyal l'fihres (Style 'frontmatter')
+\fancypagestyle{frontmatter}{%
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \fancyhead[C]{\mycustomheader}
+    \fancyfoot[C]{\mycustomfooter}
+}
+
+% ==========================================
+% PROFONDEUR DE NUMÉROTATION (Bach tban 2.5.1)
+% ==========================================
+\setcounter{secnumdepth}{3} % Kat-biyen ra9m f \subsubsection
+\setcounter{tocdepth}{3}    % Kat-biyen \subsubsection 7ta f l'Fihres (Table des matières) 
+
+\begin{document}
+\pagestyle{empty}
+
+% --- L'pages Romani (I, II, III, IV...) ---
+\pagenumbering{Roman}
+
+% ==========================================
+% PAGE DE GARDE
+% ==========================================
+\begin{titlepage}
+\vspace*{-2.5cm} % <--- HADI KAT-JER L'PAGE L-FOUQ
+\enlargethispage{1.0cm} % <--- HADI KAT-3TI TISSA3 L-TE7T BACH MAYTZADCH PAGE KHAWYA
+\centering
+
+% ------------------------------------------
+% TOP BLUE BAR
+% ------------------------------------------
+\begin{tikzpicture}[remember picture]
+  % Top accent bar (full width)
+  \fill[primaryBlue] (0, 0) rectangle (\textwidth, 0.25cm);
+  % Thin lighter line below
+  \fill[primaryBlue!60] (0, -0.1cm) rectangle (\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.3cm}
+
+% Logos + University name row
+\begin{minipage}[c]{0.26\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{images/uae-logo.png}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.46\textwidth}
+    \centering
+    {\fontsize{13}{15}\selectfont\color{primaryBlue}\bfseries UNIVERSITÉ ABDELMALEK ESSAÂDI}\\[4pt]
+    {\fontsize{11}{13}\selectfont\color{primaryBlue}\bfseries Faculté des Sciences}\\[6pt]
+    \textcolor{primaryBlue}{\rule{5cm}{0.8pt}}\\[4pt]
+    {\fontsize{10.5}{12}\selectfont\color{primaryBlue}\textbf{- Tétouan -}}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.26\textwidth}
+    \centering
+    \includegraphics[width=1\linewidth]{images/fst-logo.png}
+\end{minipage}
+
+\vspace{0.4cm}
+
+% Full-width separator
+\textcolor{primaryBlue}{\rule{\textwidth}{1pt}}
+
+\vspace{0.4cm}
+
+% ------------------------------------------
+% MASTER BADGE  (double rounded frame)
+% ------------------------------------------
+\begin{tikzpicture}
+  % Outer dashed frame
+  \node[
+    draw=primaryBlue, dashed, rounded corners=14pt,
+    inner sep=6pt, line width=1.2pt
+  ] (outer) {
+    % Inner solid frame
+    \begin{tikzpicture}
+      \node[
+        draw=primaryBlue, rounded corners=10pt,
+        inner xsep=24pt, inner ysep=14pt, line width=1pt,
+        fill=lightBlue
+      ] (inner) {
+        \begin{minipage}{0.75\textwidth}
+          \centering
+          {\fontsize{13}{18}\selectfont\color{royalBlue}\bfseries Master spécialisé}\\[8pt]
+          {\fontsize{20}{19}\selectfont\color{primaryBlue}\bfseries INGÉNIERIE INFORMATIQUE (M2I)}
+        \end{minipage}
+      };
+    \end{tikzpicture}
+  };
+\end{tikzpicture}
+
+\vspace{0.4cm}
+
+% ------------------------------------------
+% PFE TITLE
+% ------------------------------------------
+{\fontsize{15}{18}\selectfont\color{royalBlue}\bfseries MÉMOIRE DU STAGE PROFESSIONNEL\par}
+
+\vspace{0.2cm}
+
+% Decorative dashed rule
+\begin{tikzpicture}
+  \draw[primaryBlue, dash pattern=on 6pt off 4pt, line width=2pt]
+    (0,0) -- (0.75\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.35cm}
+
+% ------------------------------------------
+% PROJECT TITLE
+% ------------------------------------------
+{\fontsize{20}{25}\selectfont\color{primaryBlue}\bfseries
+  Conception et implémentation full-stack
+  \\ du module Invoicing pour la plateforme KAFA'AT EMS\par}
+
+\vspace{0.45cm}
+
+% NTT DATA Logo
+\includegraphics[width=6.5cm]{images/ntt-data-logo.png}\par
+
+\vspace{0.35cm}
+
+% Decorative dashed rule
+\begin{tikzpicture}
+  \draw[primaryBlue, dash pattern=on 6pt off 4pt, line width=2pt]
+    (0,0) -- (0.75\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.35cm}
+
+% ------------------------------------------
+% AUTHOR BLOCK
+% ------------------------------------------
+{\fontsize{14}{16}\selectfont\color{royalBlue}\bfseries Présenté par :\par}
+\vspace{0.15cm}
+{\fontsize{16}{19}\selectfont\color{primaryBlue}\bfseries ED-DAHMANY Redouane\par}
+
+\vspace{0.3cm}
+
+% Decorative dashed rule
+\begin{tikzpicture}
+  \draw[primaryBlue, dash pattern=on 6pt off 4pt, line width=2pt]
+    (0,0) -- (0.75\textwidth, 0);
+\end{tikzpicture}
+
+\vspace{0.3cm}
+
+% ------------------------------------------
+% DATE
+% ------------------------------------------
+{\fontsize{14}{16}\selectfont\color{royalBlue}\bfseries
+  Date de soutenance :\enspace 01 juillet 2026\par}
+
+\vfill
+
+% ------------------------------------------
+% JURY TABLE
+% ------------------------------------------
+\arrayrulecolor{primaryBlue}
+\renewcommand{\arraystretch}{1.6}
+\setlength{\arrayrulewidth}{1pt}
+
+\noindent
+\begin{tabular}{|l|l|l|l|}
+  \hline
+  % --- LIGNE D'EN-TÊTE (Header Row) ---
+  \rowcolor{primaryBlue}
+  \textbf{\color{white}Titre} &
+  \textbf{\color{white}Nom et Prénom} &
+  \textbf{\color{white}Établissement} &
+  \textbf{\color{white}Qualité} \\
+  \hline
+  % --- DONNÉES DU JURY ---
+  \rowcolor{lightBlue}
+  \textbf{\color{primaryBlue}Pr.} &
+  \textbf{\color{primaryBlue}Amjad Souad} &
+  {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
+  {\color{primaryBlue}\bfseries Président} \\
+  \hline
+  \textbf{\color{primaryBlue}Pr.} &
+  \textbf{\color{primaryBlue}Naoufal Rtayli} &
+  {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
+  {\color{primaryBlue}\bfseries Examinateur} \\
+  \hline
+  \rowcolor{lightBlue}
+  \textbf{\color{primaryBlue}Pr.} &
+  \textbf{\color{primaryBlue}Benameur Lamiae} &
+  {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
+  {\color{primaryBlue}\bfseries Encadrant universitaire} \\
+  \hline
+  \textbf{\color{primaryBlue}Mr.} &
+  \textbf{\color{primaryBlue}Saloumi Achraf} &
+  {\color{primaryBlue}\small NTT DATA Tétouan} &
+  {\color{primaryBlue}\bfseries Encadrant professionnel} \\
+  \hline
+\end{tabular}
+
+\vspace{0.3cm}
+
+% ------------------------------------------
+% BOTTOM BLUE BAR
+% ------------------------------------------
+\begin{tikzpicture}
+  \fill[primaryBlue] (0, 0) rectangle (\textwidth, 0.25cm);
+  \fill[primaryBlue!40] (0, 0.25cm) rectangle (\textwidth, 0.35cm);
+\end{tikzpicture}
+
+\end{titlepage}
+
+\setcounter{page}{2}
+
+% ==========================================
+% PAGE 2 : VERSETS CORANIQUES
+% ==========================================
+\thispagestyle{empty}
+
+\vspace*{\fill}
+\begin{center}
+    % FIX: minipage bach tb9a ga3 les images f page wa7da
+    \begin{minipage}{\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{images/bismillah.png}\\[1.7cm]
+        \includegraphics[width=0.9\textwidth]{images/rabbi-zidni-ilma.png}\\[1.7cm]
+        \includegraphics[width=0.9\textwidth]{images/sadaqa-allah.png}
+    \end{minipage}
+\end{center}
+\vspace*{\fill}
+
+% ==========================================
+% PAGE 3 : DÉDICACE
+% ==========================================
+\newpage
+\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Dédicace} % <--- 7ETHA HNA !
+
+\vspace*{0.5cm} % Bach ntle3o l'header lfo9 chwia
+
+% 3. Titre "Dédicace" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.65\textwidth}{1pt}}
+\hfill
+{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Dédicace}
+
+\vspace{1.5cm}
+
+% 4. Le Texte (Italique w mkber chwia m3a espace bin stoura)
+\begin{large}
+\itshape
+\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
+\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+
+Je dédie ce travail à mes parents, qui ont été ma source constante d'inspiration, d'amour et de soutien tout au long de ma vie. Leur encouragement inconditionnel et leur confiance en moi ont été les fondements de ma réussite.
+
+Je tiens à exprimer ma profonde reconnaissance envers mes encadrants, le Professeur \textbf{Benameur Lamiae} et Mr. \textbf{Saloumi Achraf}, pour leur accompagnement, leurs conseils précieux et leur expertise tout au long de ce projet. Leur patience, leur disponibilité et leur dévouement ont été des moteurs essentiels de ma progression.
+
+J'adresse également mes remerciements à mes professeurs, qui m'ont transmis leur savoir, m'ont inspiré et ont élargi mes horizons intellectuels. Leurs enseignements ont façonné ma pensée critique et ont contribué à mon développement personnel et académique.
+
+Enfin, je souhaite exprimer ma gratitude envers mes amis, qui ont été mes compagnons de route tout au long de cette aventure. Leur soutien moral, leur encouragement et leur amitié indéfectible m'ont permis de surmonter les obstacles et de persévérer dans mes efforts.
+
+À tous ceux qui ont joué un rôle important dans ma vie académique et professionnelle, je vous adresse mes sincères remerciements et ma profonde reconnaissance. Votre influence et votre soutien continus ont été inestimables et ont contribué à ma réussite.
+
+\end{large}
+
+\vspace{0.6cm}
+
+% 5. Signature
+\begin{flushright}
+    {\fontsize{14}{16}\selectfont\textit{\textbf{ED-DAHMANY Redouane}}}
+\end{flushright}
+
+% \vfill
+\vspace{0.1cm}
+
+
+% ==========================================
+% PAGE 4 : REMERCIEMENTS
+% ==========================================
+\newpage
+\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Remerciements} % <--- 7ETHA HNA !
+
+\vspace*{0.5cm} % Bach ntle3o l'header lfo9 chwia
+
+
+% 3. Titre "Remerciements" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.55\textwidth}{1pt}}
+\hfill
+{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Remerciements}
+
+\vspace{0.0cm}
+
+% 4. Le Texte (Italique w mkber chwia m3a espace bin stoura)
+\begin{large}
+\itshape
+\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
+\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+
+Je tiens tout d'abord à exprimer ma gratitude à Allah pour m'avoir accordé la santé, la détermination et la persévérance nécessaires pour mener à bien ce travail de recherche.
+
+Ensuite, je tiens à remercier chaleureusement mon encadrante universitaire, le Professeur \textbf{Benameur Lamiae}, pour son soutien constant, ses précieux conseils et son expertise tout au long de ce projet. Sa disponibilité, sa patience et sa bienveillance ont été d'une aide inestimable.
+
+Je souhaite également exprimer ma reconnaissance à Mr. \textbf{Saloumi Achraf}, mon encadrant professionnel au sein de NTT DATA, pour son accompagnement, son expertise et ses conseils avisés. Sa vision et son expérience ont grandement contribué à la réussite de ce projet.
+
+Je tiens à exprimer ma reconnaissance envers l'ensemble de l'équipe de \textbf{NTT DATA Maroc}, et tout particulièrement à Monsieur \textbf{Fred SABBAH}, Directeur Général, pour m'avoir offert l'opportunité de réaliser ce stage dans un environnement professionnel stimulant. Leur confiance en mes capacités et leur soutien ont été essentiels pour l'accomplissement de ce travail.
+
+Je souhaite également remercier les membres du jury, le Professeur \textbf{Amjad Souad} et le Professeur \textbf{Naoufal Rtayli}, d'avoir accepté d'évaluer ce travail.
+
+Enfin, je tiens à exprimer ma gratitude envers ma famille et mes amis pour leur soutien indéfectible, leurs encouragements et leurs précieux conseils tout au long de ce parcours académique.
+
+Mes sincères remerciements à toutes les personnes qui ont contribué de près ou de loin à la réalisation de ce travail.
+
+\end{large}
+
+\vspace{0.6cm}
+
+% \vfill
+\vspace{0.1cm}
+
+
+% ==========================================
+% PAGE 5 : RÉSUMÉ
+% ==========================================
+\newpage
+\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Résumé} % <--- 7ETHA HNA !
+
+\vspace*{0.5cm} % Bach ntle3o l'header lfo9 chwia
+
+% 3. Titre "Résumé" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.65\textwidth}{1pt}}
+\hfill
+{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Résumé}
+
+\vspace{0.0cm}
+
+% 4. Le Texte (Taille normale m3a espace bin stoura)
+\begin{large}
+\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
+\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+
+Ce rapport présente une synthèse du travail effectué dans le cadre de mon projet de fin d'études au sein de la société \textbf{NTT DATA} à Tétouan, dans le but d'obtenir mon diplôme du Master spécialisé en Ingénierie Informatique (M2I) de la Faculté des Sciences de Tétouan / Université Abdelmalek Essaâdi.
+
+Ce projet s'est déroulé au sein d'une équipe de développement travaillant sur une plateforme d'entreprise à grande échelle. L'objectif principal de ce projet était de concevoir et d'implémenter de bout en bout (Full-Stack) le module complexe de facturation (\textbf{Invoicing}) pour le système de gestion des employés \textbf{KAFA'AT EMS}.
+
+En raison de sa complexité et de sa logique métier pointue, ce module a été traité comme un microservice indépendant. Il prend en charge la gestion financière, les calculs liés aux temps de travail (Worktime overrides), l'application des règles de facturation, et la génération des factures.
+
+L'application a été développée en utilisant le framework \textbf{Angular 17+} pour la partie frontend, garantissant une interface utilisateur réactive et ergonomique. Le backend a été construit avec \textbf{Java} et \textbf{Spring Boot 3.x}, en utilisant \textbf{PostgreSQL} pour la gestion et la persistance des données relationnelles.
+
+La méthodologie adoptée pour la réalisation de ce projet s'est appuyée sur les pratiques agiles, allant de l'étude et la spécification des besoins à la modélisation de l'architecture et des fonctionnalités via le langage UML, pour aboutir à l'intégration et au déploiement du module.
+
+\vspace{0cm}
+
+\noindent\textbf{Mots clés :} \\
+Application Web, Plateforme EMS, Invoicing, Microservice, NTT DATA, Angular, Spring Boot, PostgreSQL, Full-Stack.
+
+\end{large}
+
+\vspace{0.0cm}
+
+% \vfill
+\vspace{0.1cm}
+
+
+% ==========================================
+% PAGE 6 : ABSTRACT
+% ==========================================
+\newpage
+\thispagestyle{frontmatter} 
+\phantomsection % <--- ZID HADI HNA
+\addcontentsline{toc}{chapter}{Abstract} % <--- 7ETHA HNA !
+
+\vspace*{0.5cm} 
+
+% 3. Titre "Abstract" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.65\textwidth}{1pt}}
+\hfill
+{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Abstract}
+
+\vspace{0.0cm}
+
+% 4. Le Texte (Taille normale m3a espace bin stoura)
+\begin{large}
+\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
+\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+
+This report presents a summary of the work carried out as part of my graduation project (Master's thesis) at \textbf{NTT DATA} in Tetouan, in order to obtain my specialized Master's degree in Computer Engineering (M2I) from the Faculty of Sciences in Tetouan / Abdelmalek Essaâdi University.
+
+This project took place within a development team working on a large-scale enterprise platform. The main objective of this project was to design and implement from scratch (Full-Stack) the complex \textbf{Invoicing} module for the \textbf{KAFA'AT} Employee Management System (EMS).
+
+Due to its complexity and advanced business logic, this module was treated as an independent microservice. It handles financial management, calculations related to worktime overrides, the application of billing rules, and invoice generation.
+
+The application was developed using the \textbf{Angular 17+} framework for the frontend, ensuring a responsive and ergonomic user interface. The backend was built with \textbf{Java} and \textbf{Spring Boot 3.x}, using \textbf{PostgreSQL} for relational data management and persistence.
+
+The methodology adopted for the realization of this project was based on agile practices, ranging from the study and specification of requirements to the modeling of the architecture and functionalities using UML language, culminating in the integration and deployment of the module.
+
+\vspace{0cm}
+
+\noindent\textbf{Keywords:} \\
+Web Application, EMS Platform, Invoicing, Microservice, NTT DATA, Angular, Spring Boot, PostgreSQL, Full-Stack.
+
+\end{large}
+
+\vspace{0.5cm}
+
+\vspace{0.1cm}
+
+
+% ==========================================
+% L'APPEL DYAL TABLE DES MATIERES
+% ==========================================
+\tableofcontents
+
+% ==========================================
+% L'APPEL DYAL TABLE DES FIGURES
+% ==========================================
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Table des figures}
+\listoffigures
+
+
+% ==========================================
+% L'APPEL DYAL LISTE DES TABLEAUX
+% ==========================================
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+\listoftables
+
+
+% ==========================================
+% L'APPEL DYAL LISTE DES ABRÉVIATIONS
+% ==========================================
+\newpage
+\thispagestyle{frontmatter}
+\phantomsection
+\addcontentsline{toc}{chapter}{Liste des abréviations}
+
+\vspace*{0.5cm} 
+
+
+% 3. Titre "Liste des abréviations" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.35\textwidth}{1pt}} % <--- N9ESNA MN T-TOUL DYAL L'KHAT (0.35)
+\hfill
+\mbox{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Liste des abréviations} % <--- MBOX BACH MAYT9SSEMCH
+
+\vspace{1.5cm}
+
+% 4. Le Tableau des abréviations
+\begin{center}
+\renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura
+\setlength{\arrayrulewidth}{1pt}
+\arrayrulecolor{primaryBlue}
+
+% Tableau b 2 colonnes (25% l'abréviation, 65% l'signification)
+% Tableau b 2 colonnes (25% l'abréviation, 65% l'signification)
+\begin{tabular}{|>{\centering\arraybackslash}p{0.25\textwidth}|>{\raggedright\arraybackslash}p{0.65\textwidth}|}
+    \hline
+    % En-tête dyal l'tableau b zre9 mghlo9 w ktba bida
+    \rowcolor{primaryBlue}
+    \textbf{\textcolor{white}{Abréviation}} & \textbf{\textcolor{white}{Signification}} \\
+    \hline
+    
+    % --- Les données stfin alphabétiquement ---
+    
+    \rowcolor{lightBlue}
+    % \textbf{ACID} & Atomicity, Consistency, Isolation, Durability (Atomicité, Cohérence, Isolation, Durabilité) \\
+    % \hline
+    \textbf{API} & Application Programming Interface (Interface de Programmation Applicative) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{CI/CD} & Continuous Integration / Continuous Deployment (Intégration et Déploiement Continus) \\
+    \hline
+    % \textbf{CORS} & Cross-Origin Resource Sharing (Partage des Ressources Entre Origines Multiples) \\
+    % \hline
+    \rowcolor{lightBlue}
+    % \textbf{CRUD} & Create, Read, Update, Delete (Créer, Lire, Mettre à jour, Supprimer) \\
+    % \hline
+    \textbf{DAO} & Data Access Object (Objet d'Accès aux Données) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{DI} & Dependency Injection (Injection de Dépendances) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{DTO} & Data Transfer Object (Objet de Transfert de Données) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{EMS} & Employee Management System (Système de Gestion des Employés) \\
+    \hline
+    % \textbf{FST} & Faculté des Sciences de Tétouan \\
+    % \hline
+    \rowcolor{lightBlue}
+    \textbf{HTTP} & HyperText Transfer Protocol (Protocole de Transfert Hypertexte) \\
+    \hline
+    \textbf{IDE} & Integrated Development Environment (Environnement de Développement Intégré) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{IoC} & Inversion of Control (Inversion de Contrôle) \\
+    \hline
+    \textbf{JPA} & Java Persistence API \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{JSON} & JavaScript Object Notation \\
+    \hline
+    \textbf{JWT} & JSON Web Token (Jeton Web JSON) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{MVC} & Model-View-Controller (Modèle-Vue-Contrôleur) \\
+    \hline
+    \textbf{ORM} & Object-Relational Mapping (Mappage Objet-Relationnel) \\
+    \hline
+    \rowcolor{lightBlue}
+    % \textbf{PFE} & Projet de Fin d'Études \\
+    % \hline
+    \textbf{REST} & Representational State Transfer \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{SGBDR} & Système de Gestion de Base de Données Relationnelle (ex: PostgreSQL) \\
+    \hline
+    \rowcolor{lightBlue}
+    \textbf{SPA} & Single Page Application (Application Web Monopage) \\
+    \hline
+    % \rowcolor{lightBlue}
+    \textbf{SQL} & Structured Query Language (Langage de Requête Structurée) \\
+    \hline
+    % \textbf{UI/UX} & User Interface / User Experience (Interface Utilisateur / Expérience Utilisateur) \\
+    % \hline
+    \rowcolor{lightBlue}
+    \textbf{UML} & Unified Modeling Language (Langage de Modélisation Unifié) \\
+    \hline
+\end{tabular}
+\end{center}
+
+
+
+% ==========================================
+% DÉBUT DU CONTENU PRINCIPAL (Page 1, 2, 3...)
+% ==========================================
+\newpage
+\pagenumbering{arabic} % Ar9am 1, 2, 3...
+\pagestyle{frontmatter} % N-appliquant l'footer dyalna m3a l'khat zre9
+
+
+% ==========================================
+% INTRODUCTION GÉNÉRALE
+% ==========================================
+\phantomsection
+\addcontentsline{toc}{chapter}{Introduction générale}
+
+\vspace*{0.5cm} 
+
+
+% 3. Titre "Introduction générale" 3la Limen
+\noindent
+\textcolor{royalBlue}{\rule{0.3\textwidth}{1pt}}
+\hfill
+\mbox{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Introduction générale}
+
+\vspace{1.0cm}
+
+% 4. Le Texte de l'introduction (Taille normale bach t9ed f 1 page)
+\setlength{\parskip}{0.2cm}
+\renewcommand{\baselinestretch}{1.2}\selectfont
+
+La transformation digitale et l'optimisation continue des processus de gestion interne sont devenues des enjeux majeurs pour les entreprises cherchant à maintenir leur compétitivité. Dans cette optique, \textbf{NTT DATA}, leader mondial des services informatiques, s'engage à innover et à moderniser ses propres systèmes d'information. C'est dans ce contexte que s'inscrit notre projet de fin d'études, intitulé : 
+
+\begin{center}
+    \textcolor{primaryBlue}{\textbf{\og Conception et implémentation full-stack du module Invoicing pour la plateforme KAFA'AT EMS \fg{}.}}
+\end{center}
+
+Ce projet, réalisé au sein de \textbf{NTT DATA Tétouan}, a pour but de concevoir et développer de bout en bout un nouveau microservice indépendant dédié à la facturation (\textbf{Invoicing}). Ce module a pour objectif d'automatiser la gestion financière, de traiter les calculs liés aux temps de travail, d'appliquer les règles de facturation, et de générer les factures de manière automatisée, fiable et performante.
+
+Afin de détailler les différentes phases de réalisation de ce projet, le présent rapport est articulé autour de trois chapitres principaux :
+
+\vspace{0.5cm}
+
+% 5. DESIGN ATTRACTIF L'CHAPITRES (Badges TikZ + Tableau invisible)
+\noindent
+\renewcommand{\arraystretch}{2.0}
+\begin{tabular}{@{} m{0.20\textwidth} m{0.72\textwidth} @{}}
+    
+    \tikz{\node[fill=primaryBlue, text=white, rounded corners=6pt, inner sep=8pt, text width=2.5cm, align=center] {\textbf{Chapitre 1}};} & 
+    Introduit l'organisme d'accueil (\textbf{NTT DATA}), le contexte général du projet pour la plateforme \textbf{KAFA'AT EMS}, et détaille la méthodologie de travail adoptée (Agile Scrum).\\
+    
+    \tikz{\node[fill=royalBlue, text=white, rounded corners=6pt, inner sep=8pt, text width=2.5cm, align=center] {\textbf{Chapitre 2}};} & 
+    Consacré à la spécification des besoins, à l'étude fonctionnelle et à la \textbf{conception} technique. Il détaille les choix d'architecture orientée \textbf{Microservices} et la modélisation \textbf{UML} du système.\\
+    
+    \tikz{\node[fill=azureBlue, text=white, rounded corners=6pt, inner sep=8pt, text width=2.5cm, align=center] {\textbf{Chapitre 3}};} & 
+    Se concentre sur la \textbf{réalisation}. Il détaille l'environnement technologique (\textbf{Angular, Spring Boot, PostgreSQL}) et présente les interfaces réalisées.\\
+    
+\end{tabular}
+
+\vspace{0.6cm}
+Ce rapport offre ainsi une vue d'ensemble complète du cycle de vie du développement de ce module, en mettant en évidence les défis techniques relevés et la valeur ajoutée apportée au système global de l'entreprise.
+
+
+% --- CHAPITRE 1 : START ---
+\chapterpage{1}{Contexte général du projet} % Page dyal l'image Gemini
+\chapter{Contexte général du projet} % Darouri bach ytzad f l'Fihres
+
+\vspace*{0.8cm} % <--- ZID HADI HNA BACH TB3ED "INTRODUCTION" 3LA L'KHAT ZRE9
+
+% ==========================================
+% INTRODUCTION DU CHAPITRE
+% ==========================================
+% \section* kat3ni section bla ra9m (bla mayktb 1. Introduction)
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+Dans ce premier chapitre, nous allons situer notre projet de fin d'études dans son contexte général. Nous commencerons par présenter l'organisme d'accueil, \textbf{NTT DATA}, au sein duquel ce travail a été réalisé. Ensuite, nous définirons le cadre du projet en détaillant la problématique, la solution proposée pour le module \textbf{Invoicing}, et les objectifs visés. Enfin, nous aborderons la méthodologie de travail mise en place pour assurer le bon déroulement et la planification du projet.
+
+% ==========================================
+% SECTION 1 : ORGANISME D'ACCUEIL
+% ==========================================
+\section{Présentation de l'organisme d'accueil}
+
+\subsection{Présentation générale de NTT DATA}
+\textbf{NTT DATA} est une entreprise multinationale de services informatiques et de conseil, faisant partie du groupe NTT (\textit{Nippon Telegraph and Telephone Corporation}), l'un des plus grands conglomérats de télécommunications au monde. Fondée au Japon en 1967, NTT DATA fournit une gamme complète de services informatiques et de solutions technologiques à ses clients à travers le monde.
+
+En tant que fournisseur global, l'entreprise propose une large gamme de services pour aider ses clients à transformer leurs activités. Ces services comprennent le conseil en stratégie, l'intégration de systèmes, le développement et la maintenance d'applications, la gestion de l'infrastructure, ainsi que des services liés au \textit{cloud computing} et à l'analyse de données.
+
+NTT DATA se positionne comme un partenaire stratégique pour ses clients, en leur fournissant des solutions technologiques innovantes basées sur des technologies émergentes. L'entreprise s'appuie sur son expertise technique et son expérience mondiale pour aider ses clients à améliorer leur efficacité opérationnelle, innover et rester compétitifs sur le marché.
+
+% --- INSERTION DU LOGO ---
+\begin{figure}[htbp]
+    \vspace{0.5cm}
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/ntt-data-logo-global.png}
+    \caption{Logo officiel de l'organisme d'accueil NTT DATA}
+    \label{fig:ntt_logo}
+    \vspace{0.5cm}
+\end{figure}
+
+
+\subsection{Historique NTT DATA}
+Avant de plonger dans l'historique détaillé de NTT DATA, il convient de noter que l'entreprise a connu une croissance et une évolution significatives depuis sa création en 1967. De ses modestes débuts en tant que filiale de NTT, NTT DATA est devenue une entreprise mondiale de premier plan dans le secteur des services informatiques et du conseil. Voici une figure des étapes clés de son parcours historique :
+
+% --- INSERTION DE L'IMAGE HISTORIQUE ---
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/historique-ntt-data.png}
+    \caption{Historique NTT DATA}
+    \label{fig:historique_ntt}
+\end{figure}
+
+Aujourd'hui, NTT DATA est reconnue comme l'un des leaders mondiaux des services informatiques et du conseil, offrant des solutions technologiques innovantes à ses clients dans le monde entier.
+
+\subsection{Fiche technique}
+Le tableau ci-dessous résume les informations générales et juridiques de l'entreprise :
+
+% --- TABLEAU FICHE TECHNIQUE (Fusion Global & Maroc) ---
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura
+    \setlength{\arrayrulewidth}{1pt}
+    \arrayrulecolor{primaryBlue}
+    
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.28\textwidth}|>{\raggedright\arraybackslash}p{0.62\textwidth}|}
+        \hline
+        \rowcolor{primaryBlue}
+        \textbf{\textcolor{white}{Caractéristique}} & \textbf{\textcolor{white}{Information}} \\
+        \hline
+        
+        \rowcolor{lightBlue}
+        \textbf{Raison Sociale / Nom} & NTT DATA \\
+        \hline
+        
+        \textbf{Forme Juridique} & 
+        \textbf{Global :} Société commerciale / Société civile \newline 
+        \textbf{Maroc :} Société à Responsabilité Limitée (SARL) \\
+        \hline
+        
+        \rowcolor{lightBlue}
+        \textbf{Date de Création} & 1\textsuperscript{er} juillet 1988 \\
+        \hline
+        
+        \textbf{Directeur Général} & 
+        \textbf{Global :} Yo Honma \newline 
+        \textbf{Maroc :} Fred Sabbah \\
+        \hline
+        
+        \rowcolor{lightBlue}
+        \textbf{Siège Social \& Adresse} & 
+        \textbf{Global :} Tokyo, Japan \newline 
+        \textbf{Maroc :} Parc de Tetouanshore, Route de Cabo Negro - Martil \\
+        \hline
+        
+        \textbf{Taille de l'entreprise} & Grande \\
+        \hline
+        
+        \rowcolor{lightBlue}
+        \textbf{Activités} & Services informatiques mondiaux, développement de logiciels, gestion des systèmes d'information, externalisation des processus métier. L'étude, la réalisation et la mise en œuvre de solutions d'automatisation pour le secteur privé et les administrations publiques. \\
+        \hline
+    \end{tabular}
+    \vspace{0.2cm}
+    \caption{Fiche technique globale et locale de NTT DATA}
+    \label{tab:fiche_technique}
+\end{table}
+
+\subsection{Couverture mondiale NTT DATA}
+
+NTT DATA possède une vaste couverture mondiale avec des bureaux et des centres de prestation de services dans de nombreux pays à travers le monde.
+
+% --- IMAGE COUVERTURE MONDIALE ---
+\begin{figure}[H] % <--- [H] bach tb9a l'image nichan hna
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/couverture-mondiale.png}
+    \caption{Couverture mondiale NTT DATA}
+    \label{fig:couverture_mondiale}
+\end{figure}
+
+\subsection{Secteur d'activités}
+
+NTT DATA opère dans le secteur des services informatiques et du conseil. L'entreprise propose une gamme complète de services et de solutions technologiques pour aider ses clients à résoudre leurs défis informatiques et à atteindre leurs objectifs commerciaux. Voici quelques-uns des principaux secteurs d'activité dans lesquels NTT DATA est impliquée :
+
+% --- L'CODE DYAL LES POINTS (DESIGN PRO W JDIID) ---
+\begin{itemize}
+    % 1. Tissa3 bin n9ati bach mayjich z7am
+    \setlength{\itemsep}{0.3cm} 
+    
+    % 2. Design dyal n9ati (Morba3 sghir zre9 f blast no9ta 3adiya)
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} 
+    
+    % 3. Lwenna l'Bold b zre9 mghlo9 bach yban w y3ti l'3in
+    \item \textcolor{primaryBlue}{\textbf{Services financiers :}} NTT DATA travaille avec des institutions financières, des banques, des compagnies d'assurance et d'autres acteurs du secteur financier pour fournir des solutions informatiques et des services de conseil qui améliorent l'efficacité opérationnelle, la gestion des risques, l'expérience client et la conformité réglementaire.
+    
+    \item \textcolor{primaryBlue}{\textbf{Santé et sciences de la vie :}} NTT DATA fournit des solutions technologiques aux fournisseurs de soins de santé, aux compagnies pharmaceutiques et aux organismes de recherche médicale. Cela inclut la gestion des dossiers médicaux électroniques, les systèmes de gestion des soins de santé, l'analyse des données de santé, les services de télémédecine et les solutions de suivi des essais cliniques.
+
+    \item \textcolor{primaryBlue}{\textbf{Secteur public :}} NTT DATA travaille en étroite collaboration avec les gouvernements et les organismes du secteur public pour fournir des solutions informatiques et des services de conseil qui améliorent la prestation des services publics, la gestion des données, la sécurité publique, la gestion des ressources et l'efficacité administrative.
+
+    \item \textcolor{primaryBlue}{\textbf{Secteur manufacturier et automobile :}} NTT DATA offre des solutions technologiques aux fabricants et aux entreprises automobiles pour optimiser les opérations de fabrication, améliorer la chaîne d'approvisionnement, intégrer l'Internet des objets (IoT) dans les processus de production et développer des solutions de mobilité intelligente.
+
+    \item \textcolor{primaryBlue}{\textbf{Télécommunications et médias :}} NTT DATA collabore avec les fournisseurs de services de télécommunications et les entreprises médiatiques pour fournir des solutions d'infrastructure informatique, des services de transformation numérique, des solutions d'analyse des données, des plateformes de services en ligne et des solutions de gestion des clients.
+\end{itemize}
+
+\vspace{0.3cm}
+
+Outre ces secteurs spécifiques, NTT DATA travaille également avec des entreprises de diverses industries, telles que l'énergie, les transports, le commerce de détail, l'industrie du voyage et de l'hôtellerie, pour fournir des services informatiques et des solutions personnalisées adaptées à leurs besoins spécifiques. [3]
+
+\vspace{0.5cm}
+
+% --- IMAGE DES SECTEURS D'ACTIVITÉS ---
+\begin{figure}[H] % <--- [H] bach tb9a l'image nichan hna ta7t l'ktaba
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/secteurs-activites.png}
+    \caption{Quelques secteurs d'activités de NTT DATA}
+    \label{fig:secteurs_activites}
+\end{figure}
+
+\subsection{Services offerts par NTT DATA}
+
+NTT DATA, en tant que fournisseur mondial de services informatiques de confiance, propose une gamme complète de services pour aider les entreprises à relever les défis numériques et à innover. La figure suivante montre les services offerts par société NTT DATA [4]
+
+\vspace{0.3cm}
+
+% --- IMAGE DES SERVICES NTT DATA ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/services-ntt-data.png}
+    \caption{NTT DATA Services}
+    \label{fig:services_ntt_data}
+\end{figure}
+
+\vspace{0.3cm}
+
+\subsection{Partenaires stratégiques de NTT DATA}
+
+NTT DATA a établi des partenariats stratégiques avec de nombreuses entreprises leaders dans le domaine de la technologie et des services. Ces partenariats sont essentiels pour renforcer l'offre de solutions de NTT DATA et offrir une valeur ajoutée à ses clients. Parmi les partenaires clés figurent des géants de l'industrie tels que Microsoft, Oracle, SAP, Salesforce, IBM et Amazon Web Services (AWS). Ces partenariats permettent à NTT DATA d'accéder aux dernières technologies et d'offrir des solutions innovantes dans des domaines tels que le cloud computing, les logiciels d'entreprise, la gestion de la relation client, l'analyse des données et bien plus encore. Grâce à ces partenariats stratégiques, NTT DATA peut offrir des services de conseil, d'intégration et de gestion des solutions basées sur les plateformes et les technologies de ses partenaires, répondant ainsi aux besoins variés de ses clients dans divers secteurs d'activité. [5]
+
+% --- IMAGE DES PARTENAIRES STRATÉGIQUES ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/partenaires-ntt-data.png}
+    \caption{Partenaires stratégiques de NTT DATA}
+    \label{fig:partenaires_ntt_data}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsection{Clients de NTT DATA}
+
+Les clients de NTT DATA comprennent une vaste gamme d'entreprises et d'organisations à travers le monde. Grâce à son expertise technologique et à ses solutions innovantes, NTT DATA a su établir des partenariats durables avec des clients dans divers secteurs tels que la finance, les télécommunications, la santé, la fabrication et bien d'autres. Que ce soit pour des grandes entreprises internationales ou des entreprises locales, NTT DATA s'engage à fournir des services de haute qualité, adaptés aux besoins spécifiques de chaque client. L'objectif principal est de créer des relations de confiance à long terme et de contribuer à la réussite et à la croissance de ses clients. Voici quelques-uns des clients principaux de NTT DATA : [3]
+
+\vspace{0.4cm}
+
+% --- IMAGE DES CLIENTS ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/clients-ntt-data.png}
+    \caption{client NTT DATA}
+    \label{fig:clients_ntt_data}
+\end{figure}
+
+\subsection{Technologie utilisée par NTT DATA}
+
+NTT DATA utilise un large éventail de technologies pour exécuter et faire évoluer les services d'application pour ses clients. Parmi les technologies clés utilisées figurent Java, .NET, SQL, Cobol, le testing (tests logiciels) ainsi que la RPA (Robotic Process Automation). Ces technologies sont mises en œuvre par une équipe hautement qualifiée et talentueuse, spécialisée non seulement dans les aspects techniques, mais aussi dans les connaissances sectorielles. En combinant ces technologies de pointe avec une expertise sectorielle approfondie, NTT DATA est en mesure de fournir des solutions innovantes et adaptées aux besoins spécifiques de ses clients, tout en garantissant une qualité élevée et une productivité optimale dans la réalisation de leurs projets d'application. [6]
+
+\vspace{0.4cm}
+
+% --- IMAGE DES TECHNOLOGIES ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/technologies-ntt-data.png}
+    \caption{Technologie utilisée par NTT DATA}
+    \label{fig:technologies_ntt_data}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsection{NTT DATA Maroc}
+
+NTT DATA est également présent au Maroc. NTT DATA Maroc est une filiale de NTT DATA Corporation, fournisseur mondial de services informatiques et de solutions technologiques. L'entreprise offre une gamme complète de services, notamment le développement de logiciels, la gestion des infrastructures informatiques, les services de conseil en technologie, la transformation numérique et bien plus encore.
+
+NTT DATA Maroc travaille avec des clients locaux et internationaux dans divers secteurs d'activité tels que la finance, les télécommunications, la santé, l'industrie manufacturière, le secteur public, le commerce de détail et d'autres industries. L'objectif de NTT DATA Maroc est d'aider les entreprises à optimiser leurs opérations, à améliorer leur efficacité et à relever les défis technologiques auxquels elles sont confrontées.
+
+En tant que filiale de NTT DATA Corporation, NTT DATA Maroc bénéficie de l'expertise et de l'expérience mondiale de l'entreprise dans le domaine des technologies de l'information. Cela lui permet de proposer des solutions de pointe et d'innover dans le domaine des services informatiques pour répondre aux besoins spécifiques du marché marocain.
+
+NTT DATA Maroc contribue également à l'écosystème technologique du pays en collaborant avec des partenaires locaux, des universités et des institutions pour promouvoir l'innovation, le développement des compétences et la croissance du secteur des technologies de l'information au Maroc. [7]
+
+\vspace{0.4cm}
+
+\subsection{Organigramme de NTT DATA Maroc}
+
+L'organigramme de NTT DATA Maroc offre une représentation visuelle de la structure interne de l'entreprise, mettant en évidence les départements, les responsabilités et les relations hiérarchiques qui existent au sein de l'organisation.
+
+\vspace{0.4cm}
+
+% --- IMAGE DE L'ORGANIGRAMME ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/organigramme-ntt-data.png}
+    \caption{Organigramme de NTT DATA Maroc}
+    \label{fig:organigramme_ntt_data_maroc}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsection{Modèle de carrière}
+
+NTT DATA utilise un modèle de carrière pour permettre aux employés de développer leurs compétences, de progresser professionnellement et d'atteindre leurs objectifs professionnels au sein de l'entreprise.
+
+Le modèle de carrière de NTT DATA se caractérise par les aspects suivants :
+
+\vspace{0.4cm}
+
+% --- IMAGE MODÈLE DE CARRIÈRE ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/modele-carriere.png}
+    \caption{Modèle de carrière}
+    \label{fig:modele_carriere}
+\end{figure}
+
+\vspace{0.6cm}
+
+% ==========================================
+% SECTION 2 : CADRE GÉNÉRAL DU PROJET
+% ==========================================
+\section{Cadre général du projet}
+
+\subsection{Contexte du projet}
+
+Ce projet s'inscrit dans le cadre de la modernisation et de l'optimisation continue des systèmes d'information internes de l'entreprise. NTT DATA dispose d'une plateforme globale et centralisée pour la gestion de ses collaborateurs nommée \textbf{KAFA'AT EMS} (Employee Management System). 
+
+Afin d'étendre les capacités de cette plateforme et de répondre aux exigences croissantes en matière de gestion financière, l'entreprise souhaite concevoir et développer de zéro un nouveau module complet et indépendant dédié à la facturation : le module \textbf{Invoicing}. Ce projet, réalisé au sein des équipes de développement de NTT DATA Tétouan, vise à doter la plateforme EMS d'un outil puissant pour automatiser et fiabiliser le cycle de facturation basé sur les temps de travail et les prestations des employés.
+
+\vspace{0.2cm}
+
+\subsection{Problématique}
+
+La gestion de la facturation dans une multinationale de l'envergure de NTT DATA est un processus complexe. Elle implique le traitement d'une quantité massive de données croisées : les profils des employés, les assignations aux projets, les taux journaliers, et surtout les temps de travail réels ainsi que leurs ajustements (Worktime overrides).
+
+Actuellement, l'absence d'un module centralisé et automatisé intégré directement à la plateforme EMS peut entraîner plusieurs défis. Les processus manuels ou l'utilisation d'outils fragmentés augmentent considérablement le risque d'erreurs de calcul, créent des goulots d'étranglement administratifs et provoquent des retards dans l'émission des factures. De plus, l'application manuelle de règles de facturation spécifiques à chaque client ou projet est fastidieuse et rend difficile le suivi financier en temps réel.
+
+La problématique majeure réside donc dans la conception d'une solution technique robuste capable de surmonter ces défis. Comment concevoir et implémenter un microservice Full-Stack évolutif qui s'intègre harmonieusement avec l'écosystème KAFA'AT EMS existant, tout en garantissant un calcul exact des données financières et en offrant aux gestionnaires une interface fluide, réactive et sécurisée pour la génération des factures ?
+
+Cependant, dans le cadre de la gestion financière actuelle, les équipes chargées de la facturation rencontrent souvent des difficultés liées à la manipulation de fichiers Excel complexes et à la fragmentation des données. En particulier, lorsque le nombre de collaborateurs et de projets est important, il devient extrêmement difficile de consolider les heures travaillées (Worktime) et d'appliquer les ajustements de manière précise et rapide sans risquer l'erreur humaine.
+
+De plus, le volume des données à traiter à la fin de chaque cycle de facturation nécessite une attention particulière et un temps considérable. À ce stade, il est primordial de trouver une solution technique qui facilite le travail des gestionnaires de manière efficace et moderne, en simplifiant les calculs complexes. Cette solution devrait permettre de générer des factures précises et conformes aux règles métier en quelques clics seulement.
+
+\vspace{0.4cm}
+
+\subsection{Solution proposée}
+
+Pour remédier à ces problèmes et optimiser le processus de gestion financière, la solution proposée consiste en la conception et la mise en place d'un microservice innovant dédié exclusivement à la facturation : le module \textbf{Invoicing}. Cette application Full-Stack viendra s'intégrer nativement à la plateforme globale KAFA'AT EMS.
+
+Ce nouveau module permettrait aux responsables de centraliser toutes les informations financières, de mettre à jour les données de facturation en temps réel et de gérer efficacement les règles de calcul liées aux temps de travail. Il offrirait également la possibilité d'automatiser entièrement la génération des factures, réduisant ainsi drastiquement la charge de travail manuelle et les risques d'erreurs.
+
+Grâce à cette solution, le suivi des prestations et des ajustements horaires (Worktime overrides) serait grandement simplifié. Les gestionnaires pourraient facilement ajouter, modifier et consulter les informations pertinentes pour chaque projet, même lorsque le volume des données est élevé. De plus, l'architecture choisie (\textbf{Angular} pour le frontend et \textbf{Spring Boot} pour le backend) garantira une application web hautement réactive, évolutive et facile à maintenir.
+
+En résumé, la mise en place de ce module d'Invoicing permettrait à NTT DATA de moderniser et d'optimiser ses processus internes de gestion financière au sein de l'EMS. Cela facilitera non seulement le suivi précis des factures, mais également la prise de décision stratégique grâce à une vue d'ensemble claire sur les données financières des projets.
+
+\subsection{Cible du projet}
+
+Le module d'Invoicing s'adresse principalement aux chefs de projet (Project Managers), aux responsables de livraison (Service Delivery Managers) et à l'équipe financière au sein de NTT DATA. Ces acteurs clés sont responsables de la gestion financière des projets et du suivi de la facturation. L'application leur fournira les outils nécessaires pour suivre les temps de travail en temps réel et gérer efficacement l'émission des factures. Elle leur permettra également de simplifier le processus de validation des heures (Worktime overrides), en facilitant l'ajout et la consultation des données financières pertinentes pour chaque projet, même lorsque le volume des données est élevé. Grâce à ce module, les équipes pourront coordonner et organiser efficacement les différentes étapes du cycle de facturation au sein de la plateforme KAFA'AT EMS.
+
+\vspace{0.3cm}
+
+\subsection{Fonctionnalités}
+
+\subsubsection{Besoins fonctionnels}
+
+Voici une liste spécifique des exigences fonctionnelles majeures pour le module Invoicing de la plateforme KAFA'AT EMS :
+
+\vspace{0.2cm}
+
+\begin{itemize}
+    % Design dyal t-n9at l-kbaar (Rmez dyal pifont b zre9 mghlo9)
+    \renewcommand{\labelitemi}{\textcolor{primaryBlue}{\textbf{\large \ding{118}}}} 
+    \setlength{\itemsep}{0.5cm} % Tissa3 bin les grandes catégories
+
+    \item \textcolor{primaryBlue}{\textbf{Authentification et gestion des utilisateurs :}}
+    \begin{itemize}
+        % Design dyal n9ati sghar l-dakhel
+        \renewcommand{\labelitemii}{\textcolor{royalBlue}{\textbullet}}
+        \setlength{\itemsep}{0.2cm}
+        \vspace{0.2cm}
+        
+        \item Les utilisateurs doivent pouvoir s'authentifier de manière sécurisée avec des identifiants uniques.
+        \item Le système doit permettre la création, la modification et la désactivation de comptes utilisateur.
+        \item Différents niveaux d'accès (Rôles) doivent être définis (ex: Administrateur, Manager, Financier) pour contrôler les actions et les vues disponibles pour chaque utilisateur.
+    \end{itemize}
+
+    \item \textcolor{primaryBlue}{\textbf{Gestion de la facturation (Invoicing) :}}
+    \begin{itemize}
+        \renewcommand{\labelitemii}{\textcolor{royalBlue}{\textbullet}}
+        \setlength{\itemsep}{0.2cm}
+        \vspace{0.2cm}
+        
+        \item Le système doit permettre la génération, la modification et l'annulation des factures liées aux projets.
+        \item Les informations clés telles que le numéro de facture, le montant calculé, la date d'émission et le statut (Payée, En attente) doivent être enregistrées.
+        \item Les utilisateurs doivent pouvoir consulter la liste des factures, les filtrer (par client, par date, par statut) et effectuer des recherches avancées.
+    \end{itemize}
+
+    \item \textcolor{primaryBlue}{\textbf{Gestion des temps de travail (Worktime Overrides) :}}
+    \begin{itemize}
+        \renewcommand{\labelitemii}{\textcolor{royalBlue}{\textbullet}}
+        \setlength{\itemsep}{0.2cm}
+        \vspace{0.2cm}
+        
+        \item Le système doit permettre l'ajout, la modification et la validation des ajustements d'heures travaillées pour chaque collaborateur.
+        \item Les données croisées telles que les taux journaliers (TJM), le projet affecté et le nombre d'heures réelles doivent être gérées avec précision pour alimenter le calcul automatique des factures.
+    \end{itemize}
+\item \textcolor{primaryBlue}{\textbf{Gestion des règles de facturation et des clients :}}
+    \begin{itemize}
+        \renewcommand{\labelitemii}{\textcolor{royalBlue}{\textbullet}}
+        \setlength{\itemsep}{0.2cm}
+        \vspace{0.2cm}
+        
+        \item Le système doit permettre l'ajout, la modification et la suppression de profils clients ou de projets.
+        \item Les détails financiers tels que la devise, les conditions de paiement et les règles de taxes doivent être configurables.
+        \item Les coordonnées des responsables de la facturation (nom, numéro de téléphone, e-mail) doivent être enregistrées.
+        \item Le système doit permettre la génération, le téléchargement et la gestion des factures au format PDF pour un envoi facilité aux clients.
+    \end{itemize}
+
+    \item \textcolor{primaryBlue}{\textbf{Tableau de bord et reporting financier :}}
+    \begin{itemize}
+        \renewcommand{\labelitemii}{\textcolor{royalBlue}{\textbullet}}
+        \setlength{\itemsep}{0.2cm}
+        \vspace{0.2cm}
+        
+        \item Le système doit fournir un tableau de bord (Dashboard) permettant aux gestionnaires de visualiser des statistiques et des informations clés sur les revenus et les factures.
+        \item Les indicateurs de performance (KPIs) tels que le montant total facturé, le nombre de factures en attente de paiement ou en retard, doivent être présentés de manière claire et concise (graphiques, diagrammes).
+    \end{itemize}
+\end{itemize} % <--- HADI HIYA LI KATSSED L'LISTE L-KBIRA L-OULA
+
+\vspace{0.4cm}
+
+Ces exigences fonctionnelles définissent les principales capacités de l'application de facturation (Invoicing) de NTT DATA, en se concentrant sur les besoins spécifiques des équipes financières et des chefs de projet.
+
+\vspace{0.0cm}
+
+\subsubsection{Besoins non-fonctionnels}
+
+L'application à concevoir doit être conforme aux exigences non-fonctionnelles suivantes :
+
+\vspace{0.2cm}
+
+\begin{itemize}
+    \setlength{\itemsep}{0.3cm} 
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} % N9ati b chkel morba3 zre9
+    
+    \item \textcolor{primaryBlue}{\textbf{Performance :}} L'application doit être robuste et capable de traiter de gros volumes de données financières sans ralentissement, répondant de manière optimale aux requêtes des utilisateurs.
+    
+    \item \textcolor{primaryBlue}{\textbf{Ergonomie :}} L'interface utilisateur (UI) développée doit être simple, intuitive et conviviale, en implémentant les meilleures pratiques de l'expérience utilisateur (UX).
+    
+    \item \textcolor{primaryBlue}{\textbf{Sécurité :}} Les données financières étant hautement sensibles, l'accès aux informations n'est possible qu'après une authentification stricte (ex: tokens JWT) et la vérification des privilèges et droits d'accès pour chaque rôle.
+    
+    \item \textcolor{primaryBlue}{\textbf{Rapidité de traitement :}} Compte tenu de la complexité des calculs (Worktime overrides, taux journaliers), il est impératif que le temps d'exécution des traitements backend soit le plus court possible.
+    
+    \item \textcolor{primaryBlue}{\textbf{Accessibilité :}} Le système doit supporter l'accès simultané de plusieurs utilisateurs (chefs de projets, comptables) de manière fluide et sans conflit de données.
+    
+    \item \textcolor{primaryBlue}{\textbf{Compatibilité :}} L'application Web doit être compatible avec les différents systèmes d'exploitation et les navigateurs modernes (Chrome, Firefox, Edge, etc.).
+\end{itemize}
+
+% ==========================================
+% SECTION 3 : CONDUITE ET PLANIFICATION DU PROJET
+% ==========================================
+\vspace{0.5cm}
+\section{Conduite et planification du projet}
+
+\subsection{Processus de développement}
+
+Le processus de développement constitue un axe déterminant dans la réussite d'un projet, du fait qu'il cadre ses différentes phases et caractérise les principaux traits de sa conduite. Pour cela, le choix d'une méthode de développement adéquate aux particularités et aux exigences du projet doit être élaboré au préalable afin d'obtenir un produit de qualité, répondant aux besoins et attentes des utilisateurs dans des délais et des coûts prévisibles.
+
+La réalisation du module \textbf{Invoicing} a été menée au sein d'une équipe de développement de NTT DATA. La gestion du projet a consisté à diviser la tâche globale en adoptant une approche \textbf{Agile} basée sur le framework \textbf{SCRUM}. Les sous-tâches ont ensuite été assignées aux membres de l'équipe via des outils de suivi. Le calendrier du projet a été minutieusement planifié afin que tous les membres de l'équipe connaissent les délais à respecter.
+
+\vspace{0.4cm}
+
+\subsection{La méthode SCRUM}
+
+Le principe de cette méthode est de concentrer l'équipe sur un ensemble de fonctionnalités à réaliser dans des intervalles de temps fixes, d'une durée de 2 à 4 semaines, appelés \textbf{Sprints}. 
+
+Chaque Sprint possède un objectif précis défini par le \textit{Product Owner} (Directeur de produit). Au cours de ce cycle, l'équipe de développement conçoit, teste et implémente de nouvelles fonctionnalités (User Stories). À la fin de chaque itération, l'équipe livre des versions intermédiaires et fonctionnelles du projet, permettant ainsi d'avoir un retour continu avant la livraison du produit final. [8]
+
+\vspace{0.6cm}
+
+% --- IMAGE MÉTHODE SCRUM ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/methode-scrum.png}
+    \caption{La méthode SCRUM}
+    \label{fig:methode_scrum}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Pourquoi SCRUM ?}
+
+Le choix de la méthodologie SCRUM pour le développement du module \textbf{Invoicing} repose sur plusieurs avantages majeurs :
+
+Avec SCRUM, l'équipe de développement bénéficie d'une participation active dans l'évolution du projet. Elle peut s'exprimer librement et s'impliquer dans la prise de décisions, la planification des sprints et l'organisation du travail, contrairement aux méthodes traditionnelles qui figent les spécifications dès le départ et obligent l'équipe à répondre strictement à un cahier des charges initial.
+
+De plus, le fait de présenter des livraisons régulières (incréments) permet de détecter rapidement les éventuelles défaillances, de signaler les blocages et d'ajuster les fonctionnalités selon les besoins réels. Ainsi, le découpage du projet en Sprints rend le travail moins abstrait et facilite la productivité de l'équipe tout au long du cycle de développement.
+
+\vspace{0.4cm}
+
+\subsubsection{Les principes fondamentaux de SCRUM}
+
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} % Morba3 zre9 sghir
+    \setlength{\itemsep}{0.3cm}
+    
+    \item \textbf{Sprints :} Ce sont des itérations de développement de courte durée, généralement de 2 à 4 semaines, au cours desquelles des fonctionnalités spécifiques sont développées, testées et livrées. Chaque sprint aboutit à un incrément de produit potentiellement livrable.
+    
+    \item \textbf{Product Backlog (Backlog du produit) :} C'est une liste priorisée et évolutive des fonctionnalités à développer. Le \textit{Product Owner} (Responsable produit) est chargé de sa gestion et de sa mise à jour régulière en fonction des nouveaux besoins et des retours des parties prenantes.
+
+    \item \textbf{Sprint Backlog (Backlog du Sprint) :} Il s'agit de l'ensemble des éléments du Product Backlog qui ont été sélectionnés pour être réalisés durant le Sprint en cours. C'est le plan de travail de l'équipe de développement.
+
+    \item \textbf{Daily Scrum (Mêlée quotidienne) :} Une courte réunion quotidienne (généralement 15 minutes) permettant à l'équipe de développement de se synchroniser, de faire le point sur l'avancement des tâches et d'identifier les blocages éventuels.
+
+    \item \textbf{Revue et Rétrospective de Sprint :} À la fin de chaque Sprint, l'équipe présente les fonctionnalités réalisées (incrément) aux parties prenantes lors de la Revue. Ensuite, la Rétrospective permet à l'équipe d'analyser son processus de travail afin de l'améliorer pour les Sprints suivants.
+\end{itemize}
+
+\vspace{0.4cm}
+
+\subsubsection{Équipe du projet}
+
+% --- IMAGE EQUIPE SCRUM ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.70\textwidth]{images/equipe-scrum.png}
+    \caption{L'équipe SCRUM}
+    \label{fig:equipe_scrum}
+\end{figure}
+
+Pour réaliser notre module d'Invoicing, nous avons intégré une équipe constituée de :
+
+\vspace{0.2cm}
+
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} % Morba3 zre9 sghir
+    \setlength{\itemsep}{0.3cm}
+
+    \item \textbf{Scrum Master (Encadrant professionnel) - M. Achraf Saloumi :} Son rôle est de s'assurer de l'implication de chaque membre, de faciliter le processus Scrum et de nous aider à franchir les différents obstacles que nous pourrions rencontrer.
+
+    \item \textbf{Architecte Backend - M. Ayoub El Youssoufi :} Son rôle est de nous superviser dans la conception architecturale et les tâches de la partie backend.
+
+    \item \textbf{Architecte Frontend - M. El Harraj Abdelatif :} Son rôle est de nous superviser dans les choix techniques et les tâches de la partie frontend.
+
+    \item \textbf{Équipe de développement - Redouane Ed-Dahmany, Soufiane Hajji et Mehdi Farhloumi :} Notre rôle consiste à concevoir, développer et tester les différentes fonctionnalités du projet.
+\end{itemize}
+
+\vspace{0.4cm}
+
+\subsubsection{Gestion de projet avec JIRA}
+
+Comme la méthodologie de travail Scrum que nous utilisons est une approche Agile, l'outil \textbf{JIRA} s'est imposé comme la solution idéale pour gérer et suivre l'avancement de notre projet.
+
+Avec JIRA, une plateforme incontournable de gestion de projets, nous pouvons suivre les différentes étapes du cycle de développement, y compris la spécification du backlog et la planification des sprints.
+
+\vspace{0.4cm}
+
+% --- IMAGE JIRA ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{images/jira-gestion.png}
+    \caption{Interface de gestion de projet JIRA}
+    \label{fig:jira_gestion}
+\end{figure}
+
+\vspace{0.4cm}
+
+Voici comment cet outil est appliqué dans notre contexte :
+
+\vspace{0.3cm}
+\noindent\textcolor{primaryBlue}{\textbf{\textit{Spécification du backlog :}}}
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\textbullet}}
+    \setlength{\itemsep}{0.2cm}
+    \item Utilisation des fonctionnalités de gestion des tâches et des User Stories de JIRA pour définir le backlog du projet.
+    \item Classement des fonctionnalités par ordre de priorité selon la valeur métier apportée.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textcolor{primaryBlue}{\textbf{\textit{Sprint planning :}}}
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\textbullet}}
+    \setlength{\itemsep}{0.2cm}
+    \item JIRA est utilisé pour visualiser le backlog global et sélectionner les User Stories qui doivent obligatoirement être réalisées pendant le Sprint en cours.
+    \item Le Scrum Master et l'équipe valident les développements nécessaires pour atteindre l'objectif du Sprint.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textcolor{primaryBlue}{\textbf{\textit{Estimation des tâches :}}}
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\textbullet}}
+    \setlength{\itemsep}{0.2cm}
+    \item Au début de chaque Sprint, une réunion de planification est organisée avec l'équipe de développement pour estimer la complexité des tâches et établir le Sprint Planning.
+    \item L'équipe de développement estime les tâches à réaliser pendant le sprint en utilisant des points de complexité (Story Points) ou d'effort.
+    \item Les tâches sont ensuite assignées aux différents membres de l'équipe de développement en utilisant les fonctionnalités de gestion et d'attribution de JIRA.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent\textcolor{primaryBlue}{\textbf{\textit{Suivi du sprint :}}}
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\textbullet}}
+    \setlength{\itemsep}{0.2cm}
+    \item Une fois le Sprint lancé, le tableau de bord JIRA (Scrum Board) est utilisé pour suivre visuellement l'avancement des tâches en temps réel.
+    \item Les développeurs peuvent mettre à jour l'état de leurs tâches en les déplaçant de manière fluide à travers les différentes colonnes (À faire, En cours, En test, Terminé).
+\end{itemize}
+
+\vspace{0.4cm}
+
+% --- IMAGE JIRA BOARD ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/jira-board.png}
+    \caption{Exemple de suivi de l'avancement des tâches sur JIRA}
+    \label{fig:jira_board}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Détail des responsabilités de l'équipe}
+
+Dans l'optique d'optimiser le cycle de vie du développement et d'assurer une implémentation robuste du module \textbf{Invoicing}, une répartition judicieuse des charges de travail a été instaurée au sein de notre équipe technique. En parfaite adéquation avec notre démarche Agile, l'attribution des périmètres d'intervention — qu'ils soient fonctionnels ou architecturaux — a été pensée de manière à maximiser la synergie du groupe et à garantir une couverture exhaustive des exigences du projet. Le tableau ci-dessous détaille cette affectation des rôles et des missions pour chaque membre :
+
+\vspace{0.4cm}
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura
+    \setlength{\arrayrulewidth}{1pt}   % Gheld dyal l-khtouta
+    \arrayrulecolor{primaryBlue}       % Loun dyal l-khtouta b zre9
+
+    % Tableau b 3 colonnes m-riglin b l-3bar (\textwidth)
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.25\textwidth}|>{\raggedright\arraybackslash}p{0.30\textwidth}|>{\raggedright\arraybackslash}p{0.35\textwidth}|}
+        \hline
+        % En-tête dyal l'tableau b zre9 mghlo9 w ktba bida
+        \rowcolor{primaryBlue}
+        \textbf{\textcolor{white}{Membre de l'équipe}} & \textbf{\textcolor{white}{Modules affectés}} & \textbf{\textcolor{white}{Détails des tâches}} \\
+        \hline
+
+        % --- REDOUANE (B loun lightBlue) ---
+        \rowcolor{lightBlue}
+        \textbf{Redouane Ed-Dahmany}\newline \textit{(Moi-même)} & 
+        \textbf{Backend :} Worktime, Billing, Export PDF\newline 
+        \textbf{Frontend :} UI Admin, Settings, Massive Edit & 
+        \textbullet~ Développement backend de la gestion du Worktime.\newline
+        \textbullet~ Implémentation de la logique de facturation (Billing).\newline
+        \textbullet~ Développement de la génération des factures en PDF.\newline
+        \textbullet~ Création des interfaces d'administration.\newline
+        \textbullet~ Conception de la vue de modification massive.\newline
+        \textbullet~ Intégration des APIs REST côté Angular. \\
+        \hline
+
+        % --- SOUFIANE (Bla loun bach yji dakchi m-khalef) ---
+        \textbf{Soufiane Hajji} & 
+        \textbf{Backend :} Analyse UML, BDD, Service CRUD, Group Mgmt, Ajustements, Sécurité & 
+        \textbullet~ Modélisation UML et conception de la base de données.\newline
+        \textbullet~ Développement des services CRUD et des groupes.\newline
+        \textbullet~ Implémentation de la logique des ajustements (Overrides).\newline
+        \textbullet~ Configuration de la sécurité (Spring Security \& JWT).\newline
+        \textbullet~ Écriture des tests unitaires backend. \\
+        \hline
+
+        % --- MEHDI (B loun lightBlue) ---
+        \rowcolor{lightBlue}
+        \textbf{Mehdi Farhloumi} & 
+        \textbf{Frontend :} Generate, Confirm \& Close Service, UI/UX, Routage & 
+        \textbullet~ Frontend de génération et clôture des services.\newline
+        \textbullet~ Consommation des APIs REST via les services Angular.\newline
+        \textbullet~ Gestion et validation des formulaires (Reactive Forms).\newline
+        \textbullet~ Mise en place du routage et protection (Auth Guards).\newline
+        \textbullet~ Amélioration de l'expérience utilisateur (UI/UX). \\
+        \hline
+    \end{tabular}
+    \vspace{0.2cm}
+    \caption{Détail approfondi des modules et tâches par membre de l'équipe}
+    \label{tab:responsabilites_equipe_detail}
+\end{table}
+
+Grâce à cette répartition des tâches, chaque membre de l'équipe a pu se concentrer sur des aspects spécifiques du projet, en travaillant de manière collaborative pour assurer la réalisation efficace de chaque module. L'implication de l'équipe de développement dans ces domaines clés garantit un développement robuste et une meilleure expérience utilisateur tout au long du processus de gestion de la facturation et du suivi des temps de travail.
+
+\vspace{0.4cm}
+
+\subsubsection{Organisation et communication (Microsoft Teams)}
+
+Dans le cadre de l'organisation de notre projet et pour maintenir une synchronisation parfaite, nous avons adopté \textbf{Microsoft Teams} comme outil principal pour nos réunions quotidiennes et notre communication continue. 
+
+Microsoft Teams est une plateforme de communication et de collaboration en ligne qui offre diverses fonctionnalités pour faciliter les échanges, la coordination et le suivi de l'avancement au sein de l'équipe de travail.
+
+\vspace{0.4cm}
+
+% --- IMAGE TEAMS F L-WSSET ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.13\textwidth]{images/microsoft-teams.png}
+    \caption{Plateforme de communication Microsoft Teams}
+    \label{fig:ms_teams}
+\end{figure}
+
+\vspace{0.4cm}
+
+Les réunions quotidiennes (\textit{Daily Scrum}) sont un élément essentiel de la gestion de projet Agile, car elles permettent de mettre à jour l'équipe sur l'avancement des tâches, d'identifier les problèmes éventuels et de prendre des décisions importantes. En utilisant Microsoft Teams, nous avons pu organiser facilement ces réunions virtuelles, garantissant ainsi une fluidité même lors des séances de télétravail.
+
+\vspace{0.2cm}
+Voici quelques-unes des fonctionnalités de Microsoft Teams que nous avons exploitées pour optimiser notre organisation :
+
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} % Morba3 zre9 sghir
+    \setlength{\itemsep}{0.3cm}
+
+    \item \textbf{Appels audio et vidéo :} Nous avons pu effectuer des appels audio ou vidéo avec les membres de l'équipe, ce qui a permis une communication en temps réel et une meilleure compréhension des informations partagées lors des Daily Scrums.
+
+    \item \textbf{Partage d'écran :} Nous avons utilisé la fonction de partage d'écran pour présenter des informations, des rapports d'erreurs, des revues de code ou des démonstrations lors de nos réunions. Cela a favorisé une résolution plus rapide des problèmes (Pair programming) et une collaboration plus efficace.
+
+    \item \textbf{Chat en ligne :} En dehors des réunions, nous avons utilisé le chat en ligne pour les discussions rapides, les échanges d'informations techniques et les clarifications. Cela a facilité la communication instantanée et a permis de résoudre rapidement les points bloquants.
+
+    \item \textbf{Gestion des documents :} Teams offre une intégration native avec l'écosystème Microsoft Office, ce qui nous a permis de partager et de collaborer sur des documents, des diagrammes UML et des spécifications techniques directement dans l'environnement de l'outil. Cela a simplifié le processus de travail et a évité les problèmes liés au contrôle des versions des fichiers.
+\end{itemize}
+
+En utilisant Microsoft Teams pour nos réunions quotidiennes, nous avons pu maintenir une communication régulière et efficace au sein de l'équipe, même à distance. Cela nous a permis de rester alignés sur les objectifs du sprint, de résoudre rapidement les problèmes bloquants et de prendre des décisions informées. De plus, l'utilisation de cette plateforme a fortement favorisé la centralisation des informations, des spécifications techniques et des documents, ce qui a simplifié la collaboration et l'organisation globale des tâches liées au module Invoicing.
+
+\vspace{0.4cm}
+
+% --- IMAGE CAPTURE TEAMS ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/teams-chat.png}
+    \caption{Collaboration de l'équipe sur Microsoft Teams}
+    \label{fig:teams_chat}
+\end{figure}
+
+\vspace{0.7cm}
+
+\subsection{Planification temporelle}
+
+La planification du projet est le processus de détermination des objectifs, des activités, des ressources et des délais nécessaires pour atteindre un résultat spécifique dans un projet. Cela implique l'identification des tâches clés, l'estimation des ressources requises, l'établissement d'un calendrier et l'allocation des responsabilités. La planification du projet permet de structurer et d'organiser les différentes étapes du projet, de définir les priorités, d'évaluer les contraintes et de minimiser les risques potentiels. Une planification solide aide à coordonner efficacement les efforts de l'équipe, à optimiser l'utilisation des ressources et à assurer la livraison réussie du projet dans les délais impartis.
+
+\subsubsection{Diagramme de GANTT}
+
+Le diagramme de Gantt est un outil de planification et de gestion de projet qui représente visuellement les différentes tâches d'un projet, leur séquence et leur durée. Il est constitué d'une ligne horizontale représentant la période totale du projet, et des barres horizontales qui indiquent le début et la fin de chaque tâche. Les tâches sont organisées en fonction de leur dépendance et de leur ordre logique. [10]
+
+\vspace{0.4cm}
+
+Le diagramme ci-dessous a été réalisé à l'aide de l'outil de modélisation \textbf{Mermaid} :
+
+\vspace{0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/diagramme-gantt-mermaid.png}
+    \caption{Diagramme de GANTT du projet Invoicing}
+    \label{fig:gantt_chart}
+\end{figure}
+
+\subsubsection{Découpage en Sprints}
+
+Le tableau ci-dessous représente la description de chaque sprint, ce qui offre une vision globale de notre travail pendant la durée du stage :
+
+\vspace{0.4cm}
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura b7al les abréviations
+    \setlength{\arrayrulewidth}{1pt}
+    \arrayrulecolor{primaryBlue}
+
+    % Tableau b 4 colonnes m-9adin m3a l'wer9a
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.45\textwidth}|>{\centering\arraybackslash}p{0.12\textwidth}|>{\centering\arraybackslash}p{0.15\textwidth}|>{\centering\arraybackslash}p{0.15\textwidth}|}
+        \hline
+        % En-tête dyal l'tableau b zre9 mghlo9 w ktba bida
+        \rowcolor{primaryBlue}
+        \textbf{\textcolor{white}{Activité (Sprint)}} & \textbf{\textcolor{white}{Durée}} & \textbf{\textcolor{white}{Date de début}} & \textbf{\textcolor{white}{Date de fin}} \\
+        \hline
+        
+        % --- SPRINT 1 ---
+        \rowcolor{lightBlue}
+        \textbf{Sprint 1 : Lancement} \newline
+        \textbullet~ Étude de l'existant et Kick-off \newline
+        \textbullet~ Analyse des besoins \newline
+        \textbullet~ Spécification et Backlog 
+        & 14 jours & 01/03/2026 & 14/03/2026 \\
+        \hline
+        
+        % --- SPRINT 2 ---
+        \textbf{Sprint 2 : Conception} \newline
+        \textbullet~ Modélisation UML \newline
+        \textbullet~ Setup Environnement Spring/Angular \newline
+        \textbullet~ Conception Base de Données 
+        & 16 jours & 15/03/2026 & 30/03/2026 \\
+        \hline
+
+        % --- SPRINT 3 ---
+        \rowcolor{lightBlue}
+        \textbf{Sprint 3 : Backend Core} \newline
+        \textbullet~ Module Worktime Management \newline
+        \textbullet~ Services CRUD et Group Management \newline
+        \textbullet~ Logique des Ajustements et Overrides 
+        & 21 jours & 05/04/2026 & 25/04/2026 \\
+        \hline
+
+        % --- SPRINT 4 ---
+        \textbf{Sprint 4 : Facturation} \newline
+        \textbullet~ Moteur de Facturation (Billing) \newline
+        \textbullet~ Génération des Factures PDF \newline
+        \textbullet~ Tests Unitaires Backend 
+        & 21 jours & 26/04/2026 & 16/05/2026 \\
+        \hline
+
+        % --- SPRINT 5 ---
+        \rowcolor{lightBlue}
+        \textbf{Sprint 5 : Frontend Angular} \newline
+        \textbullet~ UI Admin et Settings \newline
+        \textbullet~ Vues Génération et Clôture \newline
+        \textbullet~ Massive Edit Interface \newline
+        \textbullet~ Intégration APIs REST 
+        & 28 jours & 17/05/2026 & 13/06/2026 \\
+        \hline
+
+        % --- SPRINT 6 ---
+        \textbf{Sprint 6 : Finalisation} \newline
+        \textbullet~ Tests d'intégration et QA \newline
+        \textbullet~ Rédaction finale du rapport \newline
+        \textbullet~ Déploiement UAT et PROD 
+        & 19 jours & 14/06/2026 & 02/07/2026 \\
+        \hline
+    \end{tabular}
+    \caption{Description globale et temporelle des Sprints}
+    \label{tab:all_sprints}
+\end{table}
+
+\vspace{0.4cm}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion} % Bach t-ban f l'Fihres wakha ma3ndhach ra9m
+
+Durant ce premier chapitre, nous avons réussi à fournir une vue d'ensemble du projet en le situant dans son contexte général. Nous avons introduit l'organisme d'accueil, NTT DATA, et nous avons décrit de manière détaillée la problématique à résoudre, ainsi que les objectifs à atteindre dans le cadre du développement du module \textbf{Invoicing} pour la plateforme \textbf{KAFA'AT EMS}.
+
+De plus, nous avons abordé le choix de la méthodologie de travail adoptée (Agile SCRUM) pour assurer la réussite et la flexibilité de réalisation. Nous avons également souligné l'importance de la communication et de la planification pour la gestion efficace des différentes étapes et itérations du projet.
+
+En conclusion, ce premier chapitre nous a permis de poser les fondations du projet en définissant son cadre, ses objectifs et sa méthodologie. Il nous a fourni une compréhension globale du besoin et nous a préparés pour la suite, où nous aborderons les détails spécifiques de l'analyse fonctionnelle et de la conception de notre solution.
+
+% --- CHAPITRE 2 : START ---
+\chapterpage{2}{Analyse et Conception}
+\chapter{Analyse et Conception}
+
+\vspace*{0.8cm} % <--- ZID HADI HNA BACH TB3ED "INTRODUCTION" 3LA L'KHAT ZRE9
+Dans ce chapitre, nous détaillons la conception Microservices et la modélisation UML...
+
+
+
+% --- CHAPITRE 3 : START ---
+\chapterpage{3}{Réalisation et Mise en œuvre}
+\chapter{Réalisation et Mise en œuvre}
+
+\vspace*{0.8cm} % <--- ZID HADI HNA BACH TB3ED "INTRODUCTION" 3LA L'KHAT ZRE9
+Ce dernier chapitre présente l'implémentation Full-Stack avec Spring Boot et Angular...
+
+
+\end{document}
