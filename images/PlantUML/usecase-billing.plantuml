@@ -1,0 +1,73 @@
+@startuml
+left to right direction
+
+skinparam shadowing true
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+skinparam actor {
+    BackgroundColor #1A6DAF
+    BorderColor #0D3349
+    FontColor #0D3349
+    FontSize 14
+    Style awesome
+}
+
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #1A6DAF
+    FontColor #0A2540
+    ArrowColor #1A6DAF
+}
+
+skinparam rectangle {
+    BorderColor #1A6DAF
+    BackgroundColor transparent
+    FontColor #1A6DAF
+    FontSize 15
+    FontStyle bold
+}
+
+actor "Administrateur" as admin
+actor "Utilisateur\n(Employé)" as user
+actor "Système de Notification\n(Email)" as notif_sys <<Système Externe>>
+
+admin --|> user
+
+rectangle "Sous-module : Gestion de la Facturation (Billing)" {
+
+    usecase "Paramétrer les règles (TJM, Taxes)" as uc_rules
+    usecase "Modifier massivement les factures" as uc_mass_edit
+    usecase "Lancer la génération massive (PDF)" as uc_generate
+    usecase "Clôturer la période de facturation" as uc_close
+    usecase "Consulter l'historique des factures" as uc_history
+
+    usecase "S'authentifier" as auth #FFD6D6
+
+    usecase "Télécharger la facture (PDF)" as uc_dl
+    usecase "Envoyer la facture par email" as uc_notif #D6EAF8
+
+    uc_rules ..> auth : <<include>>
+    uc_mass_edit ..> auth : <<include>>
+    uc_generate ..> auth : <<include>>
+    uc_close ..> auth : <<include>>
+    uc_history ..> auth : <<include>>
+
+    uc_dl ..> uc_history : <<extend>>
+    uc_generate ..> uc_notif : <<include>>
+}
+
+admin --> uc_rules
+admin --> uc_mass_edit
+admin --> uc_generate
+admin --> uc_close
+
+user --> uc_history
+
+uc_notif --> notif_sys
+
+' Force actors to align vertically with middle of the diagram
+admin -[hidden]down-> user
+user -[hidden]down-> uc_history
+
+@enduml

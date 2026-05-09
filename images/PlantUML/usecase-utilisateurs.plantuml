@@ -1,0 +1,76 @@
+@startuml
+left to right direction
+
+skinparam shadowing true
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+skinparam actor {
+    BackgroundColor #1A6DAF
+    BorderColor #0D3349
+    FontColor #0D3349
+    FontSize 14
+    Style awesome
+}
+
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #1A6DAF
+    FontColor #0A2540
+    ArrowColor #1A6DAF
+}
+
+skinparam rectangle {
+    BorderColor #1A6DAF
+    BackgroundColor transparent
+    FontColor #1A6DAF
+    FontSize 15
+    FontStyle bold
+}
+
+actor "Utilisateur\n(Employé)" as user
+actor "Administrateur" as admin
+
+admin -up-|> user
+
+rectangle "Sous-module : Gestion des Utilisateurs et Accès" {
+
+    usecase "S'authentifier" as auth #FFD6D6
+
+    usecase "Consulter son profil" as uc_profil
+    usecase "Mettre à jour ses coordonnées" as uc_update_info
+    usecase "Changer son mot de passe" as uc_change_pwd
+
+    usecase "Consulter la liste des employés" as uc_list
+    usecase "Créer un nouveau compte" as uc_add
+    usecase "Modifier un compte existant" as uc_edit
+    usecase "Désactiver / Suspendre un compte" as uc_deactivate
+
+    usecase "Attribuer des rôles (Privilèges)" as uc_roles
+    usecase "Réinitialiser le mot de passe" as uc_reset
+
+    uc_profil .down.> auth : <<include>>
+    uc_update_info .down.> auth : <<include>>
+    uc_change_pwd .down.> auth : <<include>>
+
+    uc_list .down.> auth : <<include>>
+    uc_add .down.> auth : <<include>>
+    uc_edit .down.> auth : <<include>>
+    uc_deactivate .down.> auth : <<include>>
+
+    uc_roles .up.> uc_add : <<extend>>
+    uc_roles .up.> uc_edit : <<extend>>
+
+    uc_reset .up.> uc_edit : <<extend>>
+}
+
+user --> uc_profil
+user --> uc_update_info
+user --> uc_change_pwd
+
+admin --> uc_list
+admin --> uc_add
+admin --> uc_edit
+admin --> uc_deactivate
+
+@enduml

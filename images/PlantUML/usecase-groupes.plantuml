@@ -1,0 +1,80 @@
+@startuml
+left to right direction
+
+skinparam shadowing true
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+skinparam actor {
+    BackgroundColor #1A6DAF
+    BorderColor #0D3349
+    FontColor #0D3349
+    FontSize 14
+    Style awesome
+}
+
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #1A6DAF
+    FontColor #0A2540
+    ArrowColor #1A6DAF
+}
+
+skinparam rectangle {
+    BorderColor #1A6DAF
+    BackgroundColor transparent
+    FontColor #1A6DAF
+    FontSize 15
+    FontStyle bold
+}
+
+actor "Utilisateur\n(Employé)" as user
+actor "Administrateur" as admin
+
+admin -up-|> user
+
+rectangle "Sous-module : Gestion des Groupes et Tarification (TJM)" {
+
+    usecase "S'authentifier" as auth #FFD6D6
+
+    usecase "Consulter son profil de facturation" as uc_consulter_user
+
+    usecase "Créer un groupe de facturation" as uc_creer
+    usecase "Consulter la liste des groupes" as uc_consulter_all
+    usecase "Modifier un groupe" as uc_modifier
+    usecase "Affecter des employés au groupe" as uc_affecter
+    usecase "Définir le Taux Journalier (TJM)" as uc_tjm
+    usecase "Supprimer un groupe" as uc_supprimer
+
+    usecase "Spécifier une devise (MAD, EUR, USD)" as uc_devise
+    usecase "Définir un plafond d'heures" as uc_plafond
+    usecase "Filtrer la liste des groupes" as uc_filtrer
+    usecase "Exporter la liste en Excel" as uc_export
+
+    uc_consulter_user .down.> auth : <<include>>
+
+    uc_creer .down.> auth : <<include>>
+    uc_consulter_all .down.> auth : <<include>>
+    uc_modifier .down.> auth : <<include>>
+    uc_affecter .down.> auth : <<include>>
+    uc_tjm .down.> auth : <<include>>
+    uc_supprimer .down.> auth : <<include>>
+
+    uc_plafond .up.> uc_creer : <<extend>>
+    uc_plafond .up.> uc_modifier : <<extend>>
+    uc_devise .up.> uc_tjm : <<extend>>
+
+    uc_filtrer .up.> uc_consulter_all : <<extend>>
+    uc_export .up.> uc_consulter_all : <<extend>>
+}
+
+user --> uc_consulter_user
+
+admin --> uc_creer
+admin --> uc_consulter_all
+admin --> uc_modifier
+admin --> uc_affecter
+admin --> uc_tjm
+admin --> uc_supprimer
+
+@enduml

@@ -1,0 +1,99 @@
+@startuml
+
+skinparam sequence {
+    ArrowColor #1A6DAF
+    ActorBorderColor #0D3349
+    ActorBackgroundColor #1A6DAF
+    ActorFontColor #0D3349
+    LifeLineBorderColor #1A6DAF
+    LifeLineBackgroundColor #E8F4FD
+
+    ParticipantBorderColor #1A6DAF
+    ParticipantBackgroundColor #E8F4FD
+    ParticipantFontColor #0A2540
+    ParticipantFontSize 13
+
+    DatabaseBackgroundColor #D6EAF8
+    DatabaseBorderColor #1A6DAF
+    DatabaseFontColor #0A2540
+
+    NoteBackgroundColor #EBF5FB
+    NoteBorderColor #1A6DAF
+    NoteFontColor #0A2540
+
+    BoxBorderColor #1A6DAF
+    BoxBackgroundColor transparent
+    BoxFontColor #1A6DAF
+}
+
+skinparam shadowing true
+skinparam monochrome false
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam ParticipantPadding 50
+skinparam BoxPadding 40
+
+autonumber
+
+box "Plateforme KAFA'AT EMS — Authentification (JWT / Spring Security)" #E8F4FD
+    actor "Utilisateur" as user
+    participant "Frontend\n(Angular)" as front #1A6DAF
+    participant "Backend\n(Spring Boot)" as back #2E86C1
+    database "Base de\ndonnées" as db #D6EAF8
+end box
+
+note over user, db #E8F4FD
+<b>Flux d'authentification complet — JWT + Spring Security + BCrypt</b>
+                                                                                                                            
+end note
+
+== Chargement de l'application ==
+
+user -> front : Accéder à l'application
+activate front #E8F4FD
+front --> user : Afficher le formulaire de connexion
+deactivate front
+
+== Saisie des identifiants ==
+
+user -> front : Saisir (email, mot de passe)
+activate front #E8F4FD
+
+opt Validation locale (Champs vides / Format email invalide)
+    front -> front : Vérifier la validité des champs
+    front --> user : Afficher un message d'erreur de saisie
+end
+
+== Envoi de la requête ==
+
+front -> back : POST /api/auth/login\n(email, mot de passe)
+activate back #D6EAF8
+
+== Vérification en base ==
+
+back -> db : Rechercher l'utilisateur par email
+activate db #AED6F1
+db --> back : Retourner Utilisateur + Hash BCrypt (ou null)
+deactivate db
+
+== Traitement Spring Security ==
+
+alt Utilisateur trouvé ET Mot de passe correct (BCrypt)
+
+    back -> back : Vérifier le mot de passe (BCrypt)
+    back -> back : Générer le Token JWT
+    back --> front : 200 OK — Token JWT + Rôle + Infos Utilisateur
+    front -> front : Stocker le Token (LocalStorage / SessionStorage)
+    front --> user : Rediriger vers le Tableau de bord
+
+else Identifiants incorrects ou Compte inexistant
+
+    back --> front : 401 Unauthorized — Erreur d'authentification
+    front --> user : Afficher "Identifiants invalides"
+
+end
+
+deactivate back
+deactivate front
+
+@enduml

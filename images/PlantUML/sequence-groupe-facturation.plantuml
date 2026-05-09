@@ -1,0 +1,98 @@
+@startuml
+
+skinparam sequence {
+    ArrowColor #1A6DAF
+    ActorBorderColor #0D3349
+    ActorBackgroundColor #1A6DAF
+    ActorFontColor #0D3349
+    LifeLineBorderColor #1A6DAF
+    LifeLineBackgroundColor #E8F4FD
+
+    ParticipantBorderColor #1A6DAF
+    ParticipantBackgroundColor #E8F4FD
+    ParticipantFontColor #0A2540
+    ParticipantFontSize 13
+
+    DatabaseBackgroundColor #D6EAF8
+    DatabaseBorderColor #1A6DAF
+    DatabaseFontColor #0A2540
+
+    NoteBackgroundColor #EBF5FB
+    NoteBorderColor #1A6DAF
+    NoteFontColor #0A2540
+
+    BoxBorderColor #1A6DAF
+    BoxBackgroundColor transparent
+    BoxFontColor #1A6DAF
+}
+
+skinparam shadowing true
+skinparam monochrome false
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam ParticipantPadding 40
+skinparam BoxPadding 30
+
+autonumber
+
+box "Plateforme KAFA'AT EMS — Module Invoicing" #E8F4FD
+    actor "Administrateur" as admin
+    participant "Frontend\n(Angular)" as front #1A6DAF
+    participant "Backend\n(Spring Boot)" as back #2E86C1
+    database "Base de\ndonnées" as db #D6EAF8
+end box
+
+note over admin, db #E8F4FD
+<b>Flux de Création d'un Groupe de Facturation — TJM, Devise et Règles Métier</b>
+end note
+
+== Affichage du formulaire ==
+
+admin -> front : Cliquer sur "Créer un groupe"
+activate front #E8F4FD
+front --> admin : Afficher le formulaire (Nom, TJM, Devise, Plafond)
+deactivate front
+
+== Saisie et Soumission ==
+
+admin -> front : Saisir les informations du groupe
+activate front #E8F4FD
+
+opt Validation locale
+    front -> front : Vérifier les champs obligatoires\net le format (TJM > 0)
+end
+
+front -> back : POST /api/billing-groups\n(Données, Token JWT)
+activate back #D6EAF8
+
+== Validation Métier (Backend) ==
+
+back -> back : Vérifier les droits (ROLE_ADMIN)
+back -> db : Vérifier si le nom du groupe existe déjà
+activate db #AED6F1
+db --> back : Résultat de la vérification
+deactivate db
+
+== Enregistrement en base ==
+
+alt Nom du groupe disponible
+
+    back -> db : Insérer le nouveau groupe
+    activate db #AED6F1
+    db --> back : Confirmation d'insertion
+    deactivate db
+    
+    back --> front : 201 Created — Groupe créé
+    front --> admin : Afficher message de succès\net mettre à jour la liste
+
+else Nom du groupe déjà existant
+
+    back --> front : 409 Conflict — Doublon détecté
+    front --> admin : Afficher erreur "Ce groupe existe déjà"
+
+end
+
+deactivate back
+deactivate front
+
+@enduml
