@@ -1,0 +1,71 @@
+@startuml
+
+skinparam ActivityBackgroundColor #E8F4FD
+skinparam ActivityBorderColor #1A6DAF
+skinparam ActivityDiamondBackgroundColor #D6EAF8
+skinparam ActivityDiamondBorderColor #1A6DAF
+skinparam ActivityArrowColor #1A6DAF
+skinparam defaultFontColor #0A2540
+skinparam PartitionBackgroundColor #EBF5FB
+skinparam PartitionBorderColor #1A6DAF
+skinparam PartitionFontColor #1A6DAF
+skinparam PartitionFontSize 13
+skinparam PartitionFontStyle bold
+skinparam roundcorner 10
+skinparam shadowing true
+
+title Plateforme KAFA'AT EMS — Génération Massive des Factures
+
+|#EBF5FB|Administrateur|
+start
+:Sélectionner la période de facturation\n(Mois / Année);
+:Cliquer sur "Lancer la génération massive";
+
+|#E8F4FD|Système|
+:Contrôler les habilitations\n(Vérification Token JWT / ROLE_ADMIN);
+:Requête BD: Extraire les pointages\nstatut APPROUVE pour la période;
+
+if (Pointages trouvés ?) then (Non)
+  #FFCCCC:Afficher un avertissement\nAucune donnée facturable pour cette période;
+  kill
+else (Oui)
+  #AED6F1:Initialiser le lot (Batch) de factures;
+
+  while (Itération sur la liste des employés) is (Employé suivant)
+    :Agréger le total des heures validées;
+
+    if (Employé rattaché à un Groupe de Facturation ?) then (Oui)
+      :Récupérer les paramètres financiers\n(TJM, Devise, Taux TVA);
+      :Calculer le Montant HT\nMontant = Heures Totales x TJM;
+      :Calculer le Montant TTC\nTTC = HT + (HT x TVA);
+      #D6EAF8:Générer le flux binaire du PDF\n(Moteur JasperReports + Template);
+      :Lier l'URL du document à l'entité Facture;
+      :Ajouter la facture au lot d'insertion;
+    else (Non)
+      #FFCCCC:Générer une alerte d'anomalie\nConfiguration TJM manquante;
+      :Ignorer cet employé pour ce lot\net passer au suivant;
+    endif
+
+  endwhile (Liste épuisée)
+
+  #AED6F1:Exécuter l'insertion en masse (Batch Insert)\ndes factures dans la Base de données;
+
+  fork
+    |#E8F4FD|Système|
+    :Déléguer à un Processus Asynchrone\n(Thread / Queue);
+    while (Pour chaque facture générée)
+      :Construire l'email (Objet, Corps HTML);
+      :Attacher le fichier PDF en pièce jointe;
+      #D6EAF8:Envoyer via Serveur SMTP distant;
+    endwhile
+  fork again
+    |#EBF5FB|Administrateur|
+    #AED6F1:Afficher le tableau de bord de synthèse\n(Nb factures, Total CA, Anomalies);
+  end fork
+
+endif
+
+|#E8F4FD|Système|
+stop
+
+@enduml
