@@ -1,0 +1,64 @@
+@startuml
+
+skinparam ActivityBackgroundColor #E8F4FD
+skinparam ActivityBorderColor #1A6DAF
+skinparam ActivityDiamondBackgroundColor #D6EAF8
+skinparam ActivityDiamondBorderColor #1A6DAF
+skinparam ActivityArrowColor #1A6DAF
+skinparam defaultFontColor #0A2540
+skinparam PartitionBackgroundColor #EBF5FB
+skinparam PartitionBorderColor #1A6DAF
+skinparam PartitionFontColor #1A6DAF
+skinparam PartitionFontSize 13
+skinparam PartitionFontStyle bold
+skinparam roundcorner 10
+skinparam shadowing true
+
+title Plateforme KAFA'AT EMS — Saisie et Validation des Pointages
+
+|#D6EAF8|Employé|
+start
+:Saisir les détails du pointage\n(Projet, Date, Heures, Tâche);
+
+|#E8F4FD|Système|
+if (Cumul heures > Plafond journalier ?) then (Oui)
+  #FFCCCC:Rejeter la saisie\n(Afficher erreur 400);
+  |#D6EAF8|Employé|
+  :Corriger les heures saisies;
+  stop
+else (Non)
+  |#E8F4FD|Système|
+  #AED6F1:Enregistrer en base de données\nStatut = SOUMIS;
+endif
+
+|#EBF5FB|Administrateur|
+:Consulter le tableau de bord\ndes pointages en attente;
+
+if (Décision de l'administrateur ?) then (Approuver)
+  |#E8F4FD|Système|
+  #AED6F1:Mettre à jour le statut\nStatut = APPROUVE;
+
+elseif (Refuser) then (Sélectionné)
+  |#EBF5FB|Administrateur|
+  :Saisir le motif du refus;
+  |#E8F4FD|Système|
+  #FFCCCC:Mettre à jour le statut\nStatut = REFUSE;
+  :Envoyer une notification email;
+  stop 
+  ' ^^^ HNA DRT L-FIX: Pointage refusé kay-7bess hna, makay-mchich l-facturation
+
+else (Ajuster / Override)
+  |#EBF5FB|Administrateur|
+  :Saisir les nouvelles heures\net le motif justificatif obligatoire;
+  |#E8F4FD|Système|
+  :Historiser dans la table Ajustement;
+  #85C1E9:Mettre à jour le statut\nStatut = AJUSTE;
+  :Envoyer une Alerte SMTP a l'employe;
+
+endif
+
+|#E8F4FD|Système|
+:Rendre le pointage disponible\npour la facturation;
+stop
+
+@enduml
