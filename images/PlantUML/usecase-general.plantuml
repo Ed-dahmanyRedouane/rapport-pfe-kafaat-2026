@@ -1,0 +1,83 @@
+@startuml
+left to right direction
+
+skinparam shadowing true
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+skinparam actor {
+    BackgroundColor #1A6DAF
+    BorderColor #0D3349
+    FontColor #0D3349
+    FontSize 14
+    Style awesome
+}
+
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #1A6DAF
+    FontColor #0A2540
+    ArrowColor #1A6DAF
+}
+
+skinparam rectangle {
+    BorderColor #1A6DAF
+    BackgroundColor transparent
+    FontColor #1A6DAF
+    FontSize 15
+    FontStyle bold
+}
+
+actor "Utilisateur\n(Employé)" as user
+actor "Administrateur" as admin
+actor "Serveur SMTP\n(Messagerie)" as smtp <<Système Externe>>
+
+admin -up-|> user
+
+rectangle "Plateforme KAFA'AT EMS : Module Invoicing" {
+
+    usecase "S'authentifier" as auth #FFD6D6
+
+    usecase "Consulter les pointages (Worktime)" as uc_wt
+    usecase "Filtrer par mois / projet" as uc_filter
+    usecase "Consulter ses factures" as uc_fac_user
+    usecase "Télécharger la facture (PDF)" as uc_dl_pdf
+
+    usecase "Paramétrer les règles (TJM, Devises)" as uc_param
+    usecase "Gérer les groupes d'employés" as uc_group
+    usecase "Appliquer des ajustements (Overrides)" as uc_over
+    usecase "Saisir un motif d'ajustement" as uc_motif
+    usecase "Générer les factures massives" as uc_fac_admin
+    usecase "Clôturer la période de facturation" as uc_close
+    usecase "Notifier l'employé" as uc_notif #D6EAF8
+
+    uc_wt .down.> auth : <<include>>
+    uc_fac_user .down.> auth : <<include>>
+    uc_param .down.> auth : <<include>>
+    uc_group .down.> auth : <<include>>
+    uc_over .down.> auth : <<include>>
+    uc_fac_admin .down.> auth : <<include>>
+    uc_close .down.> auth : <<include>>
+
+    uc_filter .up.> uc_wt : <<extend>>
+    uc_dl_pdf .up.> uc_fac_user : <<extend>>
+    uc_motif .up.> uc_over : <<extend>>
+
+    uc_fac_admin ..> uc_notif : <<include>>
+}
+
+user --> uc_wt
+user --> uc_fac_user
+
+admin --> uc_param
+admin --> uc_group
+admin --> uc_over
+admin --> uc_fac_admin
+admin --> uc_close
+
+uc_notif --> smtp
+
+admin -[hidden]down-> user
+user -[hidden]down-> uc_wt
+
+@enduml

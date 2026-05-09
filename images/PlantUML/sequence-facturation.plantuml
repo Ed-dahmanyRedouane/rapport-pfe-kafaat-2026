@@ -1,0 +1,99 @@
+@startuml
+
+skinparam sequence {
+    ArrowColor #1A6DAF
+    ActorBorderColor #0D3349
+    ActorBackgroundColor #1A6DAF
+    ActorFontColor #0D3349
+    LifeLineBorderColor #1A6DAF
+    LifeLineBackgroundColor #E8F4FD
+
+    ParticipantBorderColor #1A6DAF
+    ParticipantBackgroundColor #E8F4FD
+    ParticipantFontColor #0A2540
+    ParticipantFontSize 13
+
+    DatabaseBackgroundColor #D6EAF8
+    DatabaseBorderColor #1A6DAF
+    DatabaseFontColor #0A2540
+
+    NoteBackgroundColor #EBF5FB
+    NoteBorderColor #1A6DAF
+    NoteFontColor #0A2540
+
+    BoxBorderColor #1A6DAF
+    BoxBackgroundColor transparent
+    BoxFontColor #1A6DAF
+}
+
+skinparam shadowing true
+skinparam monochrome false
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam ParticipantPadding 40
+skinparam BoxPadding 30
+
+autonumber
+
+box "Plateforme KAFA'AT EMS — Module Invoicing" #E8F4FD
+    actor "Administrateur" as admin
+    participant "Frontend\n(Angular)" as front #1A6DAF
+    participant "Backend\n(Spring Boot)" as back #2E86C1
+    database "Base de\ndonnées" as db #D6EAF8
+    participant "Serveur SMTP\n(Externe)" as smtp #85C1E9
+end box
+
+note over admin, smtp #E8F4FD
+<b>Flux de Génération Massive des Factures — Calculs, PDF et Notification Email</b>
+end note
+
+== Déclenchement du processus ==
+
+admin -> front : Lancer la génération (Mois/Année)
+activate front #E8F4FD
+front -> back : POST /api/invoices/generate-massive\n(Période, Token JWT)
+activate back #D6EAF8
+
+== Récupération et Calculs (Logique Métier) ==
+
+back -> back : Vérifier les droits (ROLE_ADMIN)
+back -> db : Récupérer les pointages validés\net les règles TJM
+activate db #AED6F1
+db --> back : Liste des pointages & Groupes
+deactivate db
+
+loop Pour chaque employé
+    back -> back : Calculer le montant (Heures * TJM)\n+ Appliquer les taxes
+    back -> back : Générer le document PDF\n(JasperReports / iText)
+end
+
+== Persistance et Notification ==
+
+alt Succès de la génération
+
+    back -> db : Sauvegarder les factures (Métadonnées + URLs PDF)
+    activate db #AED6F1
+    db --> back : Confirmation d'enregistrement
+    deactivate db
+    
+    par Envoi asynchrone des emails
+        back -> smtp : Envoyer email avec Facture PDF en PJ
+        activate smtp #D6EAF8
+        smtp --> back : Accusé d'envoi
+        deactivate smtp
+    end
+
+    back --> front : 200 OK — Rapport de génération (Succès)
+    front --> admin : Afficher message "Factures générées\net envoyées avec succès"
+
+else Erreur de calcul ou Données manquantes
+
+    back --> front : 500 Internal Error / 400 Bad Request
+    front --> admin : Afficher erreur détaillée (ex: Pointages non validés)
+
+end
+
+deactivate back
+deactivate front
+
+@enduml

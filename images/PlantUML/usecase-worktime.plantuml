@@ -1,0 +1,84 @@
+@startuml
+left to right direction
+
+skinparam shadowing true
+skinparam packageStyle rectangle
+skinparam linetype ortho
+
+skinparam actor {
+    BackgroundColor #1A6DAF
+    BorderColor #0D3349
+    FontColor #0D3349
+    FontSize 14
+    Style awesome
+}
+
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #1A6DAF
+    FontColor #0A2540
+    ArrowColor #1A6DAF
+}
+
+skinparam rectangle {
+    BorderColor #1A6DAF
+    BackgroundColor transparent
+    FontColor #1A6DAF
+    FontSize 15
+    FontStyle bold
+}
+
+actor "Utilisateur\n(Employé)" as user
+actor "Administrateur" as admin
+actor "Système de Notification\n(Email)" as notif_sys <<Système Externe>>
+
+admin -up-|> user
+
+rectangle "Sous-module : Gestion du temps de travail (Worktime)" {
+
+    usecase "S'authentifier" as auth #FFD6D6
+
+    usecase "Consulter ses propres pointages" as uc_consulter
+    usecase "Soumettre sa feuille de temps" as uc_soumettre
+
+    usecase "Consulter les pointages globaux" as uc_consulter_all
+    usecase "Gérer les jours fériés / absences" as uc_feries
+    usecase "Appliquer un ajustement (Override)" as uc_override
+    usecase "Refuser des pointages" as uc_refuser
+    usecase "Valider la période mensuelle" as uc_valider
+
+    usecase "Filtrer les pointages" as uc_filtrer
+    usecase "Exporter le relevé" as uc_export
+    usecase "Saisir un motif justificatif" as uc_motif
+    usecase "Envoyer une alerte" as uc_notif #D6EAF8
+
+    uc_consulter .down.> auth : <<include>>
+    uc_soumettre .down.> auth : <<include>>
+    uc_consulter_all .down.> auth : <<include>>
+    uc_override .down.> auth : <<include>>
+    uc_valider .down.> auth : <<include>>
+    uc_refuser .down.> auth : <<include>>
+    uc_feries .down.> auth : <<include>>
+
+    uc_filtrer .up.> uc_consulter : <<extend>>
+    uc_export .up.> uc_consulter : <<extend>>
+
+    uc_motif .up.> uc_override : <<extend>>
+    uc_motif .up.> uc_refuser : <<extend>>
+
+    uc_override .down.> uc_notif : <<include>>
+    uc_refuser .down.> uc_notif : <<include>>
+}
+
+user --> uc_consulter
+user --> uc_soumettre
+
+admin --> uc_consulter_all
+admin --> uc_override
+admin --> uc_valider
+admin --> uc_refuser
+admin --> uc_feries
+
+uc_notif --> notif_sys
+
+@enduml

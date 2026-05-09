@@ -1544,7 +1544,7 @@ Le diagramme ci-dessous a été réalisé à l'aide de l'outil de modélisation 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{images/diagramme-gantt-mermaid.png}
+    \includegraphics[width=1.0\textwidth]{images/diagramme-gantt-mermaid.png}
     \caption{Diagramme de GANTT du projet Invoicing}
     \label{fig:gantt_chart}
 \end{figure}
@@ -1712,13 +1712,289 @@ De son côté, seul l'administrateur a le privilège de configurer les paramètr
 
 La relation de généralisation entre l'administrateur et l'utilisateur indique que l'administrateur est une catégorie spéciale d'utilisateur qui bénéficie de fonctionnalités et de droits supplémentaires. Cette hiérarchie permet une gestion efficace des autorisations, des rôles et des permissions au sein de notre backend Spring Boot.
 
+En plus de ces deux acteurs humains, nous avons intégré un \textbf{Serveur SMTP (Système Externe)} qui interagit automatiquement avec notre application pour l'envoi des notifications et des factures par courriel aux employés de manière asynchrone.
+
 \subsubsection{Diagramme de cas d'utilisation général de l'application}
 
 L'utilisateur (\textit{User} / Employé) peut consulter son tableau de bord, visualiser le suivi de ses temps de travail (\textit{Worktime}), et consulter ou télécharger ses propres factures. Ces actions nécessitent obligatoirement que l'utilisateur s'authentifie au préalable pour pouvoir accéder aux fonctionnalités du système en toute sécurité.
 
 L'administrateur (\textit{Admin}), en plus des fonctionnalités de base disponibles pour l'utilisateur, dispose de privilèges supplémentaires liés au cœur de métier de l'application. Il a la capacité de configurer les paramètres du moteur de facturation (\textit{Billing}), de gérer les groupes d'employés, d'appliquer des ajustements ou des exceptions (\textit{Overrides}) sur les heures enregistrées, et de déclencher la génération et la clôture des factures au format PDF.
 
+En outre, le système fait appel à un acteur externe, le \textbf{Serveur SMTP (Messagerie)}, qui est sollicité automatiquement pour notifier les employés par courriel lors de la génération de leurs factures ou en cas de modifications de leurs pointages.
+
 Il existe une relation de généralisation entre l'administrateur et l'utilisateur, ce qui signifie conceptuellement que l'administrateur est un type spécial d'utilisateur. Il hérite de toutes les actions de l'utilisateur standard tout en bénéficiant de fonctionnalités et de droits d'accès plus étendus pour la gestion de la facturation.
+
+\vspace{0.4cm}
+
+La figure ci-dessous montre le diagramme général des cas d'utilisation du projet :
+
+\vspace{0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/usecase-general.png}
+    \caption{Diagramme de cas d'utilisation général du module Invoicing}
+    \label{fig:usecase_general}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de cas d'utilisation de gestion du temps de travail}
+
+L'utilisateur (\textit{User} / Employé) peut consulter ses propres pointages, soumettre sa feuille de temps, filtrer les pointages existants en fonction de certains critères et exporter le relevé. Pour accéder à ces fonctionnalités, l'utilisateur doit s'authentifier au préalable.
+
+L'administrateur (\textit{Admin}), en plus des fonctionnalités disponibles pour l'utilisateur, possède des privilèges supplémentaires. Il peut consulter les pointages globaux de tous les employés, gérer les jours fériés et les absences, et valider la période mensuelle. De plus, l'administrateur a la possibilité d'appliquer des ajustements (\textit{Overrides}) ou de refuser des pointages. Ces deux actions spécifiques exigent la saisie d'un motif justificatif et déclenchent l'envoi d'une alerte à l'employé via le système externe.
+
+La relation de généralisation entre l'administrateur et l'utilisateur indique que l'administrateur possède toutes les fonctionnalités de l'utilisateur.
+
+\vspace{0.4cm}
+
+La figure ci-dessous montre le diagramme de cas d'utilisation de gestion du temps de travail :
+
+\vspace{0.0cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/usecase-worktime.png}
+    \caption{Diagramme de cas d'utilisation de gestion du temps de travail}
+    \label{fig:usecase_worktime}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de cas d'utilisation de gestion de la facturation}
+
+L'utilisateur (\textit{User} / Employé) peut consulter l'historique de ses factures et a également la possibilité de télécharger ses factures au format PDF. 
+
+L'administrateur (\textit{Admin}) dispose de fonctionnalités supplémentaires pour gérer le cœur du processus de facturation. Il peut paramétrer les règles de facturation telles que les TJM et les taxes, modifier massivement les factures, lancer la génération massive des factures au format PDF et clôturer la période de facturation. De plus, la génération des factures déclenche automatiquement l'envoi de la facture par email à l'employé via un système de notification externe.
+
+Toutes ces actions nécessitent une authentification préalable pour accéder aux fonctionnalités de gestion de la facturation. La relation de généralisation entre l'administrateur et l'utilisateur indique que l'administrateur possède toutes les fonctionnalités de l'utilisateur.
+
+\vspace{0.4cm}
+
+La figure ci-dessous montre le diagramme de cas d'utilisation de gestion de la facturation :
+
+\vspace{0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/usecase-billing.png}
+    \caption{Diagramme de cas d'utilisation de gestion de la facturation}
+    \label{fig:usecase_billing}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de cas d'utilisation de gestion des groupes et de la tarification}
+
+L'utilisateur (\textit{User} / Employé) dispose d'un accès restreint dans cette section. Il a uniquement la possibilité de consulter son propre profil de facturation pour visualiser les modalités qui lui sont appliquées.
+
+L'administrateur (\textit{Admin}) dispose de privilèges supplémentaires, en tant que généralisation de l'utilisateur. Il peut créer un nouveau groupe de facturation (avec la possibilité de définir un plafond d'heures), consulter la liste complète des groupes, modifier un groupe existant, ou encore supprimer un groupe du système. De plus, il a la capacité d'affecter des employés aux différents groupes et de définir le Taux Journalier Moyen (TJM) en spécifiant, si nécessaire, une devise (MAD, EUR, USD). Enfin, l'administrateur peut filtrer la liste des groupes et l'exporter au format Excel.
+
+Toutes ces actions nécessitent une authentification préalable pour accéder aux fonctionnalités de gestion des groupes et de la tarification.
+
+\vspace{0.4cm}
+
+La figure ci-dessous montre le diagramme de cas d'utilisation de gestion des groupes et de la tarification :
+
+\vspace{0.0cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/usecase-groupes.png}
+    \caption{Diagramme de cas d'utilisation de gestion des groupes et de la tarification}
+    \label{fig:usecase_groupes}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de cas d'utilisation de gestion des utilisateurs}
+
+L'utilisateur (\textit{User} / Employé) a la possibilité de consulter son propre profil pour visualiser les informations qui y sont associées. Il peut également mettre à jour ses coordonnées personnelles et changer son mot de passe pour des raisons de sécurité.
+
+L'administrateur (\textit{Admin}) a des fonctionnalités supplémentaires. Il peut consulter la liste complète des employés enregistrés dans le système, créer de nouveaux comptes, et modifier les comptes existants. Lors de la création ou de la modification d'un compte, l'administrateur a la possibilité d'attribuer des rôles spécifiques (privilèges) grâce à un système d'extensions. De plus, il peut réinitialiser le mot de passe d'un utilisateur en cas de besoin. Pour des raisons de traçabilité et d'intégrité des données financières, l'administrateur ne supprime pas définitivement les utilisateurs, mais peut désactiver ou suspendre un compte.
+
+Toutes les actions décrites ci-dessus nécessitent une authentification préalable pour accéder aux fonctionnalités de gestion des utilisateurs. La relation de généralisation entre l'administrateur et l'utilisateur indique que l'administrateur est un type spécial d'utilisateur ayant des privilèges étendus dans le système.
+
+\vspace{0.4cm}
+
+La figure ci-dessous montre le diagramme de cas d'utilisation de gestion des utilisateurs :
+
+\vspace{0.0cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/usecase-utilisateurs.png}
+    \caption{Diagramme de cas d'utilisation de gestion des utilisateurs et des accès}
+    \label{fig:usecase_utilisateurs}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsection{Diagramme de classes}
+
+Un diagramme de classes est une représentation graphique des classes, des relations entre les classes et des attributs et méthodes associés à chaque classe. Il est utilisé dans le langage de modélisation unifié (UML) pour visualiser la structure statique d'un système logiciel. Le diagramme de classes présente les différentes classes du système et leurs associations, y compris les relations d'héritage, d'agrégation, d'association et de dépendance entre les classes. Il indique également les attributs (variables) et les méthodes (fonctions) définies dans chaque classe. Ce diagramme permet de comprendre la structure du système, les entités impliquées, leurs caractéristiques et leurs interactions. Il facilite la communication entre les développeurs et les concepteurs en fournissant une vue claire et concise de l'architecture logicielle. [11]
+
+Pour répondre aux exigences complexes de la plateforme KAFA'AT EMS (Module Invoicing), notre modélisation s'articule autour de quatre domaines principaux, mis en évidence par un code couleur spécifique :
+
+\begin{itemize}[label=\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}, leftmargin=*, itemsep=0.2cm]
+    \item \textbf{Utilisateurs et Sécurité (Bleu foncé) :} Les classes \texttt{Utilisateur} et \texttt{Administrateur} gèrent l'authentification et les profils. Leurs habilitations sont définies par l'énumération \texttt{Role}.
+    \item \textbf{Clients et Projets (Bleu moyen) :} Le système lie le travail à un \texttt{Projet} spécifique, lui-même commandé par un \texttt{Client} (l'entreprise qui sera facturée).
+    \item \textbf{Gestion du Worktime (Bleu clair) :} La classe \texttt{Pointage} enregistre les heures déclarées. Son type (Normale, Supp, Férié) est défini par \texttt{TypePointage}. Toute modification effectuée par un administrateur est historisée dans la classe \texttt{Ajustement} pour garantir la traçabilité.
+    \item \textbf{Moteur de Facturation (Cyan) :} La classe \texttt{GroupeFacturation} centralise les règles tarifaires (TJM, Devise). Lors de la clôture, le système génère une \texttt{Facture} (liée au Client et à l'Utilisateur) qui est composée de plusieurs \texttt{LigneFacture} détaillant les sous-totaux.
+\end{itemize}
+
+\vspace{0.4cm}
+
+La figure ci-dessous montre le diagramme de classes pour notre projet :
+
+\vspace{0.4cm}
+
+\begin{figure}[H]
+    \centering
+    % Dert 1.1\textwidth bach tswira t-ban kbira w y-t9raw les attributs mzyan
+    \includegraphics[width=0.85\textwidth]{images/class-diagram.png}
+    \caption{Diagramme de classes du module Invoicing et Worktime}
+    \label{fig:diagramme_classe}
+\end{figure}
+
+\vspace{0.0cm}
+
+\subsection{Diagramme de séquence}
+
+Un diagramme de séquence est un type de diagramme utilisé dans le langage de modélisation unifié (UML) pour représenter la séquence des interactions entre les objets d'un système. Il met l'accent sur la chronologie des messages échangés entre les objets et les actions qu'ils effectuent en réponse à ces messages. 
+
+Le diagramme de séquence montre l'ordre dans lequel les messages sont envoyés, ainsi que les objets qui envoient et reçoivent ces messages via des "lignes de vie" verticales. Ce diagramme permet de modéliser le comportement dynamique d'un système en montrant comment les composants (Frontend, Backend, Base de données) interagissent pour accomplir un processus métier spécifique. [11]
+
+\subsubsection{Diagramme de séquence « S'authentifier »}
+
+L'authentification est une étape cruciale pour sécuriser l'accès à la plateforme KAFA'AT EMS. Notre processus s'appuie sur les standards modernes de sécurité de l'architecture distribuée, notamment \textbf{Spring Security} et les jetons \textbf{JWT (JSON Web Token)}. 
+
+
+
+La figure ci-dessous illustre cette séquence d'interactions :
+
+\vspace{0.0cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/sequence-auth.png}
+    \caption{Diagramme de séquence d'authentification (JWT \& Spring Security)}
+    \label{fig:sequence_auth}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de séquence « Soumettre un pointage »}
+
+L'enregistrement du temps de travail (Worktime) est l'une des fonctionnalités centrales pour l'employé. Ce processus n'est pas une simple insertion de données ; il implique une validation métier rigoureuse au niveau du \textbf{Backend (Spring Boot)} pour vérifier que les règles de l'entreprise sont respectées (par exemple, s'assurer que le cumul d'heures saisies pour une même journée ne dépasse pas le plafond autorisé).
+
+La figure ci-dessous détaille les interactions entre le Frontend (Angular), le Backend et la base de données lors de la soumission d'un pointage :
+
+\vspace{0.0cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/sequence-pointage.png}
+    \caption{Diagramme de séquence de la soumission d'un pointage}
+    \label{fig:sequence_pointage}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de séquence « Génération massive des factures »}
+
+Ce diagramme illustre le cœur du processus métier de notre application, une tâche exclusivement réservée à l'administrateur. La génération massive des factures est une opération complexe qui fait intervenir de multiples composants du système.
+
+Lors du déclenchement, le \textbf{Backend (Spring Boot)} vérifie les habilitations, puis interroge la base de données pour récupérer les pointages validés et les taux tarifaires (TJM) associés à chaque groupe d'employés. Le système effectue ensuite les calculs financiers (montants HT, taxes), génère les documents au format \textbf{PDF}, et les sauvegarde en base de données. Enfin, de manière asynchrone pour ne pas bloquer l'interface, le backend communique avec un \textbf{Serveur SMTP externe} pour envoyer automatiquement les factures par courriel aux collaborateurs concernés.
+
+\vspace{0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/sequence-facturation.png}
+    \caption{Diagramme de séquence de la génération massive des factures}
+    \label{fig:sequence_facturation}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de séquence « Désactiver un compte utilisateur »}
+
+Dans un système de gestion financière et de suivi du temps de travail, la suppression définitive d'un utilisateur (Hard Delete) est proscrite afin de préserver l'intégrité de l'historique des factures et des pointages. Par conséquent, nous avons opté pour un mécanisme de \textbf{Soft Delete} (désactivation logique).
+
+Ce diagramme met en évidence le contrôle d'accès basé sur les rôles (RBAC) mis en place au niveau de Spring Security. Lorsqu'une requête de désactivation est émise, le \textbf{Backend} vérifie impérativement que le jeton JWT transmis contient le rôle \texttt{ROLE\_ADMIN} avant de procéder à la mise à jour du statut du compte (\texttt{isActif = false}) dans la base de données.
+
+\vspace{0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/sequence-desactivation.png}
+    \caption{Diagramme de séquence de la désactivation d'un compte (Soft Delete)}
+    \label{fig:sequence_desactivation}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de séquence « Créer un groupe de facturation »}
+
+La configuration des groupes de facturation est un prérequis indispensable pour le fonctionnement du moteur d'invoicing. C'est à travers cette interface que l'administrateur définit les règles de tarification (Taux Journalier Moyen, Devise, Plafond d'heures) qui seront appliquées aux collaborateurs.
+
+Ce diagramme de séquence illustre le processus d'ajout d'un nouveau groupe. Au-delà de la simple insertion de données, le \textbf{Backend} implémente une logique de validation métier pour garantir l'intégrité de la base de données. Il vérifie notamment les privilèges de l'utilisateur (\texttt{ROLE\_ADMIN}) et s'assure qu'aucun groupe portant le même nom n'existe déjà, évitant ainsi les doublons et les conflits financiers (\texttt{409 Conflict}).
+
+\vspace{0.0cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/sequence-groupe-facturation.png}
+    \caption{Diagramme de séquence de la création d'un groupe de facturation}
+    \label{fig:sequence_groupe_facturation}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de séquence « Appliquer un ajustement »}
+
+Afin de garantir une traçabilité totale et une transparence financière au sein de la plateforme, la modification des heures de travail déclarées par un employé n'est pas une simple mise à jour en base de données. 
+
+Lorsqu'un administrateur constate une anomalie et décide d'appliquer un ajustement (Override) sur un pointage, ce diagramme de séquence montre la rigueur du processus métier implémenté. Le système exige obligatoirement la saisie d'un \textbf{motif justificatif}. Une fois l'ajustement historisé en base de données de manière immuable, le \textbf{Backend} déclenche l'envoi d'une alerte automatique via le \textbf{serveur SMTP} pour notifier l'employé concerné de la modification de sa feuille de temps.
+
+\vspace{0.0cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/sequence-override.png}
+    \caption{Diagramme de séquence d'un ajustement de pointage (Override)}
+    \label{fig:sequence_override}
+\end{figure}
+
+\vspace{0.4cm}
+
+\subsubsection{Diagramme de séquence « Gestion détaillée d'une facture »}
+
+La gestion d'une facture générée n'est pas une simple opération de mise à jour, mais englobe tout le cycle de vie du document financier. Ce diagramme illustre un scénario complexe où l'administrateur interagit avec plusieurs fonctionnalités liées à une même facture.
+
+Le processus s'amorce par une modification des informations fondamentales de la facture (telle que l'application d'une remise commerciale exceptionnelle, l'ajustement ponctuel du TJM, ou la révision de la date d'échéance). Une fois ces données de base validées et persistées, l'architecture du système, conçue pour être hautement modulaire, prévoit des blocs d'exécution optionnels (\texttt{opt}). Ces blocs offrent à l'administrateur une gestion granulaire du cycle de vie du document financier, lui permettant de :
+
+\begin{itemize}[label=\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}, leftmargin=*, itemsep=0.2cm]
+    \item \textbf{Gérer les transitions d'état financier :} Mettre à jour le statut de la facture (par exemple, la faire passer de \textit{EN\_ATTENTE} à \textit{PAYÉE}) lors de la confirmation du règlement par le client. Cette action est vitale pour la cohérence des tableaux de bord de suivi et permet de verrouiller la facture contre toute modification ultérieure.
+    
+    \item \textbf{Déclencher la régénération dynamique du document :} Initier la création d'un nouveau document PDF de manière asynchrone. Si les montants, les taxes ou les remises ont été altérés lors de l'étape précédente, le système doit impérativement recalculer les totaux et écraser l'ancienne version. Cela garantit une stricte conformité entre les données relationnelles (Base de données) et le document physique archivé.
+    
+    \item \textbf{Assurer une récupération sécurisée du fichier :} Interroger l'API du serveur pour télécharger le fichier PDF final. Le Backend, après avoir vérifié les habilitations via le Token JWT, renvoie le fichier sous forme de flux binaire (\textit{Blob}). Cette approche optimise la consommation de la bande passante et sécurise l'accès aux documents sensibles en évitant l'exposition d'URL publiques statiques.
+\end{itemize}
+
+\vspace{0.4cm}
+
+\begin{figure}[H]
+    \centering
+    % Drt 1.05\textwidth bach y-ban l-code li wset les 'opt' waaaade7
+    \includegraphics[width=1.0\textwidth]{images/sequence-gestion-facture.png}
+    \caption{Diagramme de séquence de la gestion détaillée d'une facture}
+    \label{fig:sequence_gestion_facture}
+\end{figure}
+
+\vspace{0.4cm}
 
 % --- CHAPITRE 3 : START ---
 \chapterpage{3}{Réalisation et Mise en œuvre}

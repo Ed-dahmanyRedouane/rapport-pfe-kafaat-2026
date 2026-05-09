@@ -1,0 +1,104 @@
+@startuml
+
+skinparam sequence {
+    ArrowColor #1A6DAF
+    ActorBorderColor #0D3349
+    ActorBackgroundColor #1A6DAF
+    ActorFontColor #0D3349
+    LifeLineBorderColor #1A6DAF
+    LifeLineBackgroundColor #E8F4FD
+
+    ParticipantBorderColor #1A6DAF
+    ParticipantBackgroundColor #E8F4FD
+    ParticipantFontColor #0A2540
+    ParticipantFontSize 13
+
+    DatabaseBackgroundColor #D6EAF8
+    DatabaseBorderColor #1A6DAF
+    DatabaseFontColor #0A2540
+
+    NoteBackgroundColor #EBF5FB
+    NoteBorderColor #1A6DAF
+    NoteFontColor #0A2540
+
+    BoxBorderColor #1A6DAF
+    BoxBackgroundColor transparent
+    BoxFontColor #1A6DAF
+}
+
+skinparam shadowing true
+skinparam monochrome false
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam ParticipantPadding 30
+skinparam BoxPadding 20
+
+autonumber
+
+box "Plateforme KAFA'AT EMS — Module Worktime" #E8F4FD
+    actor "Administrateur" as admin
+    participant "Frontend\n(Angular)" as front #1A6DAF
+    participant "Backend\n(Spring Boot)" as back #2E86C1
+    database "Base de\ndonnées" as db #D6EAF8
+    participant "Système Externe\n(SMTP)" as smtp #85C1E9
+end box
+
+note over admin, smtp #E8F4FD
+<b>Flux d'Ajustement (Override) — Traçabilité, Motif Justificatif et Notification</b>
+end note
+
+== Demande d'ajustement ==
+
+admin -> front : Sélectionner un pointage et\ncliquer sur "Ajuster"
+activate front #E8F4FD
+front --> admin : Afficher formulaire (Nouvelles heures, Motif obligatoire)
+deactivate front
+
+== Saisie et Validation ==
+
+admin -> front : Saisir les modifications et le motif
+activate front #E8F4FD
+
+opt Validation locale
+    front -> front : Vérifier si le motif n'est pas vide\net format des heures
+end
+
+front -> back : POST /api/pointages/{id}/override\n(Données, Token JWT)
+activate back #D6EAF8
+
+== Traitement et Traçabilité (Backend) ==
+
+back -> back : Vérifier les droits (ROLE_ADMIN)
+back -> db : Récupérer le pointage original
+activate db #AED6F1
+db --> back : Données du pointage
+deactivate db
+
+alt Rôle Administrateur et Motif fourni
+
+    back -> db : Enregistrer l'entité "Ajustement"\n(Anciennes heures, Nouvelles, Motif)
+    activate db #AED6F1
+    db --> back : Succès
+    deactivate db
+    
+    par Envoi de l'alerte à l'employé
+        back -> smtp : Envoyer notification par email
+        activate smtp #D6EAF8
+        smtp --> back : Accusé de réception
+        deactivate smtp
+    end
+
+    back --> front : 200 OK — Ajustement appliqué
+    front --> admin : Afficher message de succès\net rafraîchir le tableau
+
+else Accès refusé ou Données invalides
+
+    back --> front : 403 Forbidden / 400 Bad Request
+    front --> admin : Afficher message d'erreur
+
+end
+
+deactivate back
+deactivate front
+
+@enduml

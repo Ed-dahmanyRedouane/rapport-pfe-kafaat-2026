@@ -1,0 +1,111 @@
+@startuml
+
+skinparam sequence {
+    ArrowColor #1A6DAF
+    ActorBorderColor #0D3349
+    ActorBackgroundColor #1A6DAF
+    ActorFontColor #0D3349
+    LifeLineBorderColor #1A6DAF
+    LifeLineBackgroundColor #E8F4FD
+
+    ParticipantBorderColor #1A6DAF
+    ParticipantBackgroundColor #E8F4FD
+    ParticipantFontColor #0A2540
+    ParticipantFontSize 13
+
+    DatabaseBackgroundColor #D6EAF8
+    DatabaseBorderColor #1A6DAF
+    DatabaseFontColor #0A2540
+
+    NoteBackgroundColor #EBF5FB
+    NoteBorderColor #1A6DAF
+    NoteFontColor #0A2540
+
+    BoxBorderColor #1A6DAF
+    BoxBackgroundColor transparent
+    BoxFontColor #1A6DAF
+}
+
+skinparam shadowing true
+skinparam monochrome false
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam ParticipantPadding 30
+skinparam BoxPadding 20
+
+autonumber
+
+box "Plateforme KAFA'AT EMS — Module Invoicing" #E8F4FD
+    actor "Administrateur" as admin
+    participant "Frontend\n(Angular)" as front #1A6DAF
+    participant "Backend\n(Spring Boot)" as back #2E86C1
+    database "Base de\ndonnées" as db #D6EAF8
+end box
+
+note over admin, db #E8F4FD
+<b>Flux de Gestion d'une Facture — Modifications, Statuts et Régénération PDF</b>
+end note
+
+== Modification des détails de la facture ==
+
+admin -> front : Demande de modification (ex: Remise, Échéance)
+activate front #E8F4FD
+front --> admin : Afficher le formulaire avec les détails
+admin -> front : Saisir les nouvelles informations
+
+front -> back : PUT /api/invoices/{id}\n(Nouvelles données)
+activate back #D6EAF8
+
+alt Validation des données
+    back -> db : Sauvegarder les modifications
+    activate db #AED6F1
+    db --> back : Traitement réussi
+    deactivate db
+    
+    back --> front : 200 OK — Modifications enregistrées
+    front --> admin : Afficher le message de succès
+else Données invalides
+    back --> front : 400 Bad Request
+    front --> admin : Afficher le message d'erreur
+end
+
+== Actions Optionnelles (Cycle de vie de la facture) ==
+
+opt Changer le statut de paiement
+    admin -> front : Marquer la facture comme "Payée"
+    front -> back : PATCH /api/invoices/{id}/status?val=PAYEE
+    back -> db : Mettre à jour le statut
+    activate db #AED6F1
+    db --> back : Traitement réussi
+    deactivate db
+    back --> front : 200 OK — Statut mis à jour
+    front --> admin : Afficher message de succès
+end
+
+opt Régénérer le document PDF
+    admin -> front : Demander la régénération du PDF
+    front -> back : POST /api/invoices/{id}/regenerate-pdf
+    back -> back : Recalculer les totaux\net générer nouveau PDF
+    back -> db : Mettre à jour l'URL du fichier PDF
+    activate db #AED6F1
+    db --> back : Traitement réussi
+    deactivate db
+    back --> front : 200 OK — PDF Régénéré
+    front --> admin : Afficher message de succès
+end
+
+opt Télécharger la facture PDF
+    admin -> front : Cliquer sur "Télécharger la facture"
+    front -> back : GET /api/invoices/{id}/download
+    back -> db : Vérifier l'existence et récupérer l'URL
+    activate db #AED6F1
+    db --> back : Infos du fichier
+    deactivate db
+    back --> front : Flux binaire du fichier PDF (Blob)
+    front --> admin : Lancer le téléchargement du fichier
+end
+
+deactivate back
+deactivate front
+
+@enduml

@@ -1,0 +1,175 @@
+@startuml
+skinparam shadowing true
+skinparam class {
+    BackgroundColor #E8F4FD
+    BorderColor #1A6DAF
+    FontColor #0A2540
+    ArrowColor #1A6DAF
+}
+
+skinparam package {
+    BorderColor #1A6DAF
+    BackgroundColor transparent
+    FontColor #1A6DAF
+    FontSize 15
+    FontStyle bold
+}
+
+package "Diagramme de Classes — Module Invoicing (KAFA'AT EMS)" {
+
+class Utilisateur #1A6DAF {
+    - Long id
+    - String matricule
+    - String nom
+    - String prenom
+    - String email
+    - String telephone
+    - String ibanBancaire
+    - String motDePasseHash
+    - Date dateEmbauche
+    - boolean isActif
+    - Date createdAt
+    + sAuthentifier(email, mdp) boolean
+    + modifierProfil() void
+}
+
+class Administrateur #2E86C1 {
+    - String departementGestion
+    - String niveauPrivilege
+    + gererComptes() void
+    + validerPointagesMassifs() void
+    + lancerGenerationFactures() void
+}
+
+class Client #5DADE2 {
+    - Long id
+    - String nomEntreprise
+    - String numeroICE
+    - String adresseComplete
+    - String emailContact
+    - boolean isActif
+    + ajouterClient() void
+    + archiverClient() void
+}
+
+class Projet #5DADE2 {
+    - Long id
+    - String codeProjet
+    - String nomProjet
+    - Date dateDebut
+    - Date dateFin
+    - boolean isActif
+    + assignerEmploye() void
+    + cloturerProjet() void
+}
+
+class Pointage #85C1E9 {
+    - Long id
+    - Date dateSaisie
+    - double heuresTravaillees
+    - String descriptionTache
+    - Date createdAt
+    + soumettre() void
+    + modifierHeures(nvHeures) void
+}
+
+class Ajustement #85C1E9 {
+    - Long id
+    - double heuresAnciennes
+    - double heuresNouvelles
+    - String motifJustificatif
+    - Date dateAjustement
+    + appliquerAjustement() void
+}
+
+class GroupeFacturation #AED6F1 {
+    - Long id
+    - String nomGroupe
+    - double tjm
+    - int plafondHeuresMensuel
+    - Date validiteDebut
+    - Date validiteFin
+    + calculerRentabilite() double
+    + modifierTjm(nvTjm) void
+}
+
+class Facture #AED6F1 {
+    - Long id
+    - String numeroFacture
+    - Date dateEmission
+    - Date dateEcheance
+    - String modePaiement
+    - double montantHT
+    - double montantTVA
+    - double montantTTC
+    - String urlFichierPdf
+    + calculerTotalFacture() double
+    + genererDocumentPdf() String
+    + envoyerNotificationEmail() void
+}
+
+class LigneFacture #AED6F1 {
+    - Long id
+    - String designation
+    - double quantiteHeures
+    - double tauxApplique
+    - double sousTotalHT
+    + calculerSousTotal() double
+}
+
+enum Role #EBF5FB {
+    ROLE_USER
+    ROLE_ADMIN
+}
+
+enum StatutFacture #EBF5FB {
+    BROUILLON
+    VALIDEE
+    EN_ATTENTE
+    PAYEE
+}
+
+enum StatutPointage #EBF5FB {
+    SOUMIS
+    APPROUVE
+    REFUSE
+    AJUSTE
+}
+
+enum Devise #EBF5FB {
+    MAD
+    EUR
+    USD
+}
+
+enum TypePointage #EBF5FB {
+    HEURE_NORMALE
+    HEURE_SUPP
+    ASTREINTE
+    FERIE
+}
+
+Utilisateur <|-- Administrateur : Héritage
+
+Utilisateur "1" --> "1..*" Role : Possède
+GroupeFacturation "1" o-- "0..*" Utilisateur : Affecté à
+GroupeFacturation "1" --> "1" Devise : Utilise
+
+Client "1" *-- "1..*" Projet : Commande
+Projet "1" o-- "0..*" Pointage : Concerne
+
+Utilisateur "1" *-- "0..*" Pointage : Saisit
+Pointage "1" --> "1" StatutPointage : État
+Pointage "1" --> "1" TypePointage : Type
+Pointage "1" *-- "0..*" Ajustement : Subit
+Administrateur "1" --> "0..*" Ajustement : Effectue
+
+Client "1" --> "0..*" Facture : Destinataire
+Utilisateur "1" *-- "0..*" Facture : Est facturé via
+GroupeFacturation "1" --> "0..*" Facture : Règles de
+Facture "1" --> "1" StatutFacture : Statut
+Facture "1" *-- "1..*" LigneFacture : Composée de
+
+}
+
+@enduml

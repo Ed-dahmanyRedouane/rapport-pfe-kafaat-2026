@@ -1,0 +1,87 @@
+@startuml
+
+skinparam sequence {
+    ArrowColor #1A6DAF
+    ActorBorderColor #0D3349
+    ActorBackgroundColor #1A6DAF
+    ActorFontColor #0D3349
+    LifeLineBorderColor #1A6DAF
+    LifeLineBackgroundColor #E8F4FD
+
+    ParticipantBorderColor #1A6DAF
+    ParticipantBackgroundColor #E8F4FD
+    ParticipantFontColor #0A2540
+    ParticipantFontSize 13
+
+    DatabaseBackgroundColor #D6EAF8
+    DatabaseBorderColor #1A6DAF
+    DatabaseFontColor #0A2540
+
+    NoteBackgroundColor #EBF5FB
+    NoteBorderColor #1A6DAF
+    NoteFontColor #0A2540
+
+    BoxBorderColor #1A6DAF
+    BoxBackgroundColor transparent
+    BoxFontColor #1A6DAF
+}
+
+skinparam shadowing true
+skinparam monochrome false
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam ParticipantPadding 40
+skinparam BoxPadding 30
+
+autonumber
+
+box "Plateforme KAFA'AT EMS — Sécurité et Accès" #E8F4FD
+    actor "Administrateur" as admin
+    participant "Frontend\n(Angular)" as front #1A6DAF
+    participant "Backend\n(Spring Boot)" as back #2E86C1
+    database "Base de\ndonnées" as db #D6EAF8
+end box
+
+note over admin, db #E8F4FD
+<b>Flux de Désactivation (Soft Delete) — Contrôle RBAC et Intégrité des données</b>
+end note
+
+== Demande de désactivation ==
+
+admin -> front : Cliquer sur "Désactiver le compte"
+activate front #E8F4FD
+front --> admin : Afficher pop-up de confirmation
+admin -> front : Confirmer la désactivation
+
+== Vérification des autorisations (Backend) ==
+
+front -> back : PUT /api/users/{id}/deactivate\n(Token JWT)
+activate back #D6EAF8
+
+back -> back : Extraire les rôles depuis le Token JWT
+back -> back : Vérifier si l'utilisateur\na le rôle ROLE_ADMIN
+
+== Exécution (Soft Delete) ==
+
+alt Rôle = Administrateur autorisé
+
+    back -> db : UPDATE Utilisateur SET isActif = false\nWHERE id = {id}
+    activate db #AED6F1
+    note right of db : Les données (Factures, Pointages)\nsont conservées intactes.
+    db --> back : Confirmation de modification
+    deactivate db
+    
+    back --> front : 200 OK — Compte désactivé avec succès
+    front --> admin : Afficher message de succès\net mettre à jour l'interface
+
+else Rôle = Utilisateur standard (Accès refusé)
+
+    back --> front : 403 Forbidden — Accès non autorisé
+    front --> admin : Afficher erreur "Privilèges insuffisants"
+
+end
+
+deactivate back
+deactivate front
+
+@enduml

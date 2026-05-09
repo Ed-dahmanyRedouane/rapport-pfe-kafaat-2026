@@ -1,0 +1,100 @@
+@startuml
+
+skinparam sequence {
+    ArrowColor #1A6DAF
+    ActorBorderColor #0D3349
+    ActorBackgroundColor #1A6DAF
+    ActorFontColor #0D3349
+    LifeLineBorderColor #1A6DAF
+    LifeLineBackgroundColor #E8F4FD
+
+    ParticipantBorderColor #1A6DAF
+    ParticipantBackgroundColor #E8F4FD
+    ParticipantFontColor #0A2540
+    ParticipantFontSize 13
+
+    DatabaseBackgroundColor #D6EAF8
+    DatabaseBorderColor #1A6DAF
+    DatabaseFontColor #0A2540
+
+    NoteBackgroundColor #EBF5FB
+    NoteBorderColor #1A6DAF
+    NoteFontColor #0A2540
+
+    BoxBorderColor #1A6DAF
+    BoxBackgroundColor transparent
+    BoxFontColor #1A6DAF
+}
+
+skinparam shadowing true
+skinparam monochrome false
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam ParticipantPadding 50
+skinparam BoxPadding 40
+
+autonumber
+
+box "Plateforme KAFA'AT EMS — Module Worktime" #E8F4FD
+    actor "Utilisateur\n(Employé)" as user
+    participant "Frontend\n(Angular)" as front #1A6DAF
+    participant "Backend\n(Spring Boot)" as back #2E86C1
+    database "Base de\ndonnées" as db #D6EAF8
+end box
+
+note over user, db #E8F4FD
+<b>Flux de saisie d'un pointage — Validation JWT + Règles Métier + Persistance</b>
+                                                                                                                            
+end note
+
+== Affichage du formulaire ==
+
+user -> front : Cliquer sur "Ajouter un pointage"
+activate front #E8F4FD
+front --> user : Afficher le formulaire de saisie
+deactivate front
+
+== Saisie et Soumission ==
+
+user -> front : Saisir (Projet, Date, Heures, Description)
+activate front #E8F4FD
+
+opt Validation locale
+    front -> front : Vérifier champs obligatoires\net format (Heures > 0)
+    front --> user : Afficher un message d'erreur de saisie
+end
+
+front -> back : POST /api/pointages\n(Données, Token JWT)
+activate back #D6EAF8
+
+== Validation Métier (Backend) ==
+
+back -> back : Vérifier la validité du Token JWT
+back -> db : Calculer le cumul des heures\npour cette date
+activate db #AED6F1
+db --> back : Retourner le cumul
+deactivate db
+
+== Enregistrement en base ==
+
+alt Cumul valide (Ex: <= 24h/jour)
+
+    back -> db : Enregistrer le nouveau pointage
+    activate db #AED6F1
+    db --> back : Confirmation
+    deactivate db
+
+    back --> front : 201 Created — Pointage ajouté
+    front --> user : Afficher message de succès\net actualiser la liste
+
+else Plafond journalier dépassé
+
+    back --> front : 400 Bad Request — Dépassement d'heures
+    front --> user : Afficher erreur "Plafond d'heures dépassé"
+
+end
+
+deactivate back
+deactivate front
+
+@enduml
