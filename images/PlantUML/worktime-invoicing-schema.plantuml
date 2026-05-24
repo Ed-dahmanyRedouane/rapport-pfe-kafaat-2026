@@ -1,0 +1,289 @@
+@startuml
+hide circle
+skinparam linetype ortho
+skinparam roundcorner 8
+skinparam shadowing true
+
+skinparam entity {
+    FontColor #0A2540
+    FontSize 12
+    FontStyle bold
+    BorderColor #1A6DAF
+}
+
+skinparam class {
+    ArrowColor #1A6DAF
+    BorderColor #1A6DAF
+}
+
+' ==========================================
+' 1. CORE ENTITIES — Dark Blue header / Light Blue body
+' ==========================================
+entity "CLIENT" as client <<Core>> #0D3349/D6EAF8 {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+  country_id : BIGINT <<FK>>
+  sector_id : BIGINT <<FK>>
+  active : BOOLEAN
+  invoicingName : VARCHAR
+}
+
+entity "PROJECT" as project <<Core>> #0D3349/D6EAF8 {
+  * id : BIGINT <<PK>>
+  --
+  client_id : BIGINT <<FK>>
+  currency_id : BIGINT <<FK>>
+  name : VARCHAR
+  description : VARCHAR
+  invoiceable : BOOLEAN
+  active : BOOLEAN
+  isPoolProject : BOOLEAN
+  startDate : DATE
+  endDate : DATE
+  invoicingName : VARCHAR
+}
+
+entity "EMPLOYEE" as employee <<Core>> #0D3349/D6EAF8 {
+  * employee_id : BIGINT <<PK>>
+  --
+  employeeNumber : VARCHAR
+  firstName : VARCHAR
+  lastName : VARCHAR
+  working_group_id : BIGINT <<FK>>
+}
+
+entity "CURRENCY" as currency <<Core>> #0D3349/D6EAF8 {
+  * id : BIGINT <<PK>>
+  --
+  code : VARCHAR
+  name : VARCHAR
+}
+
+' ==========================================
+' 2. WORKTIME — Medium Blue header / Light body
+' ==========================================
+entity "WORKING_GROUP" as working_group <<Worktime>> #1A6DAF/AED6F1 {
+  * id : BIGINT <<PK>>
+  --
+  groupName : VARCHAR
+  year : VARCHAR
+}
+
+entity "WORKING_PERIOD" as working_period <<Worktime>> #1A6DAF/AED6F1 {
+  * id : BIGINT <<PK>>
+  --
+  working_group_id : BIGINT <<FK>>
+  type : VARCHAR
+  hoursPerWeek : NUMERIC(5,2)
+  startDate : DATE
+  endDate : DATE
+}
+
+entity "DAILY_WORKING_HOUR" as daily_working_hour <<Worktime>> #1A6DAF/AED6F1 {
+  * id : BIGINT <<PK>>
+  --
+  working_period_id : BIGINT <<FK>>
+  day : VARCHAR
+  workingHours : NUMERIC(5,2)
+  startTime : TIME
+  endTime : TIME
+  breakDuration : NUMERIC(5,2)
+  notes : VARCHAR
+}
+
+entity "WORKTIME_OVERRIDE" as worktime_override <<Worktime>> #1A6DAF/AED6F1 {
+  * id : BIGSERIAL <<PK>>
+  --
+  employee_id : BIGINT <<FK>>
+  invoicing_project_account_id : BIGINT <<FK>>
+  working_group_id : BIGINT <<FK>>
+  entry_date : DATE
+  hours : NUMERIC(5,2)
+  absence_code : VARCHAR(10)
+  category : VARCHAR
+  validated : BOOLEAN
+  archived : BOOLEAN
+  created_by : VARCHAR
+  created_date : TIMESTAMP
+  last_modified_by : VARCHAR
+  modified_date : TIMESTAMP
+}
+
+' ==========================================
+' 3. INVOICING — Sky Blue header / Lightest body
+' ==========================================
+entity "INVOICING_GROUP" as inv_group <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+  archived_at : TIMESTAMP
+  archived_by : BIGINT <<FK>>
+  created_date : TIMESTAMP
+  modified_date : TIMESTAMP
+}
+
+entity "INVOICING_GROUP_ADMIN" as inv_group_admin <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  group_id : BIGINT <<FK>>
+  employee_id : BIGINT <<FK>>
+  role : VARCHAR
+}
+
+entity "INVOICING_GROUP_COMBINATION" as inv_group_combo <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  group_id : BIGINT <<FK>>
+  service_id : BIGINT <<FK>>
+  service_team_id : BIGINT <<FK>>
+  account_id : BIGINT <<FK>>
+  currency_id : BIGINT <<FK>>
+  employee_count : INT
+  active : BOOLEAN
+}
+
+entity "INVOICING_SERVICE" as inv_service <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  name : VARCHAR
+  service_type : VARCHAR
+  status : VARCHAR
+}
+
+entity "INVOICING_SERVICE_TEAM" as inv_service_team <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  service_id : BIGINT <<FK>>
+  invoicing_project_account_id : BIGINT <<FK>>
+  name : VARCHAR
+  language : VARCHAR
+  type : VARCHAR
+  management_model : VARCHAR
+  gdn_e_extension : BOOLEAN
+  see_not_current : BOOLEAN
+}
+
+entity "INVOICING_PROJECT_ACCOUNT" as inv_account <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  working_group_id : BIGINT <<FK>>
+  project_id : BIGINT <<FK>>
+  service_team_id : BIGINT <<FK>>
+  code : VARCHAR
+  description : VARCHAR
+  currency : VARCHAR
+  start_date : DATE
+  end_date : DATE
+  status : VARCHAR
+  type : VARCHAR
+}
+
+entity "INVOICING_SERVICE_TEAM_EMPLOYEE" as team_employee <<Invoicing>> #2E86C1/E8F4FD {
+  * service_team_id : BIGINT <<FK>>
+  * employee_id : BIGINT <<FK>>
+}
+
+entity "INVOICING_ADJUSTMENT" as inv_adj <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  employee_id : BIGINT <<logical FK>>
+  service_team_id : BIGINT <<logical FK>>
+  period : VARCHAR
+}
+
+entity "INVOICING_ADJUSTMENT_IMPACT" as inv_adj_impact <<Invoicing>> #2E86C1/E8F4FD {
+  * id : BIGINT <<PK>>
+  --
+  adjustment_id : BIGINT <<FK>>
+}
+
+' ==========================================
+' 4. STAFFING — Steel Blue header / Pale body
+' ==========================================
+entity "STAFFING_RECORD" as staffing_record <<Staffing>> #5DADE2/EBF5FB {
+  * id : BIGINT <<PK>>
+  --
+  employee_id : BIGINT <<FK>>
+  project_id : BIGINT <<FK>>
+  active : BOOLEAN
+  assignmentPercentage : FLOAT
+  startDate : DATE
+  endDate : DATE
+  automaticPoolAssignment : BOOLEAN
+  feedback : VARCHAR
+  feedbackComment : VARCHAR
+  archived : BOOLEAN
+  createdDate : TIMESTAMP
+}
+
+entity "STAFFED_ROLE" as staffed_role <<Staffing>> #5DADE2/EBF5FB {
+  * id : BIGINT <<PK>>
+  --
+  role : VARCHAR
+  rate_euro : NUMERIC
+  rate_mad : NUMERIC
+  rate_chf : NUMERIC
+  rate_usd : NUMERIC
+  fiscal_year : VARCHAR
+}
+
+entity "STAFFING_RECORD_STAFFED_ROLE" as sr_staffed_role <<Staffing>> #5DADE2/EBF5FB {
+  * id : BIGINT <<PK>>
+  --
+  staffing_record_id : BIGINT <<FK>>
+  staffed_role_id : BIGINT <<FK>>
+  start_date : DATE
+  end_date : DATE
+  is_active : BOOLEAN
+}
+
+' ==========================================
+' RELATIONSHIPS (Fully Audited & Fixed)
+' ==========================================
+
+' Core & Worktime Flow
+client ||--o{ project : "has"
+working_group ||--o{ working_period
+working_period ||--o{ daily_working_hour
+working_group ||--o{ employee : "assigned to"
+
+' Project & Accounts
+project ||--o{ inv_account
+working_group ||--o{ inv_account : "has accounts"
+
+' Worktime Overrides
+employee ||--o{ worktime_override
+inv_account ||--o{ worktime_override : "replaces service_team"
+working_group ||--o{ worktime_override
+
+' Invoicing Group Orchestration
+inv_group ||--o{ inv_group_admin
+inv_group_admin }o--|| employee : "admin is"
+inv_group ||--o{ inv_group_combo
+
+' Combination FKs (The 4 missing arrows)
+inv_group_combo }o--|| inv_service : "combines"
+inv_group_combo }o--|| inv_service_team : "combines"
+inv_group_combo }o--|| inv_account : "combines"
+inv_group_combo }o--|| currency : "uses"
+
+' Service Team & Employee M:N
+inv_service ||--o{ inv_service_team
+inv_service_team ||--o{ team_employee
+employee ||--o{ team_employee
+
+' Bidirectional Circular Reference
+inv_service_team }o--|| inv_account : "has default account"
+inv_account }o--|| inv_service_team : "assigned to team"
+
+' Staffing Flow (Added missing project_id link)
+employee ||--o{ staffing_record
+project ||--o{ staffing_record : "staffed by"
+staffing_record ||--o{ sr_staffed_role
+staffed_role ||--o{ sr_staffed_role
+
+' Adjustments
+inv_adj ||--o{ inv_adj_impact
+
+@enduml

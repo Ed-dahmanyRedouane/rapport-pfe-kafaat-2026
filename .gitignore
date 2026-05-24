@@ -10,5 +10,5 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
-*.pdf
+# *.pdf
 # Ila bghiti tpushi l'PDF dima, mseh dik *.pdf mn hna
