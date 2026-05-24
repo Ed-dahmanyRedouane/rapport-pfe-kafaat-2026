@@ -2086,8 +2086,445 @@ La conception conceptuelle et dynamique étant à présent achevée, ces modèle
 \chapter{Réalisation et Mise en œuvre}
 
 \vspace*{0.8cm} % <--- ZID HADI HNA BACH TB3ED "INTRODUCTION" 3LA L'KHAT ZRE9
-Ce dernier chapitre présente l'implémentation Full-Stack avec Spring Boot et Angular...
+\section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
 
+Dans ce chapitre, nous abordons la concrétisation technique et la mise en œuvre de notre solution logicielle au sein de la plateforme KAFA'AT EMS. Nous commencerons par définir l'architecture globale du système, en justifiant les choix technologiques adoptés pour répondre aux exigences de performance, de sécurité et de scalabilité. Ensuite, nous détaillerons l'environnement de développement et les outils mis à profit lors de la réalisation. Enfin, nous présenterons les interfaces utilisateurs développées, en mettant l'accent sur l'ergonomie et l'expérience utilisateur (UX). Ce chapitre constitue ainsi la passerelle concrète entre la modélisation théorique et le produit final déployable.
+
+\section{Architecture de l'application}
+
+L'architecture logicielle structure le système en définissant ses composants, leurs responsabilités et leurs interactions. Pour les modules \textit{Invoicing} et \textit{Worktime} de la plateforme KAFA'AT EMS, nous avons adopté une approche multicouche, modulaire et hautement découplée. Cette configuration assure une stricte séparation des préoccupations (\textit{Separation of Concerns}) tout en optimisant la maintenance évolutive et la sécurité des flux.
+
+La figure \ref{fig:architecture_globale} illustre cette architecture globale, mettant en évidence la communication fluide entre la couche de présentation (Angular), la logique métier centralisée (Spring Boot) et la persistance des données (PostgreSQL).
+
+\vspace{0.1cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/architecture-globale-app.png}
+    \caption{Architecture globale de l'application}
+    \label{fig:architecture_globale}
+\end{figure}
+\vspace{0.2cm}
+
+\subsection{Architecture Backend}
+
+Pour la partie serveur, nous avons opté pour le framework \textbf{Spring Boot} selon une architecture en couches (N-Tier). Cette approche isole la logique métier, sécurise les échanges et facilite la maintenance. Les couches s'articulent ainsi :
+
+\begin{itemize}[label=\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}, leftmargin=*, itemsep=0.05cm]
+    \item \textcolor{primaryBlue}{\textbf{Sécurité (Spring Security \& JWT) :}} Intercepte les requêtes pour assurer l'authentification et l'autorisation via les tokens JWT.
+    \item \textcolor{primaryBlue}{\textbf{API REST (Controllers) :}} Expose les points d'entrée, valide les requêtes HTTP du client Angular et les achemine vers les services.
+    \item \textcolor{primaryBlue}{\textbf{Couche Métier (Services) :}} Cœur de l'application, elle encapsule les algorithmes complexes (\textit{Invoicing}, \textit{Worktime}).
+    \item \textcolor{primaryBlue}{\textbf{Objets de Transfert (DTOs \& MapStruct) :}} Limite les données exposées en convertissant automatiquement les Entités en DTOs.
+    \item \textcolor{primaryBlue}{\textbf{Accès aux Données (Spring Data JPA) :}} Gère la persistance et les transactions avec la base de données \textbf{PostgreSQL}.
+    \item \textcolor{primaryBlue}{\textbf{Génération (JasperReports) :}} Dédiée à la création dynamique des factures au format PDF.
+\end{itemize}
+
+Cette structuration rigoureuse garantit un code propre, testable et prêt à évoluer au sein de la plateforme KAFA'AT EMS.
+
+\vspace{0.0cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{images/architecture-backend.png}
+    \caption{Architecture en couches du Backend (Spring Boot)}
+    \label{fig:architecture_backend}
+\end{figure}
+\vspace{0.2cm}
+
+\subsection{Architecture Frontend}
+
+Pour la partie cliente, notre application repose sur \textbf{Angular}, structuré selon une architecture orientée composants (Component-Based Architecture). Ce choix, couplé à \textbf{TypeScript} et à la bibliothèque graphique \textbf{PrimeNG}, garantit une interface (UI) réactive et modulaire pour les modules \textit{Invoicing} et \textit{Worktime}. L'architecture s'organise ainsi :
+
+\begin{itemize}[label=\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}, leftmargin=*, itemsep=0.05cm]
+    \item \textcolor{primaryBlue}{\textbf{Composants \& Templates (PrimeNG / SCSS) :}} Blocs de construction de l'interface. Chaque composant encapsule sa logique métier, sa structure HTML et son style, en intégrant les éléments riches de PrimeNG.
+    \item \textcolor{primaryBlue}{\textbf{Services \& API Client :}} Classes encapsulant les appels HTTP vers le backend (Spring Boot), assurant la réutilisabilité et la stricte séparation des préoccupations.
+    \item \textcolor{primaryBlue}{\textbf{Routage (SPA Routing) :}} Gère la navigation \textit{Single Page Application}, permettant des transitions fluides et sécurisées entre les différentes vues de la plateforme.
+    \item \textcolor{primaryBlue}{\textbf{Programmation Réactive (RxJS) :}} Gestion asynchrone des flux de données (Observables) pour une mise à jour dynamique de l'interface en temps réel.
+    \item \textcolor{primaryBlue}{\textbf{Modules \& Lazy Loading :}} Découpage fonctionnel du code permettant le chargement différé des ressources, optimisant ainsi les performances et le temps de réponse initial.
+\end{itemize}
+
+Cette architecture modulaire garantit une interface réactive et facilite la maintenance de la plateforme KAFA'AT EMS, comme illustré ci-dessous.
+
+\vspace{0.2cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/architecture-frontend.png}
+    \caption{Architecture interne de l'application cliente (Angular)}
+    \label{fig:architecture_frontend}
+\end{figure}
+\vspace{0.2cm}
+
+\section{Technologies et outils de développement}
+
+Cette section détaille l'écosystème technologique mis en place pour la réalisation de notre projet. Le choix de ces outils repose sur des critères stricts de performance, de sécurité et d'adéquation avec les standards de l'industrie logicielle.
+
+\subsection{Environnements logiciels}
+
+\subsubsection{IntelliJ IDEA}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/intellij-logo.png}
+    \caption{Logo d'IntelliJ IDEA}
+    \label{fig:intellij}
+\end{figure}
+
+\vspace{-0.4cm}
+
+IntelliJ IDEA a été sélectionné comme Environnement de Développement Intégré (IDE) principal pour la conception et l'implémentation de la couche backend (Spring Boot). 
+
+Reconnu pour sa robustesse, cet outil a considérablement optimisé notre cycle de développement grâce à son analyse statique de code avancée, son autocomplétion intelligente et son intégration native avec l'écosystème Java. Il a particulièrement facilité le refactoring du code, la gestion des dépendances et le débogage complexe des algorithmes liés aux processus de facturation.
+
+\subsubsection{Visual Studio Code}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{images/vscode-logo.png}
+    \caption{Logo de Visual Studio Code}
+    \label{fig:vscode}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Visual Studio Code (VS Code) a été adopté comme éditeur de choix pour l'implémentation de la partie frontend (Angular) de notre application. 
+
+Sa légèreté, couplée à un écosystème d'extensions extrêmement riche, a permis d'adapter l'environnement aux exigences spécifiques de notre \textit{Stack} technologique. L'intégration native de terminaux multiples a grandement facilité l'exécution continue des commandes \textit{Angular CLI}. De plus, les extensions dédiées à TypeScript, le formatage automatique (Prettier) et l'intégration fluide de Git ont assuré un développement rapide, tout en maintenant une qualité de code optimale et une gestion efficace des \textit{Pull Requests}.
+
+\subsubsection{Swagger (OpenAPI)}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{images/swagger-logo.png}
+    \caption{Logo de Swagger}
+    \label{fig:swagger}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Swagger a été intégré à notre backend Spring Boot afin de générer automatiquement une documentation interactive et standardisée de notre API REST, basée sur la spécification OpenAPI. 
+
+Cet outil s'est avéré indispensable lors de la phase de développement pour l'exploration et le test direct des \textit{Endpoints} (notamment ceux liés aux processus d'Invoicing et de Worktime) sans nécessiter de client externe. En fournissant un contrat d'interface clair, Swagger a considérablement fluidifié l'intégration logicielle et la communication technique entre notre logique serveur et les services clients de l'application Angular.
+
+\subsubsection{Apache Tomcat}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/tomcat-logo.png}
+    \caption{Logo d'Apache Tomcat}
+    \label{fig:tomcat}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Apache Tomcat est un conteneur de servlets et un serveur web open-source de référence pour l'environnement Java. Dans le cadre de notre projet, Tomcat a été utilisé dans sa version embarquée (\textit{embedded}) nativement fournie par le framework Spring Boot.
+
+Cette intégration transparente nous a affranchis des configurations fastidieuses liées au déploiement d'un serveur externe. Elle a permis de lancer, de tester et de déployer nos API REST (gérant la logique complexe des modules \textit{Invoicing} et \textit{Worktime}) de manière totalement autonome, légère et performante tout au long de notre cycle de développement.
+
+\subsubsection{Docker}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/docker-logo.png}
+    \caption{Logo de Docker}
+    \label{fig:docker}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Afin de garantir un environnement de développement et de déploiement standardisé, nous avons intégré Docker, une plateforme de conteneurisation incontournable. Son utilisation s'est articulée autour de trois axes majeurs au sein de notre projet :
+
+\begin{itemize}[label=\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}, leftmargin=*, itemsep=0.05cm]
+    \item \textcolor{primaryBlue}{\textbf{Base de données locale (\textit{Docker Compose}) :}} Instanciation rapide de notre base de données PostgreSQL via un fichier \texttt{docker-compose.yml}, éliminant ainsi le besoin d'installations lourdes sur la machine locale.
+    \item \textcolor{primaryBlue}{\textbf{Conteneurisation de l'application (\textit{Dockerfile}) :}} Création d'images sur mesure pour le backend (Spring Boot) et le frontend (Angular), garantissant une isolation parfaite et une portabilité totale des livrables.
+    \item \textcolor{primaryBlue}{\textbf{Intégration Continue (CI/CD) :}} Alignement avec les pratiques \textit{DevOps} de l'équipe NTT DATA, en facilitant la création et le déploiement automatisé de la plateforme KAFA'AT EMS sur les environnements de test et de production.
+\end{itemize}
+
+Cette approche moderne a considérablement optimisé notre flux de travail, résolvant les problèmes classiques de compatibilité inter-environnements et apportant une robustesse de niveau entreprise à l'ensemble du système.
+
+\subsubsection{Apache Maven}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/maven-logo.png}
+    \caption{Logo d'Apache Maven}
+    \label{fig:maven}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Apache Maven a été utilisé comme outil principal d'automatisation de compilation et de gestion des dépendances pour notre backend Spring Boot. 
+
+Via son fichier de configuration central \texttt{pom.xml}, Maven a structuré le projet et géré de manière transparente l'intégration des bibliothèques tierces indispensables à notre logique métier (telles que \textit{Spring Security} pour l'authentification JWT, \textit{MapStruct} pour le mappage des DTOs, et \textit{JasperReports} pour la facturation). Il a automatisé notre processus de \textit{build}, garantissant ainsi une construction fiable, reproductible et prête pour l'intégration continue.
+
+\subsubsection{Node.js}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/nodejs-logo.png}
+    \caption{Logo de Node.js}
+    \label{fig:nodejs}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Bien que notre logique serveur soit gérée par Spring Boot, l'environnement Node.js s'est avéré indispensable pour la partie cliente de notre application. Dans notre architecture, Node.js n'agit pas comme un serveur web de production, mais exclusivement comme moteur d'exécution en arrière-plan pour l'écosystème de développement frontend. Il fournit l'environnement nécessaire au fonctionnement d'Angular CLI, permettant la compilation à la volée du code TypeScript, la minification des ressources et le lancement du serveur de développement local.
+
+\subsubsection{NPM (Node Package Manager)}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/npm-logo.png}
+    \caption{Logo de NPM}
+    \label{fig:npm}
+\end{figure}
+
+\vspace{-0.4cm}
+
+NPM intervient comme le gestionnaire de paquets standard pour notre couche frontend, jouant un rôle symétrique à celui de Maven pour le backend. Il a facilité la résolution, l'installation et la gestion des versions de l'ensemble des dépendances Angular requises par notre interface. Via le fichier de configuration \texttt{package.json}, NPM nous a permis d'intégrer efficacement des bibliothèques clés pour l'ergonomie de l'application, telles que le framework UI \textit{PrimeNG} pour la création des composants visuels, et \textit{RxJS} pour la gestion réactive des événements.
+
+\subsubsection{JWT (JSON Web Token)}
+
+\vspace{-0.4cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/jwt-logo.png}
+    \caption{Logo de JWT}
+    \label{fig:jwt}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Dans le cadre de la sécurisation de notre architecture distribuée, JWT a été adopté comme standard pour gérer l'authentification et l'autorisation entre notre client Angular et l'API REST Spring Boot. Contrairement aux sessions classiques, JWT nous a permis de mettre en place une approche \textit{stateless} (sans état). Une fois l'utilisateur authentifié, le jeton généré encapsule ses informations et ses rôles sous forme chiffrée. Il est ensuite transmis via les en-têtes HTTP (\textit{Headers}), garantissant ainsi un accès hautement sécurisé aux ressources sensibles des modules \textit{Invoicing} et \textit{Worktime} sans surcharger la mémoire du serveur.
+
+\subsubsection{Postman}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/postman-logo.png}
+    \caption{Logo de Postman}
+    \label{fig:postman}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Postman s'est imposé comme l'outil de prédilection pour le test, le débogage et la validation de nos API REST. Indépendamment du développement de l'interface graphique (Angular), Postman nous a permis d'interroger directement les \textit{endpoints} exposés par notre backend Spring Boot. 
+
+Grâce à cet outil, nous avons pu simuler des requêtes HTTP complexes, valider la conformité des structures de données JSON (DTOs) entrantes et sortantes liées aux modules \textit{Invoicing} et \textit{Worktime}. De plus, Postman a été crucial pour tester notre couche de sécurité, en nous permettant d'injecter manuellement les jetons JWT dans les en-têtes d'autorisation (\textit{Authorization Headers}) afin de vérifier les restrictions d'accès selon les rôles utilisateurs.
+
+\subsubsection{PlantUML}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/plantuml-logo.png}
+    \caption{Logo de PlantUML}
+    \label{fig:plantuml}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Pour la phase d'analyse et de conception (détaillée dans le chapitre précédent), nous avons délibérément écarté les logiciels de modélisation graphique classiques au profit de PlantUML. Cet outil open-source permet de générer des diagrammes UML (cas d'utilisation, séquences, activités) à partir d'un langage de description textuel clair. Cette approche novatrice de \textit{« Diagram as Code »} a offert des avantages considérables : elle a permis un versionnage fluide de nos modèles via Git, facilité les revues lors des \textit{Pull Requests}, et garanti une esthétique uniforme et professionnelle pour l'ensemble des schémas architecturaux du projet.
+
+\vspace{0.6cm}
+
+\subsection{Frameworks et technologies clés}
+
+\subsubsection{Spring Boot}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/springboot-logo.png}
+    \caption{Logo de Spring Boot}
+    \label{fig:springboot}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Spring Boot constitue l'épine dorsale de notre architecture backend. Ce framework a été privilégié pour sa capacité à amorcer rapidement des applications Java robustes grâce à son mécanisme d'auto-configuration et son conteneur d'inversion de contrôle (IoC). Au sein de la plateforme KAFA'AT EMS, il nous a permis de nous affranchir des configurations fastidieuses pour nous concentrer exclusivement sur la logique métier complexe des modules \textit{Invoicing} et \textit{Worktime}. Il a grandement facilité l'implémentation et l'exposition de nos services via des API RESTful performantes, autonomes et prêtes pour la production.
+
+\subsubsection{Spring Security}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/springsecurity-logo.png}
+    \caption{Logo de Spring Security}
+    \label{fig:springsecurity}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Spring Security est le module incontournable que nous avons intégré pour assurer la protection globale de notre backend. Contrairement aux approches monolithiques traditionnelles basées sur les sessions, nous l'avons configuré pour opérer de manière \textit{stateless} (sans état) en parfaite synergie avec notre système de jetons JWT. Ce framework nous a permis d'implémenter un contrôle d'accès granulaire basé sur les rôles (RBAC). Ainsi, il garantit que chaque requête HTTP ciblant des ressources sensibles (comme les données de facturation ou les pointages) soit rigoureusement interceptée, authentifiée et autorisée avant d'atteindre nos contrôleurs REST.
+
+\subsubsection{Spring Data JPA}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.15\textwidth]{images/springdatajpa-logo.png}
+    \caption{Logo de Spring Data JPA}
+    \label{fig:springdatajpa}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Pour la couche de persistance, nous avons exploité Spring Data JPA, soutenu en arrière-plan par l'ORM Hibernate. Ce composant stratégique nous a permis d'abstraire la complexité des requêtes SQL et d'interagir avec notre base de données PostgreSQL via une approche orientée objet. En étendant simplement les interfaces \texttt{JpaRepository}, nous avons drastiquement réduit le code \textit{boilerplate} pour les opérations CRUD. De plus, Spring Data JPA a assuré une gestion transactionnelle rigoureuse, un aspect critique pour maintenir l'intégrité des données financières dans le module \textit{Invoicing} et l'exactitude des pointages dans le module \textit{Worktime}.
+
+\subsubsection{Angular}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.10\textwidth]{images/angular-logo.png}
+    \caption{Logo d'Angular}
+    \label{fig:angular}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Côté client, Angular s'est imposé comme le framework de choix pour concevoir l'interface utilisateur de notre plateforme. En s'appuyant sur la robustesse du typage strict de TypeScript, il nous a permis de structurer une \textit{Single Page Application} (SPA) modulaire. Grâce à sa gestion efficace de l'état asynchrone et à l'intégration de bibliothèques tierces comme \textit{PrimeNG}, Angular a offert une expérience utilisateur fluide et hautement réactive. Il a servi de pont direct avec notre backend, consommant efficacement les API REST sécurisées par JWT pour afficher et manipuler dynamiquement les tableaux de bord et les interfaces de gestion.
+
+\subsubsection{Sass (SCSS)}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.10\textwidth]{images/sass-logo.png}
+    \caption{Logo de Sass}
+    \label{fig:sass}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Sass (Syntactically Awesome Style Sheets) a été adopté comme préprocesseur CSS pour la partie cliente de notre application. Intégré nativement dans notre projet Angular via l'extension \texttt{.scss}, il nous a permis de pallier les limitations du CSS classique. L'utilisation de variables, de \textit{mixins} et de l'imbrication (\textit{nesting}) a grandement facilité la personnalisation des composants graphiques de \textit{PrimeNG}. Cet outil a garanti le respect de la charte graphique de la plateforme KAFA'AT EMS, tout en produisant un code de style modulaire, réutilisable et hautement maintenable.
+
+\subsection{Frameworks de tests et Assurance Qualité}
+
+\subsubsection{JUnit}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/junit-logo.png}
+    \caption{Logo de JUnit}
+    \label{fig:junit}
+\end{figure}
+
+\vspace{-0.4cm}
+
+JUnit a été utilisé comme framework de référence pour l'écriture et l'exécution des tests unitaires de notre backend Spring Boot. Il nous a permis de valider rigoureusement la logique métier et les algorithmes de calcul complexes des modules \textit{Invoicing} et \textit{Worktime}. Grâce à son riche écosystème d'annotations et d'assertions, nous avons pu garantir la fiabilité du code serveur et prévenir les régressions lors des phases de refactoring.
+
+\subsubsection{Mockito}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/mockito-logo.png}
+    \caption{Logo de Mockito}
+    \label{fig:mockito}
+\end{figure}
+
+\vspace{-0.4cm}
+
+En complément de JUnit, Mockito s'est avéré indispensable pour isoler le code en cours de test. Ce framework de \textit{mocking} nous a permis de simuler le comportement des dépendances externes (telles que les \textit{Repositories} de la base de données ou les appels d'API tierces). En créant des objets factices (\textit{mocks}), nous avons pu exécuter des tests unitaires rapides, déterministes et totalement indépendants de l'état de notre base de données PostgreSQL.
+
+\subsubsection{Jest}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/jest-logo.png}
+    \caption{Logo de Jest}
+    \label{fig:jest}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Pour garantir la qualité de la partie cliente (Angular), nous avons intégré Jest comme environnement de test. Préféré pour sa rapidité d'exécution et sa configuration minimale, Jest a facilité les tests de nos composants graphiques (\textit{UI}) et de nos services TypeScript. Ses capacités de simulation avancées et ses rapports de couverture de code ont grandement contribué à maintenir la stabilité et la réactivité de l'interface de la plateforme KAFA'AT EMS.
+
+\subsection{Outils de gestion de projet et de collaboration}
+
+\subsubsection{Jira Software}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.30\textwidth]{images/jira-logo.png}
+    \caption{Logo de Jira Software}
+    \label{fig:jira}
+\end{figure}
+
+\vspace{-0.4cm} 
+
+Dans le cadre de l'adoption de la méthodologie Agile (Scrum) au sein de l'environnement NTT DATA, Jira Software s'est imposé comme l'outil central de notre gestion de projet. 
+
+Il nous a permis de structurer le développement des modules \textit{Invoicing} et \textit{Worktime} sous forme de \textit{Sprints} itératifs. Grâce à ses tableaux de bord (Kanban/Scrum), nous avons pu gérer efficacement le \textit{Backlog} du produit, suivre l'avancement des \textit{User Stories} et coordonner les tâches quotidiennes. Jira a ainsi garanti une visibilité totale sur le cycle de vie des fonctionnalités et a assuré une collaboration transparente et continue avec l'équipe d'encadrement.
+
+\subsection{Contrôle de version et collaboration}
+
+\subsubsection{Git}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.15\textwidth]{images/git-logo.png}
+    \caption{Logo de Git}
+    \label{fig:git}
+\end{figure}
+
+\vspace{-0.4cm}
+
+Git a été adopté comme système de contrôle de version décentralisé pour l'ensemble de notre code source. Cet outil standard nous a permis de suivre minutieusement l'évolution des composants frontend et backend. Grâce à une gestion stricte des branches (\textit{Branching}), nous avons pu développer les nouvelles fonctionnalités (comme la génération des factures ou la gestion des pointages) de manière totalement isolée, évitant ainsi les conflits lors de l'intégration continue.
+
+\subsubsection{GitLab}
+
+\vspace{-0.4cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.20\textwidth]{images/gitlab-logo.png}
+    \caption{Logo de GitLab}
+    \label{fig:gitlab}
+\end{figure}
+
+\vspace{-0.4cm}
+
+En parfaite synergie avec Git, GitLab a été utilisé comme plateforme centralisée pour l'hébergement de nos dépôts sécurisés. Au-delà du simple stockage, GitLab a structuré notre flux de travail collaboratif au sein de l'environnement NTT DATA. L'utilisation des \textit{Merge Requests} a grandement facilité les revues de code avec l'encadrement professionnel. De plus, ses fonctionnalités natives de CI/CD se sont avérées indispensables pour l'automatisation de nos pipelines de tests et le déploiement des modules de la plateforme KAFA'AT EMS.
+
+\section{Présentation des interfaces de l'application}
+
+Cette section est consacrée à la présentation des interfaces graphiques (UI) développées pour notre application. Conçues à l'aide du framework Angular et enrichies par la bibliothèque de composants PrimeNG, ces interfaces ont été pensées pour offrir une expérience utilisateur (UX) optimale, ergonomique et parfaitement alignée avec la charte graphique de l'environnement NTT DATA. 
+
+Les captures d'écran suivantes illustrent l'aboutissement de notre travail de conception, en mettant en évidence les fonctionnalités clés et les interactions offertes aux différents acteurs utilisant les modules \textit{Invoicing} et \textit{Worktime} au sein de la plateforme KAFA'AT EMS.
 
 
 
