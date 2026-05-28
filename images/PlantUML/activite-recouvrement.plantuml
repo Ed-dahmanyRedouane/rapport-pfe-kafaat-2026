@@ -1,5 +1,19 @@
 @startuml
 
+skinparam Padding 18
+skinparam arrowThickness 2
+skinparam ActivityBorderThickness 2
+skinparam PartitionBorderThickness 2
+
+skinparam defaultFontSize 18
+skinparam defaultFontStyle bold
+skinparam ActivityFontSize 18
+skinparam ActivityFontStyle bold
+skinparam ActivityDiamondFontSize 18
+skinparam ActivityDiamondFontStyle bold
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+
 skinparam ActivityBackgroundColor #E8F4FD
 skinparam ActivityBorderColor #1A6DAF
 skinparam ActivityDiamondBackgroundColor #D6EAF8
@@ -9,7 +23,7 @@ skinparam defaultFontColor #0A2540
 skinparam PartitionBackgroundColor #EBF5FB
 skinparam PartitionBorderColor #1A6DAF
 skinparam PartitionFontColor #1A6DAF
-skinparam PartitionFontSize 13
+skinparam PartitionFontSize 16
 skinparam PartitionFontStyle bold
 skinparam roundcorner 10
 skinparam shadowing true
@@ -18,50 +32,33 @@ title Plateforme KAFA'AT EMS — Gestion et Recouvrement des Factures
 
 |#EBF5FB|Administrateur|
 start
-:Accéder au module de facturation;
-:Consulter la liste générale des factures;
+:Consulter les détails d'une facture\n(Sélectionnée depuis la liste);
 
-|#E8F4FD|Système|
-if (Une facture spécifique est-elle sélectionnée ?) then (Non)
-  #D6EAF8:Générer l'export global\ndes données (Fichier Excel / CSV);
-  |#EBF5FB|Administrateur|
-  :Télécharger le rapport Excel;
-  kill
-else (Oui)
-  |#E8F4FD|Système|
-  :Afficher les détails de la facture\n(Client, Montant, Échéance, Statut);
-endif
-
-|#EBF5FB|Administrateur|
 if (Action souhaitée ?) then (Enregistrer paiement)
-  :Saisir les références du paiement\n(Mode de paiement, Date, Montant exact);
+  :Saisir les références\n(Mode, Date, Montant);
   |#E8F4FD|Système|
-  :Valider les données saisies;
-  #AED6F1:Mettre à jour le statut\nStatut = PAYEE;
-  :Générer le reçu de paiement (PDF);
+  :Valider les données;
+  #AED6F1:Mettre à jour le statut (PAYEE);
+  :Générer le reçu PDF;
 
 elseif (Action souhaitée ?) then (Vérifier et Relancer)
   |#E8F4FD|Système|
-  if (Le statut actuel est-il EN_ATTENTE ?) then (Oui)
-    if (Date actuelle > Date d'échéance ?) then (Oui)
-      #FFCCCC:Mettre à jour le statut\nStatut = EN_RETARD;
-      :Déclencher l'envoi d'un email\nde relance automatique au client;
-    else (Non)
-      #D6EAF8:Aucune action requise\n(La facture est encore dans les délais);
-    endif
+  if (Statut = EN_ATTENTE et Date > Échéance ?) then (Oui)
+    #FFCCCC:Mettre à jour le statut (EN_RETARD);
+    :Envoyer l'email de relance automatique;
   else (Non)
-    #FFCCCC:Action impossible\n(Facture déjà soldée ou annulée);
+    #D6EAF8:Action ignorée\n(Facture soldée ou dans les délais);
   endif
 
-else (Télécharger document)
+else (Télécharger)
   |#E8F4FD|Système|
-  :Récupérer le flux binaire du fichier\ndepuis le serveur de stockage;
+  :Préparer le document original;
   |#EBF5FB|Administrateur|
-  #D6EAF8:Télécharger et ouvrir\nla facture PDF originale;
+  #D6EAF8:Télécharger la facture PDF;
 endif
 
 |#E8F4FD|Système|
-#AED6F1:Mettre à jour le journal d'audit\n(Traçabilité de l'action effectuée);
+#AED6F1:Enregistrer l'action effectuée\ndans le journal d'audit;
 stop
 
 @enduml

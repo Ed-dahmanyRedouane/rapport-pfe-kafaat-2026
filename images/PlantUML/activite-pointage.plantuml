@@ -1,5 +1,22 @@
 @startuml
 
+' --- NOUVEAUX PARAMÈTRES POUR HD ET LISIBILITÉ ---
+skinparam Padding 15
+skinparam defaultFontSize 18
+skinparam defaultFontStyle bold
+skinparam ActivityFontSize 18
+skinparam ActivityFontStyle bold
+skinparam ActivityDiamondFontSize 18
+skinparam ActivityDiamondFontStyle bold
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+
+' --- TES PARAMÈTRES POUR ÉPAISSIR LES LIGNES ---
+skinparam arrowThickness 2
+skinparam ActivityBorderThickness 2
+skinparam PartitionBorderThickness 2
+
+' --- TES PARAMÈTRES ORIGINAUX ---
 skinparam ActivityBackgroundColor #E8F4FD
 skinparam ActivityBorderColor #1A6DAF
 skinparam ActivityDiamondBackgroundColor #D6EAF8
@@ -9,7 +26,7 @@ skinparam defaultFontColor #0A2540
 skinparam PartitionBackgroundColor #EBF5FB
 skinparam PartitionBorderColor #1A6DAF
 skinparam PartitionFontColor #1A6DAF
-skinparam PartitionFontSize 13
+skinparam PartitionFontSize 16
 skinparam PartitionFontStyle bold
 skinparam roundcorner 10
 skinparam shadowing true
