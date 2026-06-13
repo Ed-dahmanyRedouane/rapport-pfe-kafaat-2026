@@ -325,7 +325,7 @@
     \includegraphics[width=1\linewidth]{images/fst-logo.png}
 \end{minipage} 
 
-\vspace{0.4cm}
+\vspace{0.1cm}
 
 % Full-width separator
 \textcolor{primaryBlue}{\rule{\textwidth}{1pt}}
@@ -422,6 +422,8 @@
 
 \vfill
 
+\vspace{0.3cm}
+
 % ------------------------------------------
 % JURY TABLE
 % ------------------------------------------
@@ -464,7 +466,16 @@
   \hline
 \end{tabular}
 
-\vspace{0.3cm}
+\vspace{0.2cm}
+
+% ------------------------------------------
+% ANNÉE UNIVERSITAIRE
+% ------------------------------------------
+\begin{center}
+  {\fontsize{14}{16}\selectfont\color{royalBlue}\bfseries Année Universitaire : 2025 - 2026\par}
+\end{center}
+
+\vspace{0.0cm}
 
 % ------------------------------------------
 % BOTTOM BLUE BAR
@@ -2785,6 +2796,321 @@ En parfaite synergie avec Git, GitLab a été utilisé comme plateforme centrali
 Cette section est consacrée à la présentation des interfaces graphiques (UI) développées pour notre application. Conçues à l'aide du framework Angular et enrichies par la bibliothèque de composants PrimeNG, ces interfaces ont été pensées pour offrir une expérience utilisateur (UX) optimale, ergonomique et parfaitement alignée avec la charte graphique de l'environnement NTT DATA. 
 
 Les captures d'écran suivantes illustrent l'aboutissement de notre travail de conception, en mettant en évidence les fonctionnalités clés et les interactions offertes aux différents acteurs utilisant les modules \textit{Invoicing} et \textit{Worktime} au sein de la plateforme KAFA'AT EMS.
+
+\vspace{-0.4cm}
+
+\subsection{Interface d'authentification et sécurité}
+
+\vspace{-0.4cm}
+Pour garantir la sécurité et la confidentialité des données de la plateforme KAFA'AT EMS, l'accès est strictement contrôlé à travers un système d'authentification complet et sécurisé, divisé en plusieurs étapes clés.
+
+\vspace{-0.5cm}
+
+\subsubsection{Connexion principale}
+
+\vspace{-0.4cm}
+
+L'utilisateur doit initialement s'authentifier via son adresse e-mail professionnelle (domaine \textit{nttdata.com}) et son mot de passe.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/login-page.png}
+    \vspace{-0.4cm}
+    \caption{Interface d'authentification principale}
+    \label{fig:login_main}
+\end{figure}
+
+\vspace{-0.3cm}
+Dans le cas où les informations saisies sont erronées, le système bloque immédiatement l'accès. Une notification visuelle claire (sous forme de \textit{Toast} rouge) informe l'utilisateur que les identifiants sont incorrects, tout en appliquant les bonnes pratiques de sécurité pour éviter l'énumération de comptes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/login-error.png}
+    \vspace{-0.4cm}
+    \caption{Gestion des erreurs de saisie lors de l'authentification}
+    \label{fig:login_error}
+\end{figure}
+
+\vspace{-1.0cm}
+
+\subsubsection{Authentification à double facteur (2FA)}
+
+\vspace{-0.4cm}
+
+Afin de renforcer le niveau de sécurité des accès au système, nous avons intégré un mécanisme d'authentification à double facteur (2FA). Après la validation réussie du mot de passe, le système exige la saisie d'un code dynamique à 6 chiffres généré par une application d'authentification tierce, telle que \textit{Microsoft Authenticator}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/login-2fa.png}
+    \vspace{-0.4cm}
+    \caption{Interface de vérification à double facteur (MFA/2FA)}
+    \label{fig:login_2fa}
+\end{figure}
+
+\vspace{-1.0cm}
+
+\subsubsection{Récupération du compte}
+
+\vspace{-0.4cm}
+
+Pour offrir une autonomie aux utilisateurs en cas d'oubli de leurs identifiants, une interface de récupération a été mise en place. En saisissant son adresse e-mail professionnelle, l'utilisateur déclenche l'envoi d'un lien sécurisé et temporaire vers sa boîte de réception, lui permettant de réinitialiser son mot de passe en toute sécurité.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/forgot-password.png}
+    \vspace{-0.4cm}
+    \caption{Interface de récupération de mot de passe}
+    \label{fig:forgot_pwd}
+\end{figure}
+
+\vspace{-0.4cm}
+
+\subsection{Vue d'ensemble de la plateforme}
+
+\vspace{-0.4cm}
+Après une authentification réussie, l'utilisateur accède à l'espace de travail principal de la plateforme KAFA'AT EMS.
+
+\subsubsection{Tableau de bord (Dashboard)}
+
+\vspace{-0.4cm}
+
+Ce tableau de bord centralise les indicateurs clés du \textit{Staffing}. Il synthétise les métriques essentielles (effectif global, recrutements, départs et \textit{Turnover}) et intègre un graphique d'évolution annuelle du \textit{Headcount} pour appuyer rapidement les décisions stratégiques.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/dashboard-staffing.png}
+    \vspace{-0.4cm}
+    \caption{Tableau de bord de gestion des effectifs et indicateurs RH}
+    \label{fig:dashboard_staffing}
+\end{figure}
+
+\vspace{-1.0cm}
+
+\subsubsection{Annuaire des collaborateurs (Vue en cartes)}
+
+\vspace{-0.4cm}
+Cette interface ergonomique sous forme de cartes (\textit{Card View}) résume les informations clés de chaque collaborateur (identifiant, département, expérience et statut). Elle intègre également des outils de recherche, de filtrage et d'exportation pour une gestion fluide et rapide des profils.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/employees-card-view.png}
+    \vspace{-0.4cm}
+    \caption{Interface de gestion des collaborateurs en vue "Cartes"}
+    \label{fig:employees_cards}
+\end{figure}
+
+
+\subsection{Module de Facturation (Invoicing)}
+
+\vspace{-0.4cm}
+Ce module constitue le cœur de notre contribution technique. La première étape du processus de facturation nécessite une structuration robuste des entités financières de l'entreprise, à savoir les « Services » et leurs « Équipes » (\textit{Service Teams}).
+
+\vspace{-0.5cm}
+
+\subsubsection{Gestion des Services}
+
+\vspace{-0.4cm}
+L'interface de gestion des services permet de configurer les unités d'affaires principales. Pour une ergonomie optimale, elle propose deux modes d'affichage : une vue en cartes pour un aperçu rapide, et une vue en liste détaillée avec des lignes extensibles exposant les projets rattachés, les responsables et le statut du service.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-cards.png}
+    \vspace{-0.5cm}
+    \caption{Interface de gestion des services (Vue en cartes)}
+    \label{fig:service_cards}
+\end{figure}
+
+\vspace{-0.5cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-list.png}
+    \vspace{-0.5cm}
+    \caption{Vue en liste avec détails extensibles des services}
+    \label{fig:service_list}
+\end{figure}
+
+\vspace{-0.2cm}
+La création d'un nouveau service s'effectue via une fenêtre modale structurée en plusieurs étapes (\textit{Stepper}). Cette approche guide l'utilisateur, segmente les informations requises (détails du service, projets, type) et minimise les erreurs de saisie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-create.png}
+    \vspace{-0.5cm}
+    \caption{Formulaire de création d'un service (Étape 1 du Stepper)}
+    \label{fig:service_create}
+\end{figure}
+
+\vspace{-1.1cm}
+
+\subsubsection{Gestion des Équipes de Service (Service Teams)}
+
+\vspace{-0.4cm}
+Chaque service global est subdivisé en équipes opérationnelles (\textit{Service Teams}). Cette interface fait le pont entre la facturation et l'opérationnel en intégrant des paramètres techniques tels que les clés Jira, la localisation des équipes et le modèle de collaboration. Tout comme pour les services, l'affichage bascule dynamiquement entre une vue synthétique (cartes) et une vue analytique (liste).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-teams-cards.png}
+    \vspace{-0.5cm}
+    \caption{Interface des équipes de service (Vue en cartes)}
+    \label{fig:service_teams_cards}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-teams-list.png}
+    \vspace{-0.4cm}
+    \caption{Vue en liste des équipes avec paramètres techniques détaillés}
+    \label{fig:service_teams_list}
+\end{figure}
+
+\vspace{-0.4cm}
+La modification et le paramétrage d'une équipe de service sont gérés par un formulaire modal avancé. Cette interface permet d'ajuster finement les attributs de l'équipe (langue, clés Jira, modèle de gestion, extensions) tout en affichant des règles de validation strictes en temps réel, garantissant ainsi l'intégrité et l'exhaustivité des données avant toute soumission.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-team-edit.png}
+    \vspace{-0.4cm}
+    \caption{Interface de paramétrage d'une équipe de service avec validation dynamique}
+    \label{fig:service_team_edit}
+\end{figure}
+
+ \vspace{-1.1cm}
+
+\subsubsection{Gestion des Groupes de Facturation}
+
+\vspace{-0.4cm}
+Les « Groupes » représentent l'entité organisationnelle de plus haut niveau dans le module Invoicing. Ils permettent d'agréger les clients, les services et les équipes pour structurer les processus financiers. L'interface principale offre une vue d'ensemble sous forme de cartes, facilitant l'accès rapide aux métriques de chaque groupe (nombre de clients, services rattachés et combinaisons actives).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-groups-cards.png}
+    \vspace{-0.4cm}
+    \caption{Interface de gestion des groupes de facturation (Vue en cartes)}
+    \label{fig:groups_cards}
+\end{figure}
+
+\vspace{-0.2cm}
+Pour assurer une facturation précise et automatisée, le système repose sur des « Combinaisons de saisie » (\textit{Data entry combinations}). Cette interface critique permet de lier de manière cohérente un client, un service, une équipe opérationnelle et un compte financier (ex: code projet Jira). C'est cette matrice stricte qui conditionnera la validation des pointages (\textit{Worktime}) et la génération future des factures.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-groups-combinations.png}
+    \vspace{-0.4cm}
+    \caption{Matrice de configuration des combinaisons de facturation}
+    \label{fig:groups_combinations}
+\end{figure}
+
+\vspace{1.2cm}
+Enfin, la sécurité et la traçabilité des données financières sont garanties par un module de gestion des permissions granulaire. Cette fenêtre modale permet d'attribuer des rôles spécifiques (Contrôle total, Lecture/Écriture, Lecture seule) aux administrateurs et aux membres pour chaque groupe de manière isolée.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-groups-permissions.png}
+    \vspace{-0.5cm}
+    \caption{Interface de gestion des permissions et des rôles d'accès par groupe}
+    \label{fig:groups_permissions}
+\end{figure}
+
+\vspace{-1.1cm}
+
+\subsubsection{Suivi des Pointages (Work time)}
+
+\vspace{-0.4cm}
+Au sein d'un groupe spécifique, l'onglet \textit{Work time} présente une matrice mensuelle détaillée des pointages. Il croise les collaborateurs avec leurs combinaisons de saisie et met en évidence les exceptions (congés, maladies, jours fériés) via des codes couleurs stricts, assurant ainsi une base fiable pour la facturation.
+
+\vspace{-0.1cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-worktime.png}
+    \vspace{-0.5cm}
+    \caption{Matrice de suivi mensuel des pointages et des exceptions}
+    \label{fig:finance_worktime}
+\end{figure}
+
+\subsubsection{Régularisations et Ajustements (Adjustments)}
+
+\vspace{-0.4cm}
+La réalité opérationnelle nécessite souvent des corrections. L'onglet \textit{Adjustments} permet de gérer ces écarts (heures supplémentaires, pénalités, heures de service non facturables). L'interface liste toutes les régularisations avec leurs impacts financiers directs (taux, montants facturés au client vs coûts internes).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-adjustments-list.png}
+    \vspace{-0.5cm}
+    \caption{Liste des régularisations et ajustements financiers appliqués}
+    \label{fig:finance_adjustments_list}
+\end{figure}
+
+\vspace{-0.4cm}
+L'ajout d'un nouvel ajustement se fait via un formulaire dynamique. Selon le type d'ajustement sélectionné (ex: \textit{Extra Hours}), le formulaire adapte ses champs pour exiger les informations pertinentes (taux spécifique, justification, nombre d'heures exact), garantissant la traçabilité de chaque modification.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-adjustment-add.png}
+    \vspace{-0.5cm}
+    \caption{Formulaire dynamique de saisie d'un ajustement}
+    \label{fig:finance_adjustment_add}
+\end{figure}
+
+\subsubsection{Consolidation et Facturation (Billing)}
+
+\vspace{-0.4cm}
+L'onglet \textit{Billing} représente l'aboutissement du processus. Il s'agit d'une vue consolidée qui agrège automatiquement les données de pointage (\textit{Worktime}) et les corrections (\textit{Adjustments}). Le système calcule les montants finaux en appliquant les tarifs négociés (taux interne \textit{Center Rate} et taux de facturation \textit{Client Rate}), générant ainsi les lignes prêtes à être facturées, avec des sous-totaux précis par combinaison.
+
+\vspace{-0.2cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.93\textwidth]{images/finance-billing.png}
+    \vspace{-0.5cm}
+    \caption{Vue consolidée de facturation agrégeant pointages et ajustements}
+    \label{fig:finance_billing}
+\end{figure}
+
+\vspace{-1.1cm}
+
+\subsubsection{Génération de Rapports et Exportation (Excel)}
+
+\vspace{-0.4cm}
+Pour faciliter le reporting financier, une fonctionnalité d'exportation vers Excel a été intégrée. L'utilisateur peut paramétrer finement son fichier via une fenêtre modale en sélectionnant les modules souhaités (\textit{Work time}, \textit{Adjustment}, \textit{Billing}), la période et l'équipe de service.
+
+\vspace{-0.2cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.93\textwidth]{images/export-modal.png}
+    \vspace{-0.5cm}
+    \caption{Interface de paramétrage dynamique de l'exportation des données}
+    \label{fig:export_modal}
+\end{figure}
+
+\vspace{-0.2cm}
+Le système génère dynamiquement un classeur Excel structuré en plusieurs feuilles. Afin d'offrir une expérience optimale et un fichier directement exploitable, l'export conserve fidèlement la logique métier et la charte visuelle de l'application web. Les codes couleurs des exceptions sont maintenus, les cellules sont pré-formatées (devises, nombres) et les données sont organisées de manière claire.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/export-excel-worktime.png}
+    \vspace{-0.5cm}
+    \caption{Aperçu du fichier généré : Feuille formatée des pointages (Work time)}
+    \label{fig:export_excel_worktime}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/export-excel-adjustments.png}
+    \vspace{-0.5cm}
+    \caption{Aperçu du fichier généré : Feuille détaillée des ajustements (Adjustments)}
+    \label{fig:export_excel_adjustments}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/export-excel-billing.png}
+    \vspace{-0.5cm}
+    \caption{Aperçu du fichier généré : Feuille consolidée de facturation (Billing)}
+    \label{fig:export_excel_billing}
+\end{figure}
+
 
 
 
