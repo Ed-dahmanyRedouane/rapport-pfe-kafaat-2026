@@ -3111,7 +3111,215 @@ Le système génère dynamiquement un classeur Excel structuré en plusieurs feu
     \label{fig:export_excel_billing}
 \end{figure}
 
+\vspace{-1.0cm}
 
+\subsubsection{Processus de Validation et Clôture (Process)}
 
+\vspace{-0.4cm}
+Pour sécuriser le cycle financier, un workflow de validation strict a été mis en place. Le tableau de bord du processus offre une vue globale sur l'état d'avancement de chaque service, structuré en plusieurs étapes d'approbation (de l'estimation initiale à la clôture définitive).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/process-dashboard.png}
+    \vspace{-0.4cm}
+    \caption{Tableau de bord de suivi du processus de facturation par service}
+    \label{fig:process_dashboard}
+\end{figure}
+
+\vspace{3.2cm}
+Une vue détaillée permet d'auditer les lignes de facturation spécifiques à un service pour un mois donné. Elle intègre une frise chronologique interactive indiquant le statut de confirmation (confirmé ou non confirmé) des différents mois de l'année.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/process-details.png}
+    \vspace{-0.4cm}
+    \caption{Vue détaillée des montants facturés et suivi chronologique des statuts}
+    \label{fig:process_details}
+\end{figure}
+
+\vspace{-0.2cm}
+En cas de modification rétroactive des pointages ou des tarifs, le système dispose d'une fonctionnalité de régénération. Cette option offre la flexibilité de recalculer automatiquement les montants sur un ou plusieurs mois, à condition que la période ciblée n'ait pas encore été définitivement clôturée.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/process-regenerate.png}
+    \vspace{-0.4cm}
+    \caption{Interface modale de régénération des données financières sur plusieurs mois}
+    \label{fig:process_regenerate}
+\end{figure} 
+
+\vspace{3.2cm}
+L'interface permet aux responsables financiers de valider manuellement les données mensuelles. Un menu contextuel, accessible directement depuis la frise chronologique, offre la possibilité de verrouiller le mois en cours (Action de confirmation) ou de basculer vers la vue de révision.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/process-confirm-action.png}
+    \vspace{-0.4cm}
+    \caption{Action de confirmation mensuelle via la frise chronologique interactive}
+    \label{fig:process_confirm_action}
+\end{figure}
+
+\vspace{-0.2cm}
+Une fois la période validée, le statut bascule officiellement sur « Confirmé ». Pour des raisons de conformité et de sécurité, le système génère immédiatement une trace d'audit (\textit{Audit Trail}). L'interface affiche clairement l'identité de l'utilisateur ayant approuvé les données ainsi que l'horodatage exact de l'action, garantissant ainsi une transparence totale du processus d'invoicing.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/process-confirmed-status.png}
+    \vspace{-0.4cm}
+    \caption{État confirmé avec traçabilité d'audit (Utilisateur et horodatage)}
+    \label{fig:process_confirmed_status}
+\end{figure}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion} % Bach t-ban f l-fahras ila bghiti
+
+\vspace{-0.4cm}
+En conclusion, ce chapitre a permis d'illustrer la concrétisation technique de notre travail. Nous y avons détaillé les étapes cruciales de la réalisation du module \textit{Invoicing} pour la plateforme KAFA'AT EMS, de la configuration de l'environnement de développement à l'implémentation complète des interfaces utilisateur. L'adoption d'une architecture full-stack robuste, couplée à l'utilisation d'Angular et de PrimeNG, a rendu possible la conception d'interfaces ergonomiques et fluides, capables de gérer la complexité des processus de facturation et de suivi des pointages (\textit{Worktime}). 
+
+De plus, l'intégration de mécanismes de sécurité avancés (tels que l'authentification à double facteur) et de fonctionnalités à forte valeur ajoutée (comme l'exportation dynamique vers Excel et la traçabilité des validations) garantit un produit final fiable et aligné avec les standards professionnels rigoureux de l'entreprise. Ce chapitre démontre ainsi la traduction réussie des exigences conceptuelles en une solution logicielle performante, sécurisée et parfaitement adaptée aux besoins des utilisateurs finaux.
+
+% ==========================================
+% CONCLUSION GÉNÉRALE ET PERSPECTIVES
+% ==========================================
+\newpage
+\thispagestyle{frontmatter}
+\phantomsection
+\addcontentsline{toc}{chapter}{Conclusion et Perspectives}
+
+\vspace*{0.1cm}
+
+\noindent
+\textcolor{royalBlue}{\rule{0.25\textwidth}{1pt}}
+\hfill
+{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Conclusion et Perspectives}
+
+\vspace{0.1cm}
+
+\begin{large}
+\setlength{\parskip}{0.3cm}
+\renewcommand{\baselinestretch}{1.3}\selectfont
+
+Ce projet de fin d'études chez NTT DATA a permis la conception et l'implémentation full-stack du module \textit{Invoicing} pour la plateforme KAFA'AT EMS. En adoptant la méthodologie Agile Scrum, nous avons bâti une architecture robuste (Angular, Spring Boot) répondant aux exigences complexes de gestion financière, de suivi des pointages et de facturation automatisée.
+
+Cette expérience fut doublement enrichissante : techniquement, par la maîtrise d'un cycle de développement complet, sécurisé (MFA, JWT) et ergonomique ; et professionnellement, par une intégration réussie au sein d'une équipe dynamique d'une multinationale. Le module livré est aujourd'hui fonctionnel et prêt à optimiser le quotidien des équipes financières.
+
+\vspace{-0.7cm}
+
+\section*{Perspectives d'évolution}
+
+\vspace{-0.7cm}
+
+Bien que le système réponde parfaitement au cahier des charges, plusieurs axes d'amélioration peuvent le rendre encore plus intelligent et proactif :
+
+\begin{itemize}
+    \renewcommand{\labelitemi}{\textcolor{primaryBlue}{\textbf{\large \ding{118}}}}
+    \setlength{\itemsep}{0.2cm}
+    
+    \vspace{-0.5cm}
+    \item \textcolor{primaryBlue}{\textbf{Automatisation (CI/CD) :}} Déploiement de pipelines avancés pour automatiser totalement les tests de régression.
+    
+    \vspace{-0.5cm}
+    \item \textcolor{primaryBlue}{\textbf{Analytique prédictive :}} Création de tableaux de bord anticipant les revenus et l'évolution du \textit{Turnover}.
+    
+    \vspace{-0.5cm}
+    \item \textcolor{primaryBlue}{\textbf{Intelligence Artificielle (ML) :}} Intégration de modèles de Machine Learning pour la détection automatique d'anomalies financières avant la clôture.
+    
+    \vspace{-0.5cm}
+    \item \textcolor{primaryBlue}{\textbf{Assistant Virtuel (RAG) :}} Mise en place d'un système conversationnel permettant d'interroger instantanément l'historique de facturation en langage naturel.
+\end{itemize}
+
+\vspace{-0.4cm}
+Ces évolutions confirmeront la transition de ce module vers une solution financière entièrement intelligente et automatisée.
+
+\end{large}
+
+% ==========================================
+% RÉFÉRENCES / BIBLIOGRAPHIE
+% ==========================================
+\newpage
+\thispagestyle{frontmatter}
+\phantomsection
+\addcontentsline{toc}{chapter}{Références}
+
+\vspace*{0.5cm}
+
+\noindent
+\textcolor{royalBlue}{\rule{0.60\textwidth}{1pt}}
+\hfill
+{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Références}\par
+
+\vspace{0.5cm}
+
+\begin{large}
+\renewcommand{\baselinestretch}{1.5}\selectfont
+
+\begingroup
+\let\clearpage\relax 
+\renewcommand{\bibname}{} 
+\vspace{3cm} % Kat-tle3 l-liste l-fou9 3nd l-khat
+
+\begin{thebibliography}{99}
+    \raggedright % <-- L-fix li kay-7yed l-underfull hbox
+    \setlength{\itemsep}{0.2cm} % L'espace bin les références
+
+    \bibitem{ntt_global} 
+    \textbf{NTT DATA Global.} \textit{About Us, Industries \& Services}. \newline
+    Disponible sur : \url{https://www.nttdata.com/global/en/}
+
+    \bibitem{ntt_maroc} 
+    \textbf{NTT DATA Maroc.} \textit{À propos de nous et Alliances}. \newline
+    Disponible sur : \url{https://mar.nttdata.com/}
+
+    \bibitem{scrum_guide} 
+    \textbf{Atlassian Agile Coach.} \textit{Qu'est-ce que la méthodologie Scrum ?}. \newline
+    Disponible sur : \url{https://www.atlassian.com/fr/agile/scrum}
+
+    \bibitem{jira_software} 
+    \textbf{Atlassian.} \textit{Jira Software : Outil de gestion de projet Agile}. \newline
+    Disponible sur : \url{https://www.atlassian.com/fr/software/jira}
+
+    \bibitem{gantt} 
+    \textbf{Gantt.com.} \textit{Qu'est-ce qu'un diagramme de Gantt ?}. \newline
+    Disponible sur : \url{https://www.gantt.com/fr/}
+
+    \bibitem{uml_ibm} 
+    \textbf{IBM Documentation.} \textit{Diagrammes et modèles UML}. \newline
+    Disponible sur : \url{https://www.ibm.com/docs/fr/rational-soft-arch/9.5?topic=diagrams-uml-models}
+
+    \bibitem{spring_boot} 
+    \textbf{Spring.} \textit{Spring Boot Reference Documentation}. \newline
+    Disponible sur : \url{https://docs.spring.io/spring-boot/docs/current/reference/html/}
+
+    \bibitem{angular_docs} 
+    \textbf{Google.} \textit{Angular : The modern web developer's platform}. \newline
+    Disponible sur : \url{https://angular.io/docs}
+
+    \bibitem{kinsta_arch} 
+    \textbf{Kinsta.} \textit{Architecture d'application web}. \newline
+    Disponible sur : \url{https://kinsta.com/fr/blog/architecture-application-web/}
+
+    \bibitem{postgresql} 
+    \textbf{PostgreSQL Global Development Group.} \textit{PostgreSQL: The World's Most Advanced Open Source Relational Database}. \newline
+    Disponible sur : \url{https://www.postgresql.org/docs/}
+
+    \bibitem{primeng} 
+    \textbf{PrimeTek.} \textit{PrimeNG : The Most Complete Angular UI Component Library}. \newline
+    Disponible sur : \url{https://primeng.org/}
+
+    \bibitem{jwt_auth0} 
+    \textbf{Auth0.} \textit{JSON Web Token (JWT) Introduction}. \newline
+    Disponible sur : \url{https://jwt.io/introduction}
+
+    \bibitem{jasperreports} 
+    \textbf{Jaspersoft Community.} \textit{JasperReports Library : Open Source Reporting}. \newline
+    Disponible sur : \url{https://community.jaspersoft.com/project/jasperreports-library}
+
+    \bibitem{docker_docs} 
+    \textbf{Docker Inc.} \textit{Docker Documentation}. \newline
+    Disponible sur : \url{https://docs.docker.com/}
+
+\end{thebibliography}
+\endgroup
+\end{large}
 
 \end{document}
