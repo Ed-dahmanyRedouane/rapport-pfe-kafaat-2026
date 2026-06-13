@@ -1,9 +1,22 @@
-\documentclass[12pt, a4paper, openany]{report}
+\documentclass[12pt, a4paper, openany]{report} 
+
+% ==========================================
+% DOCUMENT TITLE
+% ==========================================
+% Rapport_PFE_ED-DAHMANY_v1_Draft
+% Rapport_PFE_ED-DAHMANY_v2_Correction
+% Rapport_PFE_ED-DAHMANY_Redouane_FINAL
+% Rapport_PFE_ED-DAHMANY_Redouane_FINAL_V2
+% ------------------------------------------
+% Rapport_PFE_ED-DAHMANY_Redouane_NTTDATA_2026
+% Rapport_PFE_KAFAAT_EMS_ED-DAHMANY_2026
+% Memoire_Master_M2I_ED-DAHMANY_Redouane_2026
+% Memoire_Master_M2I_NTTDATA_ED-DAHMANY_Redouane_2026
 
 % ==========================================
 % PACKAGES
 % ==========================================
-\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc} 
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
 \usepackage[top=3.5cm, bottom=2.5cm, left=2cm, right=2cm, headheight=75pt, headsep=1cm, footskip=1.5cm]{geometry}
@@ -15,10 +28,10 @@
 \usepackage{lmodern}
 \usepackage{booktabs}
 \usepackage{microtype}
-\usepackage{float} % <--- ZID HAD L'PACKAGE HNA
-\usepackage{pifont} % <--- ZID HADI HNA
-\usepackage{pgfgantt} % Package l-asassi dyal l'Gantt
-\usepackage{graphicx} % Bach n-gueddou l'3bar dyalo m3a l'wer9a
+\usepackage{float} 
+\usepackage{pifont} 
+\usepackage{pgfgantt} 
+\usepackage{graphicx} 
 \usepackage{pifont}
 \usepackage{nicematrix}
 
@@ -27,7 +40,7 @@
 \usepackage{hhline}
 \usepackage{enumitem}
 
-% ← ZID HADI: Bach nmanc3o ga3 les pages khawyin
+
 \let\cleardoublepage\clearpage
 
 \makeatletter
@@ -39,47 +52,47 @@
 % ==========================================
 % DESIGN DES TITRES (Sections, Sous-sections...)
 % ==========================================
-% Loun dyal Section (Titre kbir b zre9 mghlo9)
+
 \titleformat{\section}
   {\color{primaryBlue}\normalfont\LARGE\bfseries}
   {\thesection}{0.5em}{}
 
-% Loun dyal Subsection (Titre mtwest b zre9 royal)
+
 \titleformat{\subsection}
   {\color{royalBlue}\normalfont\Large\bfseries}
   {\thesubsection}{0.5em}{}
 
-% Loun dyal Subsubsection (Titre sghir b zre9 mftou7)
-\titleformat{\subsubsection}
+
+\titleformat{\subsubsection} 
   {\color{azureBlue}\normalfont\large\bfseries}
   {\thesubsubsection}{0.5em}{}
 
-% Espace bin les titres w l'ktba
+
 \titlespacing*{\section}{0pt}{3ex plus 1ex minus .2ex}{2ex plus .2ex}
 \titlespacing*{\subsection}{0pt}{2ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-% 1. Had l'code bach nkhbiw l'titre dyal \chapter standard BLA maydir page khawya
+
 \titleformat{\chapter}[display]{}{}{0pt}{\vspace*{-3cm}\phantom}
 \titlespacing*{\chapter}{0pt}{-30pt}{10pt}
 
-% 2. Had l'code bach l'page li fiha \chapter t7tarem l'footer dyalna (l'khat zre9)
+
 \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{frontmatter}}{}{}
 
 % ==========================================
 % COMMANDE POUR LA PAGE DE GARDE DU CHAPITRE
 % ==========================================
 \newcommand{\chapterpage}[2]{%
-    \clearpage % T-bda page jdida n9iya
+    \clearpage 
     \thispagestyle{frontmatter} 
     \vspace*{\fill}
     \begin{center}
         \begin{tikzpicture}
-            % 1. Image kberna liha l'width l 1.15 bach tban kbira w t-ched l'3erd
+            
             \node[inner sep=0pt] (frame) at (0,0) {
                 \includegraphics[width=1.0\textwidth, keepaspectratio]{images/cercle-chapitre.png}
             };
             
-            % 2. L'ktba m-centriya
+            
             \node[align=center, text width=0.8\textwidth] at (0,0) {
                 {\fontsize{36}{44}\selectfont\color{primaryBlue}\bfseries Chapitre #1}\\[15pt]
                 \textcolor{primaryBlue}{\rule{5cm}{2pt}}\\[15pt]
@@ -88,24 +101,24 @@
         \end{tikzpicture}
     \end{center}
     \vspace*{\fill}
-    % MSSE7NA \newpage MN HNA BACH MAT3TICH WRATI KHAWYIN
-    \newpage % <--- ZID HADI
+    
+    \newpage 
 }
 
-% --- ZID HAD L'PACKAGE HNA BACH YBANO NOQAT F L'FIHRES ---
+
 \usepackage[titles]{tocloft}
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 % ---------------------------------------------------------
-% Zid had 3 stora bach tktb "Figure X :" f Table des figures:
+
 \renewcommand{\cftfigpresnum}{Figure }
 \renewcommand{\cftfigaftersnum}{ :}
-\addtolength{\cftfignumwidth}{40pt} % Tissa3 bach t9ed lkelma "Figure 10 :"
+\addtolength{\cftfignumwidth}{40pt} 
 % ---------------------------------------------------------
 
-% L'code jdid dyal Liste des tableaux:
+
 \renewcommand{\cfttabpresnum}{Tableau }
 \renewcommand{\cfttabaftersnum}{ :}
-\addtolength{\cfttabnumwidth}{48pt} % Drnaha 48pt 7it kelmat 'Tableau' twel mn 'Figure'
+\addtolength{\cfttabnumwidth}{48pt} 
 % ---------------------------------------------------------
 
 
@@ -115,19 +128,19 @@
 \makeatletter
 \renewcommand\tableofcontents{%
     \newpage
-    \pagestyle{frontmatter}     % <--- ZID HADI: bach tb9a khdama f ga3 l'pages d l'fihres
-    \thispagestyle{frontmatter} % <--- BEDDEL HADI: mn 'empty' l 'frontmatter'
+    \pagestyle{frontmatter}    
+    \thispagestyle{frontmatter} 
     \vspace*{0.5cm}
     
-    % 3. Titre "Table des matières"
+   
     \noindent
     \textcolor{royalBlue}{\rule{0.45\textwidth}{1pt}}
     \hfill
     {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Table des matières}\par
     \vspace{1.5cm}
     
-    % Hna fin LaTeX kay-généri l'fihres bo7do (Lownah b zre9 mftou7)
-    {\color{azureBlue} % <--- BEDDELHA L AZURE BLUE
+   
+    {\color{azureBlue} 
     \@starttoc{toc}%
     }
 }
@@ -150,9 +163,9 @@
     {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Table des figures}\par
     \vspace{1.5cm}
     
-    % Hna fin LaTeX kay-généri l'fihres d'les figures
+    
     {\color{azureBlue} 
-    \@starttoc{lof}% <--- lof katsme3 'List of Figures'
+    \@starttoc{lof}
     }
 }
 \makeatother
@@ -174,9 +187,9 @@
     {\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Liste des tableaux}\par
     \vspace{1.5cm}
     
-    % Hna fin LaTeX kay-généri l'fihres d'les tableaux
+    
     {\color{azureBlue} 
-    \@starttoc{lot}% <--- lot katsme3 'List of Tables'
+    \@starttoc{lot}
     }
 }
 \makeatother
@@ -189,7 +202,7 @@
 \definecolor{primaryBlue}{RGB}{28, 62, 110}    % Single professional dark blue
 \definecolor{lightBlue}{RGB}{235, 243, 250}    % Very light blue for table rows
 \definecolor{royalBlue}{RGB}{52, 101, 164}
-\definecolor{azureBlue}{RGB}{0, 122, 204}      % <--- ZID HADA (Zre9 mftou7 w kayban)
+\definecolor{azureBlue}{RGB}{0, 122, 204}      
 
 % ==========================================
 % LIENS ET CLICKABLE TOC (Fihres Interactif)
@@ -197,8 +210,8 @@
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
-    linkcolor=azureBlue, % <--- BEDDELHA HNA
-    urlcolor=azureBlue,  % <--- W HNA
+    linkcolor=azureBlue, 
+    urlcolor=azureBlue, 
     linktoc=all 
 }
 
@@ -207,8 +220,8 @@
 % ==========================================
 \usepackage{fancyhdr}
 
-% 1. Kan-definiw l'header w l'footer f variables
-\newcommand{\mycustomheader}{%
+
+\newcommand{\mycustomheader}{
     \noindent
     \begin{minipage}[b]{0.45\textwidth} 
         \raggedright
@@ -217,10 +230,10 @@
     \hfill
     \begin{minipage}[b]{0.45\textwidth} 
         \raggedleft
-        % ZEDNA \raisebox BACH NHEBTO L'LOGO DYAL FST B D-DRA3
-        \raisebox{-0.3cm}{\includegraphics[height=2.2cm]{images/fst-logo.png}}
+        
+        \raisebox{-0.4cm}{\includegraphics[height=2.2cm]{images/fst-logo.png}}
     \end{minipage}\par
-    \vspace{-0.4cm} % <--- ZEDNA L'ESPACE NEGATIF BACH YLSE9 L'KHAT MZYAN
+    \vspace{-0.4cm} 
     \noindent
     \begin{tikzpicture}
         \draw[royalBlue, dash pattern=on 5pt off 3pt, line width=0.8pt] (0,0) -- (\textwidth, 0);
@@ -235,7 +248,7 @@
     \textcolor{royalBlue}{\textbf{\thepage}}
 }
 
-% 2. Kan-appliqiw hadchi 3la ga3 l'pages (Style 'fancy')
+
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
@@ -243,7 +256,7 @@
 \fancyhead[C]{\mycustomheader}
 \fancyfoot[C]{\mycustomfooter}
 
-% 3. Kan-appliqiw hadchi 3la l'pages dyal \chapter (Style 'plain')
+
 \fancypagestyle{plain}{%
     \fancyhf{}
     \renewcommand{\headrulewidth}{0pt}
@@ -252,7 +265,7 @@
     \fancyfoot[C]{\mycustomfooter}
 }
 
-% 4. Kan-appliqiw hadchi 3la l'pages dyal l'fihres (Style 'frontmatter')
+
 \fancypagestyle{frontmatter}{%
     \fancyhf{}
     \renewcommand{\headrulewidth}{0pt}
@@ -264,8 +277,8 @@
 % ==========================================
 % PROFONDEUR DE NUMÉROTATION (Bach tban 2.5.1)
 % ==========================================
-\setcounter{secnumdepth}{3} % Kat-biyen ra9m f \subsubsection
-\setcounter{tocdepth}{3}    % Kat-biyen \subsubsection 7ta f l'Fihres (Table des matières) 
+\setcounter{secnumdepth}{3} 
+\setcounter{tocdepth}{3}    
 
 \begin{document}
 \pagestyle{empty}
@@ -277,8 +290,8 @@
 % PAGE DE GARDE
 % ==========================================
 \begin{titlepage}
-\vspace*{-2.5cm} % <--- HADI KAT-JER L'PAGE L-FOUQ
-\enlargethispage{1.0cm} % <--- HADI KAT-3TI TISSA3 L-TE7T BACH MAYTZADCH PAGE KHAWYA
+\vspace*{-2.5cm} 
+\enlargethispage{1.0cm} 
 \centering
 
 % ------------------------------------------
@@ -305,14 +318,14 @@
     {\fontsize{11}{13}\selectfont\color{primaryBlue}\bfseries Faculté des Sciences}\\[6pt]
     \textcolor{primaryBlue}{\rule{5cm}{0.8pt}}\\[4pt]
     {\fontsize{10.5}{12}\selectfont\color{primaryBlue}\textbf{- Tétouan -}}
-\end{minipage}
+\end{minipage} 
 \hfill
-\begin{minipage}[c]{0.26\textwidth}
-    \centering
+\begin{minipage}[c]{0.26\textwidth} 
+    \centering 
     \includegraphics[width=1\linewidth]{images/fst-logo.png}
-\end{minipage}
+\end{minipage} 
 
-\vspace{0.4cm}
+\vspace{0.1cm}
 
 % Full-width separator
 \textcolor{primaryBlue}{\rule{\textwidth}{1pt}}
@@ -409,6 +422,8 @@
 
 \vfill
 
+\vspace{0.3cm}
+
 % ------------------------------------------
 % JURY TABLE
 % ------------------------------------------
@@ -434,13 +449,13 @@
   {\color{primaryBlue}\bfseries Président} \\
   \hline
   \textbf{\color{primaryBlue}Pr.} &
-  \textbf{\color{primaryBlue}Naoufal Rtayli} &
+  \textbf{\color{primaryBlue}Rtayli Naoufal} &
   {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
   {\color{primaryBlue}\bfseries Examinateur} \\
   \hline
   \rowcolor{lightBlue}
   \textbf{\color{primaryBlue}Pr.} &
-  \textbf{\color{primaryBlue}Benameur Lamiae} &
+  \textbf{\color{primaryBlue}Benameur Lamyae} &
   {\color{primaryBlue}\small Faculté des Sciences Tétouan} &
   {\color{primaryBlue}\bfseries Encadrant universitaire} \\
   \hline
@@ -451,7 +466,16 @@
   \hline
 \end{tabular}
 
-\vspace{0.3cm}
+\vspace{0.2cm}
+
+% ------------------------------------------
+% ANNÉE UNIVERSITAIRE
+% ------------------------------------------
+\begin{center}
+  {\fontsize{14}{16}\selectfont\color{royalBlue}\bfseries Année Universitaire : 2025 - 2026\par}
+\end{center}
+
+\vspace{0.0cm}
 
 % ------------------------------------------
 % BOTTOM BLUE BAR
@@ -472,7 +496,7 @@
 
 \vspace*{\fill}
 \begin{center}
-    % FIX: minipage bach tb9a ga3 les images f page wa7da
+    
     \begin{minipage}{\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{images/bismillah.png}\\[1.7cm]
@@ -486,13 +510,13 @@
 % PAGE 3 : DÉDICACE
 % ==========================================
 \newpage
-\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
-\phantomsection % <--- ZID HADI HNA
-\addcontentsline{toc}{chapter}{Dédicace} % <--- 7ETHA HNA !
+\thispagestyle{frontmatter} 
+\phantomsection
+\addcontentsline{toc}{chapter}{Dédicace}
 
-\vspace*{0.5cm} % Bach ntle3o l'header lfo9 chwia
+\vspace*{0.5cm} 
 
-% 3. Titre "Dédicace" 3la Limen
+
 \noindent
 \textcolor{royalBlue}{\rule{0.65\textwidth}{1pt}}
 \hfill
@@ -500,15 +524,15 @@
 
 \vspace{1.5cm}
 
-% 4. Le Texte (Italique w mkber chwia m3a espace bin stoura)
+
 \begin{large}
 \itshape
-\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
-\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+\setlength{\parskip}{0.3cm} 
+\renewcommand{\baselinestretch}{1.3}\selectfont 
 
 Je dédie ce travail à mes parents, qui ont été ma source constante d'inspiration, d'amour et de soutien tout au long de ma vie. Leur encouragement inconditionnel et leur confiance en moi ont été les fondements de ma réussite.
 
-Je tiens à exprimer ma profonde reconnaissance envers mes encadrants, le Professeur \textbf{Benameur Lamiae} et Mr. \textbf{Saloumi Achraf}, pour leur accompagnement, leurs conseils précieux et leur expertise tout au long de ce projet. Leur patience, leur disponibilité et leur dévouement ont été des moteurs essentiels de ma progression.
+Je tiens à exprimer ma profonde reconnaissance envers mes encadrants, le Professeur \textbf{Benameur Lamyae} et Mr. \textbf{Saloumi Achraf}, pour leur accompagnement, leurs conseils précieux et leur expertise tout au long de ce projet. Leur patience, leur disponibilité et leur dévouement ont été des moteurs essentiels de ma progression.
 
 J'adresse également mes remerciements à mes professeurs, qui m'ont transmis leur savoir, m'ont inspiré et ont élargi mes horizons intellectuels. Leurs enseignements ont façonné ma pensée critique et ont contribué à mon développement personnel et académique.
 
@@ -533,14 +557,14 @@ Enfin, je souhaite exprimer ma gratitude envers mes amis, qui ont été mes comp
 % PAGE 4 : REMERCIEMENTS
 % ==========================================
 \newpage
-\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
-\phantomsection % <--- ZID HADI HNA
-\addcontentsline{toc}{chapter}{Remerciements} % <--- 7ETHA HNA !
+\thispagestyle{frontmatter} 
+\phantomsection 
+\addcontentsline{toc}{chapter}{Remerciements} 
 
-\vspace*{0.5cm} % Bach ntle3o l'header lfo9 chwia
+\vspace*{0.5cm} 
 
 
-% 3. Titre "Remerciements" 3la Limen
+
 \noindent
 \textcolor{royalBlue}{\rule{0.55\textwidth}{1pt}}
 \hfill
@@ -548,21 +572,21 @@ Enfin, je souhaite exprimer ma gratitude envers mes amis, qui ont été mes comp
 
 \vspace{0.0cm}
 
-% 4. Le Texte (Italique w mkber chwia m3a espace bin stoura)
+
 \begin{large}
 \itshape
-\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
-\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+\setlength{\parskip}{0.3cm} 
+\renewcommand{\baselinestretch}{1.3}\selectfont 
 
 Je tiens tout d'abord à exprimer ma gratitude à Allah pour m'avoir accordé la santé, la détermination et la persévérance nécessaires pour mener à bien ce travail de recherche.
 
-Ensuite, je tiens à remercier chaleureusement mon encadrante universitaire, le Professeur \textbf{Benameur Lamiae}, pour son soutien constant, ses précieux conseils et son expertise tout au long de ce projet. Sa disponibilité, sa patience et sa bienveillance ont été d'une aide inestimable.
+Ensuite, je tiens à remercier chaleureusement mon encadrante universitaire, le Professeur \textbf{Benameur Lamyae}, pour son soutien constant, ses précieux conseils et son expertise tout au long de ce projet. Sa disponibilité, sa patience et sa bienveillance ont été d'une aide inestimable.
 
 Je souhaite également exprimer ma reconnaissance à Mr. \textbf{Saloumi Achraf}, mon encadrant professionnel au sein de NTT DATA, pour son accompagnement, son expertise et ses conseils avisés. Sa vision et son expérience ont grandement contribué à la réussite de ce projet.
 
 Je tiens à exprimer ma reconnaissance envers l'ensemble de l'équipe de \textbf{NTT DATA Maroc}, et tout particulièrement à Monsieur \textbf{Fred SABBAH}, Directeur Général, pour m'avoir offert l'opportunité de réaliser ce stage dans un environnement professionnel stimulant. Leur confiance en mes capacités et leur soutien ont été essentiels pour l'accomplissement de ce travail.
 
-Je souhaite également remercier les membres du jury, le Professeur \textbf{Amjad Souad} et le Professeur \textbf{Naoufal Rtayli}, d'avoir accepté d'évaluer ce travail.
+Je souhaite également remercier les membres du jury, le Professeur \textbf{Amjad Souad} et le Professeur \textbf{Rtayli Naoufal}, d'avoir accepté d'évaluer ce travail.
 
 Enfin, je tiens à exprimer ma gratitude envers ma famille et mes amis pour leur soutien indéfectible, leurs encouragements et leurs précieux conseils tout au long de ce parcours académique.
 
@@ -580,13 +604,13 @@ Mes sincères remerciements à toutes les personnes qui ont contribué de près 
 % PAGE 5 : RÉSUMÉ
 % ==========================================
 \newpage
-\thispagestyle{frontmatter} % Bach n7kmo f ra9m l'page b idina lte7t
-\phantomsection % <--- ZID HADI HNA
-\addcontentsline{toc}{chapter}{Résumé} % <--- 7ETHA HNA !
+\thispagestyle{frontmatter} 
+\phantomsection 
+\addcontentsline{toc}{chapter}{Résumé} 
 
-\vspace*{0.5cm} % Bach ntle3o l'header lfo9 chwia
+\vspace*{0.5cm} 
 
-% 3. Titre "Résumé" 3la Limen
+
 \noindent
 \textcolor{royalBlue}{\rule{0.65\textwidth}{1pt}}
 \hfill
@@ -594,10 +618,10 @@ Mes sincères remerciements à toutes les personnes qui ont contribué de près 
 
 \vspace{0.0cm}
 
-% 4. Le Texte (Taille normale m3a espace bin stoura)
+
 \begin{large}
-\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
-\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+\setlength{\parskip}{0.3cm} 
+\renewcommand{\baselinestretch}{1.3}\selectfont 
 
 Ce rapport présente une synthèse du travail effectué dans le cadre de mon projet de fin d'études au sein de la société \textbf{NTT DATA} à Tétouan, dans le but d'obtenir mon diplôme du Master spécialisé en Ingénierie Informatique (M2I) de la Faculté des Sciences de Tétouan / Université Abdelmalek Essaâdi.
 
@@ -627,12 +651,12 @@ Application Web, Plateforme EMS, Invoicing, Microservice, NTT DATA, Angular, Spr
 % ==========================================
 \newpage
 \thispagestyle{frontmatter} 
-\phantomsection % <--- ZID HADI HNA
-\addcontentsline{toc}{chapter}{Abstract} % <--- 7ETHA HNA !
+\phantomsection 
+\addcontentsline{toc}{chapter}{Abstract} 
 
 \vspace*{0.5cm} 
 
-% 3. Titre "Abstract" 3la Limen
+
 \noindent
 \textcolor{royalBlue}{\rule{0.65\textwidth}{1pt}}
 \hfill
@@ -640,10 +664,10 @@ Application Web, Plateforme EMS, Invoicing, Microservice, NTT DATA, Angular, Spr
 
 \vspace{0.0cm}
 
-% 4. Le Texte (Taille normale m3a espace bin stoura)
+
 \begin{large}
-\setlength{\parskip}{0.3cm} % L'espace bin les paragraphes
-\renewcommand{\baselinestretch}{1.3}\selectfont % L'espace bin stoura (interligne)
+\setlength{\parskip}{0.3cm} 
+\renewcommand{\baselinestretch}{1.3}\selectfont 
 
 This report presents a summary of the work carried out as part of my graduation project (Master's thesis) at \textbf{NTT DATA} in Tetouan, in order to obtain my specialized Master's degree in Computer Engineering (M2I) from the Faculty of Sciences in Tetouan / Abdelmalek Essaâdi University.
 
@@ -701,17 +725,17 @@ Web Application, EMS Platform, Invoicing, Microservice, NTT DATA, Angular, Sprin
 \vspace*{0.5cm} 
 
 
-% 3. Titre "Liste des abréviations" 3la Limen
+
 \noindent
-\textcolor{royalBlue}{\rule{0.35\textwidth}{1pt}} % <--- N9ESNA MN T-TOUL DYAL L'KHAT (0.35)
+\textcolor{royalBlue}{\rule{0.35\textwidth}{1pt}} 
 \hfill
-\mbox{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Liste des abréviations} % <--- MBOX BACH MAYT9SSEMCH
+\mbox{\fontsize{24}{28}\selectfont\color{royalBlue}\bfseries Liste des abréviations} 
 
 \vspace{1.5cm}
 
 % 4. Le Tableau des abréviations
 \begin{center}
-\renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura
+\renewcommand{\arraystretch}{1.6} 
 \setlength{\arrayrulewidth}{1pt}
 \arrayrulecolor{primaryBlue}
 
@@ -800,8 +824,8 @@ Web Application, EMS Platform, Invoicing, Microservice, NTT DATA, Angular, Sprin
 % DÉBUT DU CONTENU PRINCIPAL (Page 1, 2, 3...)
 % ==========================================
 \newpage
-\pagenumbering{arabic} % Ar9am 1, 2, 3...
-\pagestyle{frontmatter} % N-appliquant l'footer dyalna m3a l'khat zre9
+\pagenumbering{arabic} 
+\pagestyle{frontmatter} 
 
 
 % ==========================================
@@ -813,7 +837,7 @@ Web Application, EMS Platform, Invoicing, Microservice, NTT DATA, Angular, Sprin
 \vspace*{0.5cm} 
 
 
-% 3. Titre "Introduction générale" 3la Limen
+
 \noindent
 \textcolor{royalBlue}{\rule{0.3\textwidth}{1pt}}
 \hfill
@@ -821,7 +845,7 @@ Web Application, EMS Platform, Invoicing, Microservice, NTT DATA, Angular, Sprin
 
 \vspace{1.0cm}
 
-% 4. Le Texte de l'introduction (Taille normale bach t9ed f 1 page)
+
 \setlength{\parskip}{0.2cm}
 \renewcommand{\baselinestretch}{1.2}\selectfont
 
@@ -858,15 +882,15 @@ Ce rapport offre ainsi une vue d'ensemble complète du cycle de vie du développ
 
 
 % --- CHAPITRE 1 : START ---
-\chapterpage{1}{Contexte général du projet} % Page dyal l'image Gemini
-\chapter{Contexte général du projet} % Darouri bach ytzad f l'Fihres
+\chapterpage{1}{Contexte général du projet} 
+\chapter{Contexte général du projet} 
 
-\vspace*{0.8cm} % <--- ZID HADI HNA BACH TB3ED "INTRODUCTION" 3LA L'KHAT ZRE9
+\vspace*{0.8cm} 
 
 % ==========================================
 % INTRODUCTION DU CHAPITRE
 % ==========================================
-% \section* kat3ni section bla ra9m (bla mayktb 1. Introduction)
+
 \section*{Introduction}
 \addcontentsline{toc}{section}{Introduction}
 
@@ -928,7 +952,7 @@ Le tableau ci-dessous résume les informations générales et juridiques de l'en
 % --- TABLEAU FICHE TECHNIQUE (Fusion Global & Maroc) ---
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura
+    \renewcommand{\arraystretch}{1.6} 
     \setlength{\arrayrulewidth}{1pt}
     \arrayrulecolor{primaryBlue}
     
@@ -980,7 +1004,7 @@ Le tableau ci-dessous résume les informations générales et juridiques de l'en
 NTT DATA possède une vaste couverture mondiale avec des bureaux et des centres de prestation de services dans de nombreux pays à travers le monde.
 
 % --- IMAGE COUVERTURE MONDIALE ---
-\begin{figure}[H] % <--- [H] bach tb9a l'image nichan hna
+\begin{figure}[H] 
     \centering
     \includegraphics[width=0.80\textwidth]{images/couverture-mondiale.png}
     \vspace{-0.4cm}
@@ -996,14 +1020,14 @@ NTT DATA opère dans le secteur des services informatiques et du conseil. L'entr
 
 % --- L'CODE DYAL LES POINTS (DESIGN PRO W JDIID) ---
 \begin{itemize}
-    % 1. Tissa3 bin n9ati bach mayjich z7am
+   
     \setlength{\itemsep}{0.3cm} 
     
-    % 2. Design dyal n9ati (Morba3 sghir zre9 f blast no9ta 3adiya)
+    
     \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} 
     
     \vspace{-0.3cm}
-    % 3. Lwenna l'Bold b zre9 mghlo9 bach yban w y3ti l'3in
+   
     \item \textcolor{primaryBlue}{\textbf{Services financiers :}} NTT DATA travaille avec des institutions financières, des banques, des compagnies d'assurance et d'autres acteurs du secteur financier pour fournir des solutions informatiques et des services de conseil qui améliorent l'efficacité opérationnelle, la gestion des risques, l'expérience client et la conformité réglementaire.
     
     \vspace{-0.3cm}
@@ -1026,7 +1050,7 @@ Outre ces secteurs spécifiques, NTT DATA travaille également avec des entrepri
 \vspace{0.0cm}
 
 % --- IMAGE DES SECTEURS D'ACTIVITÉS ---
-\begin{figure}[H] % <--- [H] bach tb9a l'image nichan hna ta7t l'ktaba
+\begin{figure}[H] 
     \centering
     \includegraphics[width=0.85\textwidth]{images/secteurs-activites.png}
     \vspace{-0.4cm}
@@ -1082,7 +1106,7 @@ Les clients de NTT DATA comprennent une vaste gamme d'entreprises et d'organisat
     \centering
     \includegraphics[width=0.9\textwidth]{images/clients-ntt-data.png}
     \vspace{-0.4cm}
-    \caption{client NTT DATA}
+    \caption{Clients de NTT DATA}
     \label{fig:clients_ntt_data}
 \end{figure}
 
@@ -1215,13 +1239,13 @@ Voici une liste spécifique des exigences fonctionnelles majeures pour le module
 \vspace{-0.4cm}
 
 \begin{itemize}
-    % Design dyal t-n9at l-kbaar (Rmez dyal pifont b zre9 mghlo9)
+    
     \renewcommand{\labelitemi}{\textcolor{primaryBlue}{\textbf{\large \ding{118}}}} 
-    \setlength{\itemsep}{0.5cm} % Tissa3 bin les grandes catégories
+    \setlength{\itemsep}{0.5cm} 
 
     \item \textcolor{primaryBlue}{\textbf{Authentification et gestion des utilisateurs :}}
     \begin{itemize}
-        % Design dyal n9ati sghar l-dakhel
+       
         \renewcommand{\labelitemii}{\textcolor{royalBlue}{\textbullet}}
         \setlength{\itemsep}{0.2cm}
         \vspace{0.2cm}
@@ -1291,7 +1315,7 @@ Voici une liste spécifique des exigences fonctionnelles majeures pour le module
         \vspace{-0.3cm}
         \item Les indicateurs de performance (KPIs) tels que le montant total facturé, le nombre de factures en attente de paiement ou en retard, doivent être présentés de manière claire et concise (graphiques, diagrammes).
     \end{itemize}
-\end{itemize} % <--- HADI HIYA LI KATSSED L'LISTE L-KBIRA L-OULA
+\end{itemize} 
 
 \vspace{-0.4cm}
 
@@ -1308,7 +1332,7 @@ L'application à concevoir doit être conforme aux exigences non-fonctionnelles 
 
 \begin{itemize}
     \setlength{\itemsep}{0.3cm} 
-    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} % N9ati b chkel morba3 zre9
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}}
     
     \vspace{-0.3cm}
     \item \textcolor{primaryBlue}{\textbf{Performance :}} L'application doit être robuste et capable de traiter de gros volumes de données financières sans ralentissement, répondant de manière optimale aux requêtes des utilisateurs.
@@ -1418,7 +1442,7 @@ Pour réaliser notre module d'Invoicing, nous avons intégré une équipe consti
 \vspace{-0.0cm}
 
 \begin{itemize}
-    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} % Morba3 zre9 sghir
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} 
     \setlength{\itemsep}{0.3cm}
 
     \vspace{-0.3cm}
@@ -1526,19 +1550,19 @@ Dans l'optique d'optimiser le cycle de vie du développement et d'assurer une im
 
 \begin{table}[H]
     \centering
-    \renewcommand{\arraystretch}{1.6} % Tissa3 bin stoura
-    \setlength{\arrayrulewidth}{1pt}   % Gheld dyal l-khtouta
-    \arrayrulecolor{primaryBlue}       % Loun dyal l-khtouta b zre9
+    \renewcommand{\arraystretch}{1.6} 
+    \setlength{\arrayrulewidth}{1pt}   
+    \arrayrulecolor{primaryBlue}       
 
-    % Tableau b 3 colonnes m-riglin b l-3bar (\textwidth)
+    
     \begin{tabular}{|>{\centering\arraybackslash}p{0.25\textwidth}|>{\raggedright\arraybackslash}p{0.30\textwidth}|>{\raggedright\arraybackslash}p{0.35\textwidth}|}
         \hline
-        % En-tête dyal l'tableau b zre9 mghlo9 w ktba bida
+        
         \rowcolor{primaryBlue}
         \textbf{\textcolor{white}{Membre de l'équipe}} & \textbf{\textcolor{white}{Modules affectés}} & \textbf{\textcolor{white}{Détails des tâches}} \\
         \hline
 
-        % --- REDOUANE (B loun lightBlue) ---
+        
         \rowcolor{lightBlue}
         \textbf{Redouane Ed-Dahmany}\newline \textit{(Moi-même)} & 
         \textbf{Backend :} Worktime, Billing, Export PDF\newline 
@@ -1551,7 +1575,7 @@ Dans l'optique d'optimiser le cycle de vie du développement et d'assurer une im
         \textbullet~ Intégration des APIs REST côté Angular. \\
         \hline
 
-        % --- SOUFIANE (Bla loun bach yji dakchi m-khalef) ---
+        
         \textbf{Soufiane Hajji} & 
         \textbf{Backend :} Analyse UML, BDD, Service CRUD, Group Mgmt, Ajustements, Sécurité & 
         \textbullet~ Modélisation UML et conception de la base de données.\newline
@@ -1561,7 +1585,7 @@ Dans l'optique d'optimiser le cycle de vie du développement et d'assurer une im
         \textbullet~ Écriture des tests unitaires backend. \\
         \hline
 
-        % --- MEHDI (B loun lightBlue) ---
+        
         \rowcolor{lightBlue}
         \textbf{Mehdi Farhloumi} & 
         \textbf{Frontend :} Generate, Confirm \& Close Service, UI/UX, Routage & 
@@ -1590,7 +1614,7 @@ Microsoft Teams est une plateforme de communication et de collaboration en ligne
 
 \vspace{-0.0cm}
 
-% --- IMAGE TEAMS F L-WSSET ---
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.12\textwidth]{images/microsoft-teams.png}
@@ -1607,7 +1631,7 @@ Les réunions quotidiennes (\textit{Daily Scrum}) sont un élément essentiel de
 Voici quelques-unes des fonctionnalités de Microsoft Teams que nous avons exploitées pour optimiser notre organisation :
 
 \begin{itemize}
-    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} % Morba3 zre9 sghir
+    \renewcommand{\labelitemi}{\textcolor{royalBlue}{\rule{1.2ex}{1.2ex}}} 
     \setlength{\itemsep}{0.3cm}
 
     \vspace{-0.3cm}
@@ -1678,7 +1702,7 @@ Le tableau ci-dessous représente la description de chaque sprint, ce qui offre 
 
     \begin{tabular}{|>{\raggedright\arraybackslash}p{0.45\textwidth}|>{\centering\arraybackslash}p{0.12\textwidth}|>{\centering\arraybackslash}p{0.15\textwidth}|>{\centering\arraybackslash}p{0.15\textwidth}|}
         \hhline{|-|-|-|-|}
-        % En-tête dyal l'tableau
+        
         \rowcolor{primaryBlue}
         \textbf{\textcolor{white}{Activité (Sprint)}} & \textbf{\textcolor{white}{Durée}} & \textbf{\textcolor{white}{Date de début}} & \textbf{\textcolor{white}{Date de fin}} \\
         \hhline{|-|-|-|-|}
@@ -1742,7 +1766,7 @@ Le tableau ci-dessous représente la description de chaque sprint, ce qui offre 
 \vspace{0.4cm}
 
 \section*{Conclusion}
-\addcontentsline{toc}{section}{Conclusion} % Bach t-ban f l'Fihres wakha ma3ndhach ra9m
+\addcontentsline{toc}{section}{Conclusion} 
 
  \vspace{-0.4cm}
 Durant ce premier chapitre, nous avons réussi à fournir une vue d'ensemble du projet en le situant dans son contexte général. Nous avons introduit l'organisme d'accueil, NTT DATA, et nous avons décrit de manière détaillée la problématique à résoudre, ainsi que les objectifs à atteindre dans le cadre du développement du module \textbf{Invoicing} pour la plateforme \textbf{KAFA'AT EMS}.
@@ -1755,10 +1779,10 @@ En conclusion, ce premier chapitre nous a permis de poser les fondations du proj
 \chapterpage{2}{Analyse et Conception}
 \chapter{Analyse et Conception}
 
-\vspace*{0.8cm} % <--- ZID HADI HNA BACH TB3ED "INTRODUCTION" 3LA L'KHAT ZRE9
+\vspace*{0.8cm} 
 
 \section*{Introduction}
-\addcontentsline{toc}{section}{Introduction} % Bach d-dkhoul l'Fihres
+\addcontentsline{toc}{section}{Introduction} 
 
 \vspace{-0.4cm}
 Dans ce chapitre d'analyse et de conception, nous utiliserons des outils de modélisation tels que les diagrammes UML pour approfondir notre compréhension du projet et détailler l'architecture du module \textbf{Invoicing} au sein de la plateforme \textbf{KAFA'AT EMS}. 
@@ -1796,7 +1820,7 @@ En utilisant UML, les professionnels de l'informatique peuvent modéliser et con
 Le choix du langage UML pour la phase de conception du module \textbf{Invoicing} ne s'est pas fait au hasard. Il s'appuie sur plusieurs atouts majeurs qui répondent directement aux exigences de notre projet :
 
 \vspace{-0.4cm}
-% Hna kan-forciw LaTeX y-kheddem morba3 zre9 f ga3 les listes li jayin
+
 \renewcommand{\labelitemi}{{\color{royalBlue}\rule{1.2ex}{1.2ex}}}
 
 \begin{itemize}[leftmargin=*, itemsep=0.3cm]
@@ -1820,7 +1844,7 @@ En résumé, l'adoption d'UML pour la conception de ce projet nous permet de ma�
 
 \vspace{-0.6cm}
 
-% --- BDAYA DYAL SECTION 2 : MODELISATION ---
+
 
 \section{Modélisation du système}
 
@@ -1997,7 +2021,7 @@ La figure ci-dessous montre le diagramme de classes pour notre projet :
 
 \begin{figure}[H]
     \centering
-    % Dert 1.1\textwidth bach tswira t-ban kbira w y-t9raw les attributs mzyan
+    
     \includegraphics[width=0.92\textwidth]{images/class-diagram.png}
     \vspace{-0.4cm}
     \caption{Diagramme de classes du module Invoicing et Worktime}
@@ -2149,7 +2173,7 @@ Le processus s'amorce par une modification des informations fondamentales de la 
 
 \begin{figure}[H]
     \centering
-    % Drt 1.05\textwidth bach y-ban l-code li wset les 'opt' waaaade7
+    
     \includegraphics[width=1.0\textwidth]{images/sequence-gestion-facture.png}
     \vspace{-0.9cm}
     \caption{Diagramme de séquence de la gestion détaillée d'une facture}
@@ -2240,10 +2264,10 @@ Indépendamment de l'action spécifique effectuée (modification ou consultation
     \label{fig:activite_recouvrement}
 \end{figure}
 
-\vspace{2.4cm}
+\vspace{3.4cm}
 
 \section*{Conclusion}
-\addcontentsline{toc}{section}{Conclusion} % Bach t-ban f l'Fihres wakha ma3ndhach ra9m
+\addcontentsline{toc}{section}{Conclusion} 
 
 \vspace{-0.4cm}
 Dans ce chapitre, nous avons détaillé la phase de conception logicielle de notre projet en nous appuyant sur les standards du langage de modélisation UML. À travers l'élaboration progressive des diagrammes de cas d'utilisation, de classes, de séquence et d'activité, nous avons pu traduire les exigences métiers complexes des modules \textit{Invoicing} et \textit{Worktime} en spécifications techniques claires et rigoureuses.
@@ -2256,7 +2280,7 @@ La conception conceptuelle et dynamique étant à présent achevée, ces modèle
 \chapterpage{3}{Réalisation et Mise en œuvre}
 \chapter{Réalisation et Mise en œuvre}
 
-\vspace*{0.8cm} % <--- ZID HADI HNA BACH TB3ED "INTRODUCTION" 3LA L'KHAT ZRE9
+\vspace*{0.8cm} 
 \section*{Introduction}
 \addcontentsline{toc}{section}{Introduction}
 
@@ -2711,6 +2735,24 @@ Dans le cadre de l'adoption de la méthodologie Agile (Scrum) au sein de l'envir
 Il nous a permis de structurer le développement des modules \textit{Invoicing} et \textit{Worktime} sous forme de \textit{Sprints} itératifs. Grâce à ses tableaux de bord (Kanban/Scrum), nous avons pu gérer efficacement le \textit{Backlog} du produit, suivre l'avancement des \textit{User Stories} et coordonner les tâches quotidiennes. Jira a ainsi garanti une visibilité totale sur le cycle de vie des fonctionnalités et a assuré une collaboration transparente et continue avec l'équipe d'encadrement.
 
 \vspace{-0.4cm}
+\subsubsection{Confluence}
+
+\vspace{-0.4cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{images/confluence-logo.png}
+    \vspace{-0.4cm}
+    \caption{Logo de Confluence}
+    \label{fig:confluence}
+\end{figure}
+
+\vspace{-0.4cm}
+
+En parfaite complémentarité avec Jira, Confluence a été exploité comme espace de travail centralisé pour la gestion documentaire de notre projet au sein de l'environnement NTT DATA. 
+
+Cet outil collaboratif nous a permis de capitaliser les connaissances, de rédiger les spécifications techniques et fonctionnelles des modules \textit{Invoicing} et \textit{Worktime}, et de maintenir une traçabilité de nos décisions architecturales. Son intégration native avec Jira a garanti une synchronisation fluide entre notre documentation et le suivi Agile de nos \textit{Sprints}.
+
+\vspace{-0.4cm}
 \subsection{Contrôle de version et collaboration}
 
 \vspace{-0.4cm}
@@ -2737,7 +2779,7 @@ Git a été adopté comme système de contrôle de version décentralisé pour l
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.20\textwidth]{images/gitlab-logo.png}
+    \includegraphics[width=0.22\textwidth]{images/gitlab-logo.png}
     \vspace{-0.4cm}
     \caption{Logo de GitLab}
     \label{fig:gitlab}
@@ -2754,6 +2796,321 @@ En parfaite synergie avec Git, GitLab a été utilisé comme plateforme centrali
 Cette section est consacrée à la présentation des interfaces graphiques (UI) développées pour notre application. Conçues à l'aide du framework Angular et enrichies par la bibliothèque de composants PrimeNG, ces interfaces ont été pensées pour offrir une expérience utilisateur (UX) optimale, ergonomique et parfaitement alignée avec la charte graphique de l'environnement NTT DATA. 
 
 Les captures d'écran suivantes illustrent l'aboutissement de notre travail de conception, en mettant en évidence les fonctionnalités clés et les interactions offertes aux différents acteurs utilisant les modules \textit{Invoicing} et \textit{Worktime} au sein de la plateforme KAFA'AT EMS.
+
+\vspace{-0.4cm}
+
+\subsection{Interface d'authentification et sécurité}
+
+\vspace{-0.4cm}
+Pour garantir la sécurité et la confidentialité des données de la plateforme KAFA'AT EMS, l'accès est strictement contrôlé à travers un système d'authentification complet et sécurisé, divisé en plusieurs étapes clés.
+
+\vspace{-0.5cm}
+
+\subsubsection{Connexion principale}
+
+\vspace{-0.4cm}
+
+L'utilisateur doit initialement s'authentifier via son adresse e-mail professionnelle (domaine \textit{nttdata.com}) et son mot de passe.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/login-page.png}
+    \vspace{-0.4cm}
+    \caption{Interface d'authentification principale}
+    \label{fig:login_main}
+\end{figure}
+
+\vspace{-0.3cm}
+Dans le cas où les informations saisies sont erronées, le système bloque immédiatement l'accès. Une notification visuelle claire (sous forme de \textit{Toast} rouge) informe l'utilisateur que les identifiants sont incorrects, tout en appliquant les bonnes pratiques de sécurité pour éviter l'énumération de comptes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/login-error.png}
+    \vspace{-0.4cm}
+    \caption{Gestion des erreurs de saisie lors de l'authentification}
+    \label{fig:login_error}
+\end{figure}
+
+\vspace{-1.0cm}
+
+\subsubsection{Authentification à double facteur (2FA)}
+
+\vspace{-0.4cm}
+
+Afin de renforcer le niveau de sécurité des accès au système, nous avons intégré un mécanisme d'authentification à double facteur (2FA). Après la validation réussie du mot de passe, le système exige la saisie d'un code dynamique à 6 chiffres généré par une application d'authentification tierce, telle que \textit{Microsoft Authenticator}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/login-2fa.png}
+    \vspace{-0.4cm}
+    \caption{Interface de vérification à double facteur (MFA/2FA)}
+    \label{fig:login_2fa}
+\end{figure}
+
+\vspace{-1.0cm}
+
+\subsubsection{Récupération du compte}
+
+\vspace{-0.4cm}
+
+Pour offrir une autonomie aux utilisateurs en cas d'oubli de leurs identifiants, une interface de récupération a été mise en place. En saisissant son adresse e-mail professionnelle, l'utilisateur déclenche l'envoi d'un lien sécurisé et temporaire vers sa boîte de réception, lui permettant de réinitialiser son mot de passe en toute sécurité.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/forgot-password.png}
+    \vspace{-0.4cm}
+    \caption{Interface de récupération de mot de passe}
+    \label{fig:forgot_pwd}
+\end{figure}
+
+\vspace{-0.4cm}
+
+\subsection{Vue d'ensemble de la plateforme}
+
+\vspace{-0.4cm}
+Après une authentification réussie, l'utilisateur accède à l'espace de travail principal de la plateforme KAFA'AT EMS.
+
+\subsubsection{Tableau de bord (Dashboard)}
+
+\vspace{-0.4cm}
+
+Ce tableau de bord centralise les indicateurs clés du \textit{Staffing}. Il synthétise les métriques essentielles (effectif global, recrutements, départs et \textit{Turnover}) et intègre un graphique d'évolution annuelle du \textit{Headcount} pour appuyer rapidement les décisions stratégiques.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/dashboard-staffing.png}
+    \vspace{-0.4cm}
+    \caption{Tableau de bord de gestion des effectifs et indicateurs RH}
+    \label{fig:dashboard_staffing}
+\end{figure}
+
+\vspace{-1.0cm}
+
+\subsubsection{Annuaire des collaborateurs (Vue en cartes)}
+
+\vspace{-0.4cm}
+Cette interface ergonomique sous forme de cartes (\textit{Card View}) résume les informations clés de chaque collaborateur (identifiant, département, expérience et statut). Elle intègre également des outils de recherche, de filtrage et d'exportation pour une gestion fluide et rapide des profils.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/employees-card-view.png}
+    \vspace{-0.4cm}
+    \caption{Interface de gestion des collaborateurs en vue "Cartes"}
+    \label{fig:employees_cards}
+\end{figure}
+
+
+\subsection{Module de Facturation (Invoicing)}
+
+\vspace{-0.4cm}
+Ce module constitue le cœur de notre contribution technique. La première étape du processus de facturation nécessite une structuration robuste des entités financières de l'entreprise, à savoir les « Services » et leurs « Équipes » (\textit{Service Teams}).
+
+\vspace{-0.5cm}
+
+\subsubsection{Gestion des Services}
+
+\vspace{-0.4cm}
+L'interface de gestion des services permet de configurer les unités d'affaires principales. Pour une ergonomie optimale, elle propose deux modes d'affichage : une vue en cartes pour un aperçu rapide, et une vue en liste détaillée avec des lignes extensibles exposant les projets rattachés, les responsables et le statut du service.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-cards.png}
+    \vspace{-0.5cm}
+    \caption{Interface de gestion des services (Vue en cartes)}
+    \label{fig:service_cards}
+\end{figure}
+
+\vspace{-0.5cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-list.png}
+    \vspace{-0.5cm}
+    \caption{Vue en liste avec détails extensibles des services}
+    \label{fig:service_list}
+\end{figure}
+
+\vspace{-0.2cm}
+La création d'un nouveau service s'effectue via une fenêtre modale structurée en plusieurs étapes (\textit{Stepper}). Cette approche guide l'utilisateur, segmente les informations requises (détails du service, projets, type) et minimise les erreurs de saisie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-create.png}
+    \vspace{-0.5cm}
+    \caption{Formulaire de création d'un service (Étape 1 du Stepper)}
+    \label{fig:service_create}
+\end{figure}
+
+\vspace{-1.1cm}
+
+\subsubsection{Gestion des Équipes de Service (Service Teams)}
+
+\vspace{-0.4cm}
+Chaque service global est subdivisé en équipes opérationnelles (\textit{Service Teams}). Cette interface fait le pont entre la facturation et l'opérationnel en intégrant des paramètres techniques tels que les clés Jira, la localisation des équipes et le modèle de collaboration. Tout comme pour les services, l'affichage bascule dynamiquement entre une vue synthétique (cartes) et une vue analytique (liste).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-teams-cards.png}
+    \vspace{-0.5cm}
+    \caption{Interface des équipes de service (Vue en cartes)}
+    \label{fig:service_teams_cards}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-teams-list.png}
+    \vspace{-0.4cm}
+    \caption{Vue en liste des équipes avec paramètres techniques détaillés}
+    \label{fig:service_teams_list}
+\end{figure}
+
+\vspace{-0.4cm}
+La modification et le paramétrage d'une équipe de service sont gérés par un formulaire modal avancé. Cette interface permet d'ajuster finement les attributs de l'équipe (langue, clés Jira, modèle de gestion, extensions) tout en affichant des règles de validation strictes en temps réel, garantissant ainsi l'intégrité et l'exhaustivité des données avant toute soumission.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/service-team-edit.png}
+    \vspace{-0.4cm}
+    \caption{Interface de paramétrage d'une équipe de service avec validation dynamique}
+    \label{fig:service_team_edit}
+\end{figure}
+
+ \vspace{-1.1cm}
+
+\subsubsection{Gestion des Groupes de Facturation}
+
+\vspace{-0.4cm}
+Les « Groupes » représentent l'entité organisationnelle de plus haut niveau dans le module Invoicing. Ils permettent d'agréger les clients, les services et les équipes pour structurer les processus financiers. L'interface principale offre une vue d'ensemble sous forme de cartes, facilitant l'accès rapide aux métriques de chaque groupe (nombre de clients, services rattachés et combinaisons actives).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-groups-cards.png}
+    \vspace{-0.4cm}
+    \caption{Interface de gestion des groupes de facturation (Vue en cartes)}
+    \label{fig:groups_cards}
+\end{figure}
+
+\vspace{-0.2cm}
+Pour assurer une facturation précise et automatisée, le système repose sur des « Combinaisons de saisie » (\textit{Data entry combinations}). Cette interface critique permet de lier de manière cohérente un client, un service, une équipe opérationnelle et un compte financier (ex: code projet Jira). C'est cette matrice stricte qui conditionnera la validation des pointages (\textit{Worktime}) et la génération future des factures.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-groups-combinations.png}
+    \vspace{-0.4cm}
+    \caption{Matrice de configuration des combinaisons de facturation}
+    \label{fig:groups_combinations}
+\end{figure}
+
+\vspace{1.2cm}
+Enfin, la sécurité et la traçabilité des données financières sont garanties par un module de gestion des permissions granulaire. Cette fenêtre modale permet d'attribuer des rôles spécifiques (Contrôle total, Lecture/Écriture, Lecture seule) aux administrateurs et aux membres pour chaque groupe de manière isolée.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-groups-permissions.png}
+    \vspace{-0.5cm}
+    \caption{Interface de gestion des permissions et des rôles d'accès par groupe}
+    \label{fig:groups_permissions}
+\end{figure}
+
+\vspace{-1.1cm}
+
+\subsubsection{Suivi des Pointages (Work time)}
+
+\vspace{-0.4cm}
+Au sein d'un groupe spécifique, l'onglet \textit{Work time} présente une matrice mensuelle détaillée des pointages. Il croise les collaborateurs avec leurs combinaisons de saisie et met en évidence les exceptions (congés, maladies, jours fériés) via des codes couleurs stricts, assurant ainsi une base fiable pour la facturation.
+
+\vspace{-0.1cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-worktime.png}
+    \vspace{-0.5cm}
+    \caption{Matrice de suivi mensuel des pointages et des exceptions}
+    \label{fig:finance_worktime}
+\end{figure}
+
+\subsubsection{Régularisations et Ajustements (Adjustments)}
+
+\vspace{-0.4cm}
+La réalité opérationnelle nécessite souvent des corrections. L'onglet \textit{Adjustments} permet de gérer ces écarts (heures supplémentaires, pénalités, heures de service non facturables). L'interface liste toutes les régularisations avec leurs impacts financiers directs (taux, montants facturés au client vs coûts internes).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-adjustments-list.png}
+    \vspace{-0.5cm}
+    \caption{Liste des régularisations et ajustements financiers appliqués}
+    \label{fig:finance_adjustments_list}
+\end{figure}
+
+\vspace{-0.4cm}
+L'ajout d'un nouvel ajustement se fait via un formulaire dynamique. Selon le type d'ajustement sélectionné (ex: \textit{Extra Hours}), le formulaire adapte ses champs pour exiger les informations pertinentes (taux spécifique, justification, nombre d'heures exact), garantissant la traçabilité de chaque modification.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/finance-adjustment-add.png}
+    \vspace{-0.5cm}
+    \caption{Formulaire dynamique de saisie d'un ajustement}
+    \label{fig:finance_adjustment_add}
+\end{figure}
+
+\subsubsection{Consolidation et Facturation (Billing)}
+
+\vspace{-0.4cm}
+L'onglet \textit{Billing} représente l'aboutissement du processus. Il s'agit d'une vue consolidée qui agrège automatiquement les données de pointage (\textit{Worktime}) et les corrections (\textit{Adjustments}). Le système calcule les montants finaux en appliquant les tarifs négociés (taux interne \textit{Center Rate} et taux de facturation \textit{Client Rate}), générant ainsi les lignes prêtes à être facturées, avec des sous-totaux précis par combinaison.
+
+\vspace{-0.2cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.93\textwidth]{images/finance-billing.png}
+    \vspace{-0.5cm}
+    \caption{Vue consolidée de facturation agrégeant pointages et ajustements}
+    \label{fig:finance_billing}
+\end{figure}
+
+\vspace{-1.1cm}
+
+\subsubsection{Génération de Rapports et Exportation (Excel)}
+
+\vspace{-0.4cm}
+Pour faciliter le reporting financier, une fonctionnalité d'exportation vers Excel a été intégrée. L'utilisateur peut paramétrer finement son fichier via une fenêtre modale en sélectionnant les modules souhaités (\textit{Work time}, \textit{Adjustment}, \textit{Billing}), la période et l'équipe de service.
+
+\vspace{-0.2cm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.93\textwidth]{images/export-modal.png}
+    \vspace{-0.5cm}
+    \caption{Interface de paramétrage dynamique de l'exportation des données}
+    \label{fig:export_modal}
+\end{figure}
+
+\vspace{-0.2cm}
+Le système génère dynamiquement un classeur Excel structuré en plusieurs feuilles. Afin d'offrir une expérience optimale et un fichier directement exploitable, l'export conserve fidèlement la logique métier et la charte visuelle de l'application web. Les codes couleurs des exceptions sont maintenus, les cellules sont pré-formatées (devises, nombres) et les données sont organisées de manière claire.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/export-excel-worktime.png}
+    \vspace{-0.5cm}
+    \caption{Aperçu du fichier généré : Feuille formatée des pointages (Work time)}
+    \label{fig:export_excel_worktime}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/export-excel-adjustments.png}
+    \vspace{-0.5cm}
+    \caption{Aperçu du fichier généré : Feuille détaillée des ajustements (Adjustments)}
+    \label{fig:export_excel_adjustments}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.94\textwidth]{images/export-excel-billing.png}
+    \vspace{-0.5cm}
+    \caption{Aperçu du fichier généré : Feuille consolidée de facturation (Billing)}
+    \label{fig:export_excel_billing}
+\end{figure}
+
 
 
 
