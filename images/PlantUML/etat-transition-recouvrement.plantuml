@@ -1,0 +1,96 @@
+@startuml
+
+skinparam backgroundColor #EBF5FB
+
+skinparam Padding 15
+skinparam defaultFontSize 16
+skinparam defaultFontStyle bold
+skinparam StateFontSize 16
+skinparam StateFontStyle bold
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+skinparam arrowThickness 2
+skinparam StateBorderThickness 2
+
+skinparam StateBackgroundColor #E8F4FD
+skinparam StateBorderColor #1A6DAF
+skinparam ArrowColor #1A6DAF
+skinparam defaultFontColor #0A2540
+skinparam roundcorner 15
+skinparam shadowing true
+
+skinparam state {
+    BackgroundColor<<container>> #FFFFFF
+    BorderColor<<container>> #1A6DAF
+    FontColor<<container>> #1A6DAF
+    FontSize<<container>> 18
+    FontStyle<<container>> bold
+}
+
+state "Plateforme KAFA'AT EMS — Cycle de Vie : Gestion et Recouvrement" as MainProcess <<container>> {
+
+    [*] --> CONSULTATION_FACTURE : Sélectionner une facture
+
+    state CONSULTATION_FACTURE {
+        CONSULTATION_FACTURE : entry / Charger les détails de la facture
+    }
+
+    state "Action\nSouhaitée ?" as ChoixAction <<choice>>
+
+    CONSULTATION_FACTURE --> ChoixAction
+
+    state RECOUVREMENT_PAIEMENT #D6EAF8 {
+        RECOUVREMENT_PAIEMENT : entry / Saisir références (Mode, Date, Montant)
+        RECOUVREMENT_PAIEMENT : do / Valider les données
+        RECOUVREMENT_PAIEMENT : exit / Mettre à jour le statut (PAYEE)
+        RECOUVREMENT_PAIEMENT : exit / Générer le reçu PDF
+    }
+
+    ChoixAction --> RECOUVREMENT_PAIEMENT : [Enregistrer Paiement]
+
+    state "Contrôle des Échéances" as CONTROLE_ECHEANCES {
+
+        state "Délai\nDépassé ?" as CheckRetard <<choice>>
+
+        [*] --> CheckRetard
+
+        state EN_RETARD #FFCCCC {
+            EN_RETARD : entry / Mettre à jour le statut (EN_RETARD)
+            EN_RETARD : exit / Envoyer l'email de relance auto
+        }
+
+        state ACTION_IGNOREE #F4F9FD {
+            ACTION_IGNOREE : entry / Ignorer l'action
+            ACTION_IGNOREE : do / Facture soldée ou dans les délais
+        }
+
+        CheckRetard --> EN_RETARD : [Statut=EN_ATTENTE\net Date > Échéance]
+        CheckRetard --> ACTION_IGNOREE : [Sinon]
+
+        EN_RETARD --> [*]
+        ACTION_IGNOREE --> [*]
+    }
+
+    ChoixAction --> CONTROLE_ECHEANCES : [Vérifier et Relancer]
+
+    state TELECHARGEMENT_DOCUMENT {
+        TELECHARGEMENT_DOCUMENT : entry / Préparer le document original
+        TELECHARGEMENT_DOCUMENT : do / Télécharger la facture PDF
+    }
+
+    ChoixAction --> TELECHARGEMENT_DOCUMENT : [Télécharger]
+
+    state JOURNALISATION_AUDIT #85C1E9 {
+        JOURNALISATION_AUDIT : entry / Enregistrer l'action effectuée
+        JOURNALISATION_AUDIT : do / Sauvegarder dans le journal d'audit
+    }
+
+    RECOUVREMENT_PAIEMENT --> JOURNALISATION_AUDIT
+    CONTROLE_ECHEANCES --> JOURNALISATION_AUDIT
+    TELECHARGEMENT_DOCUMENT --> JOURNALISATION_AUDIT
+
+    JOURNALISATION_AUDIT --> [*] : Fin du processus
+
+}
+
+@enduml

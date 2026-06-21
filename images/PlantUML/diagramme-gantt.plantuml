@@ -1,89 +1,93 @@
-@startuml
-skinparam backgroundColor #E8F4FD
+@startgantt
+skinparam backgroundColor #EBF5FB
+skinparam shadowing true
+
+skinparam defaultFontSize 13
+skinparam defaultFontColor #0A2540
 
 printscale weekly
 Project starts 2026-03-01
 
--- Sprint 1 Lancement --
-[Etude existant Kick-off] lasts 3 days
-[Etude existant Kick-off] starts 2026-03-01
-[Etude existant Kick-off] is colored in #AED6F1/#1A6DAF
+-- Sprint 1 - Lancement --
+[Etude de l'existant et Kick-off (Team)] lasts 3 days
+[Etude de l'existant et Kick-off (Team)] starts 2026-03-01
+[Etude de l'existant et Kick-off (Team)] is colored in #D6EAF8/1A6DAF
 
-[Analyse des besoins] lasts 5 days
-[Analyse des besoins] starts 2026-03-04
-[Analyse des besoins] is colored in #AED6F1/#1A6DAF
+[Analyse des besoins (Redouane et Soufiane)] lasts 5 days
+[Analyse des besoins (Redouane et Soufiane)] starts 2026-03-04
+[Analyse des besoins (Redouane et Soufiane)] is colored in #D6EAF8/1A6DAF
 
-[Specification et Backlog] lasts 6 days
-[Specification et Backlog] starts 2026-03-09
-[Specification et Backlog] is colored in #AED6F1/#1A6DAF
+[Specification et Backlog (Redouane)] lasts 6 days
+[Specification et Backlog (Redouane)] starts 2026-03-09
+[Specification et Backlog (Redouane)] is colored in #D6EAF8/1A6DAF
 
--- Sprint 2 Conception --
-[Modelisation UML] lasts 8 days
-[Modelisation UML] starts 2026-03-15
-[Modelisation UML] is colored in #85C1E9/#2E86C1
+-- Sprint 2 - Conception --
+[Modelisation UML (Soufiane)] lasts 8 days
+[Modelisation UML (Soufiane)] starts 2026-03-15
+[Modelisation UML (Soufiane)] is colored in #AED6F1/1A6DAF
 
-[Setup Spring et Angular] lasts 10 days
-[Setup Spring et Angular] starts 2026-03-21
-[Setup Spring et Angular] is colored in #85C1E9/#2E86C1
+[Setup Environnement Spring Angular (Redouane)] lasts 10 days
+[Setup Environnement Spring Angular (Redouane)] starts 2026-03-21
+[Setup Environnement Spring Angular (Redouane)] is colored in #AED6F1/1A6DAF
 
-[Conception Base de Donnees] lasts 7 days
-[Conception Base de Donnees] starts 2026-03-23
-[Conception Base de Donnees] is colored in #85C1E9/#2E86C1
+[Conception Base de Donnees (Soufiane)] lasts 7 days
+[Conception Base de Donnees (Soufiane)] starts 2026-03-23
+[Conception Base de Donnees (Soufiane)] is colored in #AED6F1/1A6DAF
 
--- Sprint 3 Backend Core --
-[Module Worktime Management] lasts 11 days
-[Module Worktime Management] starts 2026-04-05
-[Module Worktime Management] is colored in #5DADE2/#1A6DAF
+-- Sprint 3 - Backend Core --
+[Module Worktime Management (Redouane)] lasts 11 days
+[Module Worktime Management (Redouane)] starts 2026-04-05
+[Module Worktime Management (Redouane)] is colored in #85C1E9/1A6DAF
 
-[Services CRUD et Group Management] lasts 10 days
-[Services CRUD et Group Management] starts 2026-04-07
-[Services CRUD et Group Management] is colored in #5DADE2/#1A6DAF
+[Services CRUD et Group Management (Redouane)] lasts 10 days
+[Services CRUD et Group Management (Redouane)] starts 2026-04-07
+[Services CRUD et Group Management (Redouane)] is colored in #85C1E9/1A6DAF
 
-[Ajustements et Overrides] lasts 9 days
-[Ajustements et Overrides] starts 2026-04-17
-[Ajustements et Overrides] is colored in #5DADE2/#1A6DAF
+[Logique des Ajustements et Overrides (Soufiane)] lasts 9 days
+[Logique des Ajustements et Overrides (Soufiane)] starts 2026-04-17
+[Logique des Ajustements et Overrides (Soufiane)] is colored in #85C1E9/1A6DAF
 
--- Sprint 4 Facturation --
-[Moteur de Facturation Billing] lasts 12 days
-[Moteur de Facturation Billing] starts 2026-04-26
-[Moteur de Facturation Billing] is colored in #2E86C1/#1A6DAF
+-- Sprint 4 - Facturation --
+[Moteur de Facturation Billing (Redouane)] lasts 12 days
+[Moteur de Facturation Billing (Redouane)] starts 2026-04-26
+[Moteur de Facturation Billing (Redouane)] is colored in #5DADE2/1A6DAF
 
-[Generation des Factures PDF] lasts 10 days
-[Generation des Factures PDF] starts 2026-05-01
-[Generation des Factures PDF] is colored in #2E86C1/#1A6DAF
+[Generation des Factures PDF (Redouane)] lasts 10 days
+[Generation des Factures PDF (Redouane)] starts 2026-05-01
+[Generation des Factures PDF (Redouane)] is colored in #5DADE2/1A6DAF
 
-[Tests Unitaires Backend] lasts 9 days
-[Tests Unitaires Backend] starts 2026-05-08
-[Tests Unitaires Backend] is colored in #2E86C1/#1A6DAF
+[Tests Unitaires Backend (Soufiane)] lasts 9 days
+[Tests Unitaires Backend (Soufiane)] starts 2026-05-08
+[Tests Unitaires Backend (Soufiane)] is colored in #5DADE2/1A6DAF
 
--- Sprint 5 Frontend Angular --
-[UI Admin et Settings] lasts 10 days
-[UI Admin et Settings] starts 2026-05-17
-[UI Admin et Settings] is colored in #85C1E9/#2E86C1
+-- Sprint 5 - Frontend Angular --
+[UI Admin et Settings (Redouane)] lasts 10 days
+[UI Admin et Settings (Redouane)] starts 2026-05-17
+[UI Admin et Settings (Redouane)] is colored in #AED6F1/1A6DAF
 
-[Vues Generation et Cloture] lasts 12 days
-[Vues Generation et Cloture] starts 2026-05-18
-[Vues Generation et Cloture] is colored in #85C1E9/#2E86C1
+[Vues Generation et Cloture (Mehdi)] lasts 12 days
+[Vues Generation et Cloture (Mehdi)] starts 2026-05-18
+[Vues Generation et Cloture (Mehdi)] is colored in #AED6F1/1A6DAF
 
-[Massive Edit Interface] lasts 10 days
-[Massive Edit Interface] starts 2026-05-27
-[Massive Edit Interface] is colored in #85C1E9/#2E86C1
+[Massive Edit Interface (Redouane et Mehdi)] lasts 10 days
+[Massive Edit Interface (Redouane et Mehdi)] starts 2026-05-27
+[Massive Edit Interface (Redouane et Mehdi)] is colored in #AED6F1/1A6DAF
 
-[Integration APIs REST] lasts 11 days
-[Integration APIs REST] starts 2026-06-03
-[Integration APIs REST] is colored in #85C1E9/#2E86C1
+[Integration APIs REST (Mehdi)] lasts 11 days
+[Integration APIs REST (Mehdi)] starts 2026-06-03
+[Integration APIs REST (Mehdi)] is colored in #AED6F1/1A6DAF
 
--- Sprint 6 Finalisation --
-[Tests integration et QA] lasts 9 days
-[Tests integration et QA] starts 2026-06-14
-[Tests integration et QA] is colored in #1A6DAF/#0D3349
+-- Sprint 6 - Finalisation --
+[Tests integration et QA (Team)] lasts 9 days
+[Tests integration et QA (Team)] starts 2026-06-14
+[Tests integration et QA (Team)] is colored in #2E86C1/0D3349
 
-[Redaction du rapport] lasts 108 days
-[Redaction du rapport] starts 2026-03-15
-[Redaction du rapport] is colored in #D6EAF8/#1A6DAF
+[Redaction finale du rapport (Redouane)] lasts 108 days
+[Redaction finale du rapport (Redouane)] starts 2026-03-15
+[Redaction finale du rapport (Redouane)] is colored in #E8F4FD/1A6DAF
 
-[Deploiement UAT et PROD] lasts 10 days
-[Deploiement UAT et PROD] starts 2026-06-23
-[Deploiement UAT et PROD] is colored in #1A6DAF/#0D3349
+[Deploiement UAT et PROD (Team)] lasts 10 days
+[Deploiement UAT et PROD (Team)] starts 2026-06-23
+[Deploiement UAT et PROD (Team)] is colored in #2E86C1/0D3349
 
-@enduml
+@endgantt
