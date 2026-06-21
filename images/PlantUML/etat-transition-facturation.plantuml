@@ -1,0 +1,110 @@
+@startuml
+
+skinparam backgroundColor #EBF5FB
+skinparam nodesep 70
+skinparam ranksep 50
+
+skinparam Padding 15
+skinparam defaultFontSize 16
+skinparam defaultFontStyle bold
+skinparam StateFontSize 16
+skinparam StateFontStyle bold
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+skinparam arrowThickness 2
+skinparam StateBorderThickness 2
+
+skinparam StateBackgroundColor #E8F4FD
+skinparam StateBorderColor #1A6DAF
+skinparam ArrowColor #1A6DAF
+skinparam defaultFontColor #0A2540
+skinparam roundcorner 15
+skinparam shadowing true
+
+skinparam state {
+    BackgroundColor<<container>> #FFFFFF
+    BorderColor<<container>> #1A6DAF
+    FontColor<<container>> #1A6DAF
+    FontSize<<container>> 18
+    FontStyle<<container>> bold
+}
+
+state "Plateforme KAFA'AT EMS — Cycle de Vie de la Génération des Factures" as MainProcess <<container>> {
+
+    [*] --> INITIALISATION : Déclenchement (Mois/Année)
+
+    state INITIALISATION {
+        INITIALISATION : entry / Contrôler habilitations (JWT / ROLE_ADMIN)
+        INITIALISATION : do / Extraire pointages (Statut = APPROUVE)
+    }
+
+    state "Pointages\nTrouvés ?" as CheckPointages <<choice>>
+
+    INITIALISATION -right-> CheckPointages : Vérification BD
+
+    state ECHEC_PRECONDITIONS #FFCCCC {
+        ECHEC_PRECONDITIONS : entry / Afficher avertissement (Aucune donnée)
+    }
+
+    CheckPointages -down-> ECHEC_PRECONDITIONS : [Non]
+    ECHEC_PRECONDITIONS -down-> [*] : Fin (Annulation)
+
+    state "Moteur de Traitement par Lot (Batch)" as TRAITEMENT_LOT #F4F9FD {
+
+        [*] --> EVALUATION_EMPLOYE
+
+        state EVALUATION_EMPLOYE
+
+        state "Groupe de\nFacturation ?" as CheckConfig <<choice>>
+
+        EVALUATION_EMPLOYE -right-> CheckConfig
+
+        state ANOMALIE_PARTIELLE #FFCCCC {
+            ANOMALIE_PARTIELLE : entry / Alerte d'anomalie (TJM manquant)
+            ANOMALIE_PARTIELLE : exit / Ignorer l'employé
+        }
+
+        state GENERATION_UNITAIRE #D6EAF8 {
+            GENERATION_UNITAIRE : entry / Calculer HT (Heures x TJM) et TTC
+            GENERATION_UNITAIRE : do / Générer PDF (Moteur JasperReports)
+            GENERATION_UNITAIRE : exit / Lier URL et ajouter au Lot
+        }
+
+        CheckConfig -down-> ANOMALIE_PARTIELLE : [Non Rattaché]
+        CheckConfig -right-> GENERATION_UNITAIRE : [Rattaché]
+
+        ANOMALIE_PARTIELLE --> [*] : Employé Suivant
+        GENERATION_UNITAIRE --> [*] : Employé Suivant
+    }
+
+    CheckPointages -right-> TRAITEMENT_LOT : [Oui]
+
+    state PERSISTANCE_MASSE #85C1E9 {
+        PERSISTANCE_MASSE : entry / Exécuter l'insertion en masse (Batch Insert)
+    }
+
+    TRAITEMENT_LOT -down-> PERSISTANCE_MASSE : Itérations terminées
+
+    state "Clôture et Routage (Exécution Parallèle)" as CLOTURE_PARALLELE {
+
+        state NOTIFICATION_ASYNC {
+            NOTIFICATION_ASYNC : entry / Déléguer à un Processus Asynchrone
+            NOTIFICATION_ASYNC : do / Construire Email et Attacher PDF
+            NOTIFICATION_ASYNC : exit / Envoyer via Serveur SMTP
+        }
+
+        --
+
+        state SYNTHESE_UI {
+            SYNTHESE_UI : entry / Afficher tableau de bord de synthèse
+            SYNTHESE_UI : do / Calculer Nb factures, Total CA, Anomalies
+        }
+    }
+
+    PERSISTANCE_MASSE -left-> CLOTURE_PARALLELE : Post-Persistance DB
+
+    CLOTURE_PARALLELE -down-> [*] : Fin du traitement
+
+}
+
+@enduml

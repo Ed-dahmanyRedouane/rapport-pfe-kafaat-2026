@@ -1,0 +1,97 @@
+@startuml
+
+skinparam backgroundColor #EBF5FB
+
+skinparam Padding 15
+skinparam defaultFontSize 16
+skinparam defaultFontStyle bold
+skinparam StateFontSize 16
+skinparam StateFontStyle bold
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+skinparam arrowThickness 2
+skinparam StateBorderThickness 2
+
+skinparam StateBackgroundColor #E8F4FD
+skinparam StateBorderColor #1A6DAF
+skinparam ArrowColor #1A6DAF
+skinparam defaultFontColor #0A2540
+skinparam roundcorner 15
+skinparam shadowing true
+
+skinparam state {
+    BackgroundColor<<container>> #FFFFFF
+    BorderColor<<container>> #1A6DAF
+    FontColor<<container>> #1A6DAF
+    FontSize<<container>> 18
+    FontStyle<<container>> bold
+}
+
+state "Plateforme KAFA'AT EMS — Cycle de Vie d'un Pointage" as MainProcess <<container>> {
+
+[*] --> SAISIE_EN_COURS : Initialisation du processus
+
+state SAISIE_EN_COURS {
+  SAISIE_EN_COURS : entry / Instancier objet Pointage
+  SAISIE_EN_COURS : do / Saisir données (Projet, Date, Heures)
+}
+
+state "Contrôle\nSystème" as VerifPlafond <<choice>>
+
+SAISIE_EN_COURS --> VerifPlafond : Soumettre
+
+note right of VerifPlafond
+  <b>Règle Métier :</b>
+  Le plafond journalier est défini
+  dans le groupe de facturation.
+end note
+
+VerifPlafond --> SAISIE_EN_COURS : [Cumul > Plafond]\n/ Déclencher Exception (HTTP 400)
+VerifPlafond --> SOUMIS : [Cumul <= Plafond]\n/ Persister en Base
+
+state SOUMIS {
+  SOUMIS : entry / Statut = SOUMIS
+  SOUMIS : entry / Notifier Admin (Event/Notification)
+}
+
+state "Évaluation Administrative (Workflow)" as EVALUATION #F4F9FD {
+
+    [*] --> EN_ATTENTE_REVISION
+
+    state EN_ATTENTE_REVISION
+
+    state AJUSTE #85C1E9 {
+        AJUSTE : entry / Exiger et enregistrer Motif
+        AJUSTE : entry / Historiser l'Ajustement (Override)
+        AJUSTE : do / Recalculer les heures réelles
+        AJUSTE : exit / Déclencher Alerte SMTP (Employé)
+    }
+
+    state APPROUVE #D6EAF8
+
+    EN_ATTENTE_REVISION --> APPROUVE : Décision [Approuver]
+    EN_ATTENTE_REVISION --> AJUSTE : Décision [Ajuster]
+
+    AJUSTE --> APPROUVE : Validation automatique\naprès ajustement
+}
+
+SOUMIS --> EN_ATTENTE_REVISION : Assigner au tableau de bord Admin
+
+state REFUSE #FFCCCC {
+    REFUSE : entry / Enregistrer motif de refus
+    REFUSE : entry / Alerter l'employé
+}
+
+EN_ATTENTE_REVISION --> REFUSE : Décision [Refuser]
+REFUSE --> [*] : Fin du cycle (Rejeté)
+
+state DISPONIBLE_FACTURATION #EBF5FB {
+    DISPONIBLE_FACTURATION : entry / Transférer au Moteur d'Invoicing
+}
+
+APPROUVE --> DISPONIBLE_FACTURATION : Processus de Synchronisation
+DISPONIBLE_FACTURATION --> [*] : Intégration dans une Facture
+
+}
+
+@enduml
